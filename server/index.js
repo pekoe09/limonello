@@ -9,11 +9,16 @@ const mongo = require('./mongo')
 const { tokenExtractor } = require('./utils/tokenExtractor')
 const { userExtractor } = require('./utils/userExtractor')
 
+const { userRouter } = require('./user')
+const { countryRouter } = require('./category')
+
 app.use(cors())
 app.use(bodyparser.json())
 app.use(tokenExtractor)
 app.use(userExtractor)
 
+app.use('/api/countries', countryRouter)
+app.use('/api/users', userRouter)
 
 app.use(express.static('/client/public'))
 
@@ -32,6 +37,8 @@ app.use((err, req, res, next) => {
   } else if (err.isUnauthorizedAttempt) {
     res.status(401).json({ error: err.message })
   } else if (err.isForbidden) {
+    res.status(403).json({ error: err.message })
+  } else if (err.refsPreventDeletion) {
     res.status(403).json({ error: err.message })
   } else {
     res.status(500).json({ error: 'Something has gone wrong' })

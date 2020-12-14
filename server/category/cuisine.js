@@ -1,6 +1,5 @@
-import mongoose from 'mongoose'
-import { model } from '../user/user'
-import metaDataSchema from '../utils/metaData'
+const mongoose = require('mongoose')
+const metaDataSchema = require('../utils/metaData')
 
 const cuisineSchema = new mongoose.Schema({
   name: {

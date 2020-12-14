@@ -31,9 +31,9 @@ const getMetaData = (req, old) => {
   }
 }
 
-const validateUserRights = async (req, collectionId, level) => {
-  console.log('querying userrights', req.user.username, collectionId, level)
-  const userRight = await UserRight.findOne({ user: req.user._id, panCollection: collectionId })
+const validateUserRights = async (req, level) => {
+  console.log('querying userrights', req.user.username, level)
+  const userRight = await UserRight.findOne({ user: req.user._id })
   console.log('found rights', userRight)
   let hasRight = false
   if (userRight) {
@@ -56,7 +56,7 @@ const validateUserRights = async (req, collectionId, level) => {
     }
   }
   if (!hasRight) {
-    let err = new Error(`Operation on collection ${collectionId} requires ${level} rights for user ${req.user.username}`)
+    let err = new Error(`Operation requires ${level} rights for user ${req.user.username}`)
     err.isUnauthorizedAttempt = true
     throw err
   }
@@ -135,6 +135,12 @@ const isUnique = async (Entity, fieldName, newValue, _id) => {
   return true
 }
 
+const throwRefsPreventDeleting = (entityName, id, refsName) => {
+  let err = new Error(`${capitalize(entityName)} (${id}) cannot be deleted as it has ${refsName}`)
+  err.isUnauthorizedAttempt = true
+  throw err
+}
+
 const findObjectById = async (id, Entity, entityName) => {
   const entity = await Entity.findById(id)
   if (!entity) {
@@ -193,5 +199,6 @@ module.exports = {
   addChildToEntity,
   removeChildFromEntity,
   isUnique,
-  stringifyByProperty
+  stringifyByProperty,
+  throwRefsPreventDeleting
 }

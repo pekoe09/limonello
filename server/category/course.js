@@ -1,5 +1,5 @@
-import mongoose from 'mongoose'
-import metaDataSchema from '../utils/metaData'
+const mongoose = require('mongoose')
+const metaDataSchema = require('../utils/metaData')
 
 const courseSchema = new mongoose.Schema({
   name: {

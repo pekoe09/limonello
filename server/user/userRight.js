@@ -6,11 +6,6 @@ const userRightSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  panCollection: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'PanCollection',
-    required: true
-  },
   rightLevel: {
     type: String,
     required: true

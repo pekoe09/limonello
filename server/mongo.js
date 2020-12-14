@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const config = require('./config.js')
 const bcrypt = require('bcryptjs')
 const { User } = require('./user')
+const { UserRight } = require('./user')
 
 const initializeUser = async () => {
   const users = await User.find({})
@@ -9,7 +10,7 @@ const initializeUser = async () => {
     console.log('Initializing first user')
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(config.firstPassword, saltRounds)
-    const user = new User({
+    let user = new User({
       username: config.firstUsername,
       passwordHash,
       firstNames: 'Default',
@@ -17,7 +18,18 @@ const initializeUser = async () => {
       email: 'some.one@some.where',
       userRights: []
     })
-    await user.save()
+    user = await user.save()
+
+    let userRight = new UserRight({
+      user: user._id,
+      rightLevel: 'superadmin'
+    })
+    userRight = await userRight.save()
+    user = await User.findByIdAndUpdate(
+      user._id,
+      { $push: { userRights: userRight._id } },
+      { new: true }
+    )
   }
 }
 
