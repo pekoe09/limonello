@@ -1,4 +1,4 @@
-const UserRight = require('../user')
+const UserRight = require('../user/userRight')
 
 const wrapAsync = (fn) => {
   return function (req, res, next) {
@@ -32,8 +32,9 @@ const getMetaData = (req, old) => {
 }
 
 const validateUserRights = async (req, level) => {
-  console.log('querying userrights', req.user.username, level)
-  const userRight = await UserRight.findOne({ user: req.user._id })
+  console.log('querying userrights', req.user.username, req.user._id, level)
+  console.log(UserRight)
+  const userRight = await UserRight.findOne({ user: req.user._id})
   console.log('found rights', userRight)
   let hasRight = false
   if (userRight) {
@@ -126,7 +127,7 @@ const validateUniqueness = async (Entity, entityName, fieldName, newValue, _id) 
 const isUnique = async (Entity, fieldName, newValue, _id) => {
   const match = await Entity.findOne({ [fieldName]: newValue })
   if (match) {
-    if (_id && _id.equals(match._id)) {
+    if (_id && _id == match._id) {
       return true
     } else {
       return false
