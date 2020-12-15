@@ -12,6 +12,7 @@ const { userExtractor } = require('./utils/userExtractor')
 const { userRouter } = require('./user')
 const { countryRouter } = require('./category')
 const { courseRouter } = require('./category')
+const { cuisineRouter } = require('./category')
 
 app.use(cors())
 app.use(bodyparser.json())
@@ -20,6 +21,7 @@ app.use(userExtractor)
 
 app.use('/api/countries', countryRouter)
 app.use('/api/courses', courseRouter)
+app.use('/api/cuisines', cuisineRouter)
 app.use('/api/users', userRouter)
 
 app.use(express.static('/client/public'))
