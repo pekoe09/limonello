@@ -5,6 +5,7 @@ const DishType = require('./dishType')
 const countryRouter = require('./countryController')
 const courseRouter = require('./courseController')
 const cuisineRouter = require('./cuisineController')
+const dishTypeRouter = require('./dishTypeController')
 
 module.exports = {
   Country,
@@ -13,5 +14,6 @@ module.exports = {
   DishType,
   countryRouter,
   courseRouter,
-  cuisineRouter
+  cuisineRouter,
+  dishTypeRouter
 }
