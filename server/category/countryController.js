@@ -19,9 +19,8 @@ countryRouter.get('/', wrapAsync(async (req, res, next) => {
 }))
 
 countryRouter.post('/', wrapAsync(async (req, res, next) => {
-  console.log('hit countries/post')
   await validate(req)
-  
+
   let country = new Country({
     name: req.body.name,
     continent: req.body.continent,
@@ -68,9 +67,7 @@ countryRouter.delete('/:id', wrapAsync(async (req, res, next) => {
 
 const validate = async (req) => {
   checkUser(req)
-  console.log('starts validating user rights')
   await validateUserRights(req, 'admin')
-  console.log('starts validating mandatory fields')
   validateMandatoryFields(req, ['name'], 'country', 'create')
   await validateUniqueness(Country, 'Country', 'name', req.body.name, req.params.id)
 }

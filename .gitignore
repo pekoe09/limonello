@@ -117,3 +117,4 @@ dist
 
 # login test
 loginHttpTest.rest
+*.rest

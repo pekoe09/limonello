@@ -4,7 +4,8 @@ const metaDataSchema = require('../utils/metaData')
 const courseSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   ordinality: {
     type: Number,
