@@ -13,7 +13,7 @@ const { countryRouter } = require('./category')
 const { courseRouter } = require('./category')
 const { cuisineRouter } = require('./category')
 const { dishTypeRouter } = require('./category')
-const { measureTypeRouter } = require('./measure')
+const { measureRouter, measureTypeRouter } = require('./measure')
 const { userRouter } = require('./user')
 
 app.use(cors())
@@ -25,6 +25,7 @@ app.use('/api/countries', countryRouter)
 app.use('/api/courses', courseRouter)
 app.use('/api/cuisines', cuisineRouter)
 app.use('/api/dishtypes', dishTypeRouter)
+app.use('/api/measures', measureRouter)
 app.use('/api/measuretypes', measureTypeRouter)
 app.use('/api/users', userRouter)
 
@@ -46,7 +47,7 @@ app.use((err, req, res, next) => {
     res.status(401).json({ error: err.message })
   } else if (err.isForbidden) {
     res.status(403).json({ error: err.message })
-  } else if (err.refsPreventDeletion) {
+  } else if (err.refPreventDeletion) {
     res.status(403).json({ error: err.message })
   } else {
     res.status(500).json({ error: 'Something has gone wrong' })

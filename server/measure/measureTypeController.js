@@ -50,7 +50,7 @@ measureTypeRouter.delete('/:id', wrapAsync(async (req, res, next) => {
 
   let measureType = await findObjectById(req.params.id, MeasureType, 'measureType')
   if (measureType.measures.length > 0) {
-    throwRefsPreventDeleting('MeasureType', req.params.id, 'beers')
+    throwRefsPreventDeleting('MeasureType', req.params.id, 'measures')
   }
 
   await MeasureType.findByIdAndRemove(req.params.id)

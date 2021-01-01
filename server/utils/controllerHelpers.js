@@ -31,10 +31,17 @@ const getMetaData = (req, old) => {
   }
 }
 
+const capitalize = (str) => {
+  if (typeof str === 'string' && str.length > 0) {
+    str = str.charAt(0).toUpperCase() + str.slice(1)
+  }
+  return str
+}
+
 const validateUserRights = async (req, level) => {
   console.log('querying userrights', req.user.username, req.user._id, level)
   console.log(UserRight)
-  const userRight = await UserRight.findOne({ user: req.user._id})
+  const userRight = await UserRight.findOne({ user: req.user._id })
   console.log('found rights', userRight)
   let hasRight = false
   if (userRight) {
@@ -178,10 +185,6 @@ const stringifyByProperty = (arr, propertyName, separator) => {
   propStr = arr.reduce((fullString, entity) => `${fullString}${entity[propertyName]}${separator}`, '')
   propStr = propStr.slice(0, propStr.length - separator.length)
   return propStr
-}
-
-const capitalize = old => {
-  return old.charAt(0).toUpperCase + old.slice(1)
 }
 
 module.exports = {
