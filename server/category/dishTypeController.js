@@ -48,7 +48,7 @@ dishTypeRouter.delete('/:id', wrapAsync(async (req, res, next) => {
 
   let dishType = await findObjectById(req.params.id, DishType, 'dishType')
   if (dishType.recipes.length > 0) {
-    throwRefsPreventDeleting('DishType', req.params.id, 'beers')
+    throwRefsPreventDeleting('DishType', req.params.id, 'recipes')
   }
 
   await DishType.findByIdAndRemove(req.params.id)

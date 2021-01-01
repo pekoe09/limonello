@@ -48,7 +48,7 @@ cuisineRouter.delete('/:id', wrapAsync(async (req, res, next) => {
 
   let cuisine = await findObjectById(req.params.id, Cuisine, 'cuisine')
   if (cuisine.recipes.length > 0) {
-    throwRefsPreventDeleting('Cuisine', req.params.id, 'beers')
+    throwRefsPreventDeleting('Cuisine', req.params.id, 'recipes')
   }
 
   await Cuisine.findByIdAndRemove(req.params.id)
