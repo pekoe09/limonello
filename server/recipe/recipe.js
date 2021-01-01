@@ -1,10 +1,11 @@
-import mongoose from 'mongoose'
-import metaDataSchema from '../utils/metaData'
+const mongoose = require('mongoose')
+const metaDataSchema = require('../utils/metaData')
 
 const recipeSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   cuisine: {
     type: mongoose.Schema.Types.ObjectId,
