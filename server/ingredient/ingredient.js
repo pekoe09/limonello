@@ -4,7 +4,8 @@ const metaDataSchema = require('../utils/metaData')
 const ingredientSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   partitive: {
     type: String,
