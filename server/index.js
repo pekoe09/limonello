@@ -15,7 +15,7 @@ const { courseRouter } = require('./category')
 const { cuisineRouter } = require('./category')
 const { dishTypeRouter } = require('./category')
 const { foodStuffRouter, ingredientRouter } = require('./ingredient')
-const { grapeRouter } = require('./wine')
+const { grapeRouter, regionRouter, wineTypeRouter } = require('./wine')
 const { measureRouter, measureTypeRouter } = require('./measure')
 const { userRouter } = require('./user')
 
@@ -35,7 +35,9 @@ app.use('/api/grapes', grapeRouter)
 app.use('/api/ingredients', ingredientRouter)
 app.use('/api/measures', measureRouter)
 app.use('/api/measuretypes', measureTypeRouter)
+app.use('/api/regions', regionRouter)
 app.use('/api/users', userRouter)
+app.use('/api/winetypes', wineTypeRouter)
 
 app.use(express.static('/client/public'))
 

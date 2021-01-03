@@ -1,14 +1,23 @@
-import mongoose from 'mongoose'
-import metaDataSchema from '../utils/metaData'
+const mongoose = require('mongoose')
+const metaDataSchema = require('../utils/metaData')
 
 const regionSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   country: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Country',
+    required: true
+  },
+  wines: {
+    type: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Wine',
+      required: true
+    }],
     required: true
   },
   metaData: metaDataSchema
