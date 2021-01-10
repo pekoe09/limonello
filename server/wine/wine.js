@@ -1,10 +1,11 @@
-import mongoose from 'mongoose'
-import metaDataSchema from '../utils/metaData'
+const mongoose = require('mongoose')
+const metaDataSchema = require('../utils/metaData')
 
 const wineSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   alcohol: {
     type: Number,
@@ -72,3 +73,7 @@ const wineSchema = new mongoose.Schema({
   },
   metaData: metaDataSchema
 })
+
+const Wine = mongoose.model('Wine', wineSchema)
+
+module.exports = Wine
