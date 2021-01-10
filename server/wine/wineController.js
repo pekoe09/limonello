@@ -195,6 +195,7 @@ wineRouter.delete('/:id', wrapAsync(async (req, res, next) => {
       { $pull: { wines: wine._id } }
     ))
   })
+  await Promise.all(grapePromises)
 
   await Wine.findByIdAndRemove(req.params.id)
   res.status(204).end()
