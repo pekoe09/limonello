@@ -4,17 +4,13 @@ import { persistStore, persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 
-// import {
-//   userReducer
-// } from './reducers'
+import {
+  userReducer
+} from './reducers'
 
-// const appReducer = combineReducers({
-//   users: userReducer
-// })
-
-const appReducer = () => {
-  
-}
+const appReducer = combineReducers({
+  users: userReducer
+})
 
 export const rootReducer = (state, action) => {
   if (action.type === 'LOGOUT_SUCCESS') {

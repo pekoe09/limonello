@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import MainTitle from './MainTitle'
+import MainNavBar from './MainNavBar'
 import { Container, Row } from 'react-bootstrap'
 
 const containerStyle = {
@@ -21,6 +22,7 @@ const MainHeader = ({ titleText }) => {
       <Row>
         <div style={mainHeaderStyle}>
           <MainTitle text={titleText} />
+          <MainNavBar />
         </div>
       </Row>
     </Container>
