@@ -1,5 +1,7 @@
 const Recipe = require('./recipe')
+const recipeRouter = require('./recipeController')
 
 module.exports = {
-  Recipe
+  Recipe,
+  recipeRouter
 }

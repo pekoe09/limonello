@@ -12,6 +12,9 @@ const recipeRouter = require('express').Router()
 const Recipe = require('./recipe')
 const { Cuisine, DishType, Course } = require('../category')
 const { FoodStuff, Ingredient } = require('../ingredient')
+const { Measure } = require('../measure')
+const { Beer } = require('../beer')
+const { Wine } = require('../wine')
 
 recipeRouter.get('/', wrapAsync(async (req, res, next) => {
   const recipes = await Recipe
@@ -26,6 +29,7 @@ recipeRouter.post('/', wrapAsync(async (req, res, next) => {
   let dishType = await findObjectById(req.body.dishType, DishType, 'DishType')
   let course = await findObjectById(req.body.course, Course, 'Course')
   let mainFoodStuff = req.body.mainFoodStuff ? await findObjectById(req.body.mainFoodStuff, FoodStuff, 'FoodStuff') : null
+  //TODO: validate the contents of ingredients property
 
   let recipe = new Recipe({
     name: req.body.name,
@@ -63,6 +67,45 @@ recipeRouter.post('/', wrapAsync(async (req, res, next) => {
       mainFoodStuff._id,
       { $push: { recipes: recipe._id } }
     )
+  }
+
+  if (recipe.ingredients.length > 0) {
+    const ingredientPromises = []
+    const measurePromises = []
+    recipe.ingredients.forEach(i => {
+      ingredientPromises.push(Ingredient.findByIdAndUpdate(
+        i.ingredient,
+        { $push: { recipes: recipe._id } }
+      ))
+      if (i.quantity) {
+        measurePromises.push(Measure.findByIdAndUpdate(
+          i.quantity.measure,
+          { $push: { recipes: recipe._id } }
+        ))
+      }
+    })
+    await Promise.all(ingredientPromises)
+    await Promise.all(measurePromises)
+  }
+
+  if (recipe.beers.length > 0) {
+    const beerPromises = []
+    recipe.beers.forEach(b => {
+      beerPromises.push(Beer.findByIdAndUpdate(
+        b,
+        { $push: { recipes: recipe._id } }
+      ))
+    })
+    await Promise.all(beerPromises)
+  }
+  if (recipe.wines.length > 0) {
+    const winePromises = []
+    recipe.wines.forEach(w => {
+      winePromises.push(Wine.findByIdAndUpdate(
+        w,
+        { $push: { recipes: recipe._id } }
+      ))
+    })
   }
 
   res.status(201).json(recipe)
