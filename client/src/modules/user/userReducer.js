@@ -5,7 +5,7 @@ import {
   LOGOUT_BEGIN,
   LOGOUT_SUCCESS,
   LOGOUT_FAILURE
-} from '../actions/userActions'
+} from './userActions'
 
 const initialState = {
   items: [],

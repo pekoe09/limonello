@@ -1,4 +1,4 @@
-import userReducer from './userReducer'
+import { userReducer } from '../modules/user'
 
 console.log(userReducer)
 

@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { withRouter } from 'react-router-dom'
 import { Form, Button } from 'react-bootstrap'
-import { logout } from '../../actions/userActions'
+import { logout } from '../userActions'
 
 const Logout = ({ logout, history }) => {
   const handleLogout = () => {

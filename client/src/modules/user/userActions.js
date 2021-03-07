@@ -1,4 +1,4 @@
-import userService from '../services/userServices'
+import userService from './userServices'
 
 export const LOGIN_BEGIN = 'LOGIN_BEGIN'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'

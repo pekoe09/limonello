@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { NavLink } from 'react-router-dom'
 import { Navbar, Nav, NavItem, NavDropdown, Image } from 'react-bootstrap'
-import { Login, Logout } from '../users'
+import { Login, Logout } from '../../user'
 
 const AnonymousItems = () => {
   return (
