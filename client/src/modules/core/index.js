@@ -2,7 +2,8 @@ import LimonelloButton from './components/LimonelloButton'
 import LimonelloDataTable from './components/LimonelloDataTable'
 import {
   DeletionConfirmation,
-  Layout
+  Layout,
+  PageBar
 } from './layout'
 import withCrud from './withCRUD'
 import entityServices from './services/entityServices'
@@ -21,6 +22,7 @@ export {
   Layout,
   LimonelloButton,
   LimonelloDataTable,
+  PageBar,
   withCrud,
   getAll,
   getByPage,

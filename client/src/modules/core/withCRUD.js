@@ -52,8 +52,9 @@ const addCRUDs = (WrappedComponent) => props => {
 }
 
 const mapStateToProps = (store, ownProps) => {
+  console.log('countries rep:', store[ownProps.repository].byId)
   return {
-    items: store[ownProps.repository].items.sort(ownProps.defaultSort)
+    items: Object.entries(store[ownProps.repository].byId).sort(ownProps.defaultSort)
   }
 }
 

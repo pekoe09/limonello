@@ -5,11 +5,10 @@ import { withRouter } from 'react-router-dom'
 import {
   LimonelloButton,
   LimonelloDataTable,
-  DeletionConfirmation
+  DeletionConfirmation,
+  PageBar
 } from '../../core'
 // import '../common/alexandria-react-table.css'
-// import ViewBar from '../common/ViewBar'
-// import PublisherEdit from './PublisherEdit'
 
 function CountriesList(props) {
   const [rowToEdit, setRowToEdit] = useState(null)
@@ -128,6 +127,9 @@ function CountriesList(props) {
 
   return (
     <React.Fragment>
+      <PageBar
+        headerText='Countries'
+      />
       <p>Countries list</p>
     </React.Fragment>
   )
@@ -137,7 +139,7 @@ function CountriesList(props) {
 const mapStateToProps = store => ({
   countries: store.countries.items,
   loading: store.countries.loading,
-  error: store.coountries.error
+  error: store.countries.error
 })
 
 export default withRouter(connect(
