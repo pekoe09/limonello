@@ -5,6 +5,7 @@ import {
   usePagination,
   useSortBy
 } from 'react-table'
+import './limonello-react-table.css'
 import LimonelloButton from './LimonelloButton'
 
 const LimonelloDataTable = ({ columns, data, handleRowClick }) => {

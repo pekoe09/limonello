@@ -4,16 +4,12 @@ import { withRouter } from 'react-router-dom'
 
 import {
   LimonelloButton,
-  LimonelloDataTable
-} from '../core'
+  LimonelloDataTable,
+  DeletionConfirmation
+} from '../../core'
 // import '../common/alexandria-react-table.css'
-// import {
-//   updateBook
-// } from '../../actions/bookActions'
 // import ViewBar from '../common/ViewBar'
 // import PublisherEdit from './PublisherEdit'
-// import BookEdit from '../books/BookEdit'
-// import DeletionConfirmation from '../common/DeletionConfirmation'
 
 function CountriesList(props) {
   const [rowToEdit, setRowToEdit] = useState(null)
@@ -132,6 +128,7 @@ function CountriesList(props) {
 
   return (
     <React.Fragment>
+      <p>Countries list</p>
     </React.Fragment>
   )
 

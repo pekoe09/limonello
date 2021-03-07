@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getConfig } from './servicehelpers'
+import { getConfig } from './serviceHelpers'
 
 const baseUrl = '/api'
 

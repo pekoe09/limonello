@@ -1,6 +1,10 @@
 import LimonelloButton from './components/LimonelloButton'
-import LimonelloDataTable from './components/common/LimonelloDataTable'
-import withCrud from '.withCRUD'
+import LimonelloDataTable from './components/LimonelloDataTable'
+import {
+  DeletionConfirmation,
+  Layout
+} from './layout'
+import withCrud from './withCRUD'
 import entityServices from './services/entityServices'
 const {
   getAll,
@@ -13,6 +17,8 @@ const {
 } = entityServices
 
 export {
+  DeletionConfirmation,
+  Layout,
   LimonelloButton,
   LimonelloDataTable,
   withCrud,

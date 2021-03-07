@@ -1,7 +1,7 @@
+import { countryReducer } from '../modules/country'
 import { userReducer } from '../modules/user'
 
-console.log(userReducer)
-
 export {
+  countryReducer,
   userReducer
 }
