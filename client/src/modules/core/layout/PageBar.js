@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { InputGroup, Button, Form, Row, Col } from 'react-bootstrap'
+import { InputGroup, Form, Row, Col } from 'react-bootstrap'
+import PageTitle from './PageTitle'
+import { LimonelloButton, LimonelloForm } from '../../core'
 
 const PageBar = ({
   headerText,
@@ -12,9 +14,48 @@ const PageBar = ({
   toggleAdvancedSearch
 }) => {
   return (
-    <React.Fragment>
-      <p>pagebar</p>
-    </React.Fragment>
+    <div style={{backgroundColor: 'navy'}}>
+      <Row>
+        <Col md={3}>
+          <PageTitle text='Countries' />
+        </Col>
+        <Col md={9}>
+          <LimonelloButton
+            bsstyle='primary'
+            style={{ marginRight: 10, marginLeft: 10, float: 'right' }}
+            onClick={() => handleOpenEditPage()}
+          >
+            {addBtnText}
+          </LimonelloButton>
+          <Form
+            inline
+            style={{
+              display: 'grid',
+              width: 'auto',
+              marginLeft: 25
+            }}
+          >
+            <InputGroup>
+              <LimonelloForm.Control
+                type='text'
+                name='searchPhrase'
+                value={searchPhrase}
+                onChange={handlePhraseChange}
+                placeholder='Write a search text'
+              />
+              <InputGroup.Append>
+                <LimonelloButton
+                  onClick={handleSearch}
+                >
+                  Go!
+              </LimonelloButton>
+              </InputGroup.Append>
+            </InputGroup>
+          </Form>
+        </Col>
+      </Row>
+
+    </div>
   )
 }
 
@@ -26,6 +67,5 @@ PageBar.propTypes = {
   handleOpenEditPage: PropTypes.func,
   handlePhraseChange: PropTypes.func,
   handleSearch: PropTypes.func,
-  searchPhrase: PropTypes.string,
-  toggleAdvancedSearch: PropTypes.func
+  searchPhrase: PropTypes.string
 }

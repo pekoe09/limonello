@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, useHistory } from 'react-router-dom'
 
 import {
   LimonelloButton,
@@ -19,30 +19,25 @@ function CountriesList(props) {
   const [searchPhrase, setSearchPhrase] = useState('')
   const [searchPhraseToUse, setSearchPhraseToUse] = useState('')
 
-  // const toggleEditModalOpen = () => {
-  //   props.showError('')
-  //   setEditModalIsOpen(!editModalIsOpen)
-  //   setRowToEdit(null)
-  // }
+  let history = useHistory()
 
-  // const toggleBookModalOpen = () => {
-  //   props.showError('')
-  //   setBookModalIsOpen(!bookModalIsOpen)
-  //   setCountryToEdit(null)
-  // }
-
-  const handleRowClick = (row) => {
-    // setEditModalIsOpen(true)
-    setRowToEdit(row.original)
-    setRelatedRegions(getRelatedRegions(row.original._id))
-    props.showError('')
+  const handleOpenEditPage = (id) => {
+    setRowToEdit(id)
+    if (id) {
+      history.push({
+        pathname: '/countries/edit',
+        search: `?id=${id}`
+      })
+    } else {
+      history.push('/countries/create')
+    }
   }
 
-  // const handleCountryClick = (countryId) => {
-  //   setCountryToEdit(relatedRegions.find(b => b._id === countryId))
-  //   // setBookModalIsOpen(true)
-  //   props.showError('')
-  // }
+  const handleRowClick = (row) => {
+    // setRelatedRegions(getRelatedRegions(row.original._id))
+    props.showError('')
+    handleOpenEditPage(row.original._id)
+  }
 
   //TODO: delete stuff could be in a separate component
 
@@ -77,18 +72,19 @@ function CountriesList(props) {
     setSearchPhraseToUse(searchPhrase)
   }
 
-  const getRelatedRegions = (countryId) => {
-    return props.regions.filter(r => r.country && r.country._id === countryId)
-  }
+  // const getRelatedRegions = (countryId) => {
+  //   return props.regions.filter(r => r.country && r.country._id === countryId)
+  // }
 
   const getFilteredItems = useCallback(() => {
     let searchPhrase = searchPhraseToUse.toLowerCase()
-    let filtered = props.items
+    let filtered = props.items.map(i => i[1])
     if (searchPhraseToUse.length > 0) {
       filtered = props.items.filter(p =>
         p.name.toLowerCase().includes(searchPhrase)
       )
     }
+    console.log('found countries:', filtered)
     return filtered
   }, [props.items, searchPhraseToUse])
 
@@ -129,8 +125,25 @@ function CountriesList(props) {
     <React.Fragment>
       <PageBar
         headerText='Countries'
+        addBtnText='New country'
+        handleOpenEditPage={handleOpenEditPage}
+        searchPhrase={searchPhrase}
+        handlePhraseChange={handlePhraseChange}
+        handleSearch={handleSearch}
       />
-      <p>Countries list</p>
+
+      <LimonelloDataTable
+        columns={columns}
+        data={getData}
+        handleRowClick={handleRowClick}
+      />
+
+      <DeletionConfirmation
+        headerText={`Deleting ${deletionTargetName}`}
+        bodyText='Are you sure you want to go ahead and delete this?'
+        modalIsOpen={deletionConfirmationIsOpen}
+        closeModal={handleDeleteConfirmation}
+      />
     </React.Fragment>
   )
 
