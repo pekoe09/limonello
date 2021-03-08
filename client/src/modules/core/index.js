@@ -4,7 +4,8 @@ import LimonelloForm from './components/LimonelloForm'
 import {
   DeletionConfirmation,
   Layout,
-  PageBar
+  PageBar,
+  PageTitle
 } from './layout'
 import withCrud from './withCRUD'
 import entityServices from './services/entityServices'
@@ -25,6 +26,7 @@ export {
   LimonelloDataTable,
   LimonelloForm,
   PageBar,
+  PageTitle,
   withCrud,
   getAll,
   getByPage,
