@@ -1,6 +1,7 @@
 import LimonelloButton from './components/LimonelloButton'
 import LimonelloDataTable from './components/LimonelloDataTable'
 import LimonelloForm from './components/LimonelloForm'
+import LimonelloFormButtons from './components/LimonelloFormButtons'
 import {
   DeletionConfirmation,
   Layout,
@@ -8,6 +9,7 @@ import {
   PageTitle
 } from './layout'
 import withCrud from './withCRUD'
+import withSearch from './withSearch'
 import entityServices from './services/entityServices'
 const {
   getAll,
@@ -25,9 +27,11 @@ export {
   LimonelloButton,
   LimonelloDataTable,
   LimonelloForm,
+  LimonelloFormButtons,
   PageBar,
   PageTitle,
   withCrud,
+  withSearch,
   getAll,
   getByPage,
   getOne,

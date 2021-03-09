@@ -7,10 +7,11 @@ import {
 
 const PageContainer = () => {
   return (
-    <React.Fragment>
+    <div>
       <Route exact path='/countries' render={() => <CountriesPage />} />
+      <Route exact path='/countries/create' render={() => <CountryEditPage />} />
       <Route exaxt path='/countries/edit/:id' render={() => <CountryEditPage />} />
-    </React.Fragment>
+    </div>
   )
 }
 export default withRouter(PageContainer)

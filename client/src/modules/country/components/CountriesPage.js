@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import CountriesList from './CountriesList'
-import { withCrud } from '../../core'
+import CountriesListView from './CountriesListView'
+import { withCrud, withSearch } from '../../core'
 import {
   saveCountry,
   getCountries,
@@ -12,7 +12,7 @@ const defaultSort = (a, b) =>
   a.name > b.name ? 1 : (a.name < b.name ? -1 : 0)
 
 const CountriesPage = props => {
-  const CountriesWrapped = withCrud(CountriesList)
+  const CountriesWrapped = withSearch(withCrud(CountriesListView))
   return (
     <CountriesWrapped
       repository={'countries'}
