@@ -21,31 +21,31 @@ const LoggedInItems = () => {
   return (
     <React.Fragment>
       <Nav
-        style={{ width: "100%" }}
+        style={{ width: "100%", paddingRight: 0 }}
         className='justify-content-end'
       >
-        <Nav.Link href='/recipes'>Recipes</Nav.Link>
-        <NavDropdown title='Beverages' id='beverages-dropdown'>          
-          <NavDropdown.Item href='/wines'>Wines</NavDropdown.Item>
-          <NavDropdown.Item href='/grapes'>Grapes</NavDropdown.Item>  
-          <NavDropdown.Item href='/winetypes'>Wine types</NavDropdown.Item>
+        <Nav.Link href='/recipes'>Reseptit</Nav.Link>
+        <NavDropdown title='Juomat' id='beverages-dropdown'>          
+          <NavDropdown.Item href='/wines'>Viinit</NavDropdown.Item>
+          <NavDropdown.Item href='/grapes'>Rypäleet</NavDropdown.Item>  
+          <NavDropdown.Item href='/winetypes'>Viinityypit</NavDropdown.Item>
           <NavDropdown.Divider />
-          <NavDropdown.Item href='/beers'>Beers</NavDropdown.Item>
-          <NavDropdown.Item href='/beertypes'>Beer types</NavDropdown.Item>
+          <NavDropdown.Item href='/beers'>Oluet</NavDropdown.Item>
+          <NavDropdown.Item href='/beertypes'>Oluttyypit</NavDropdown.Item>
         </NavDropdown>
-        <NavDropdown title='Static info' id='static-info-dropdown'>
-          <NavDropdown.Item href='/countries'>Countries</NavDropdown.Item>
-          <NavDropdown.Item href='/regions'>Regions</NavDropdown.Item>
-          <NavDropdown.Item href='/cuisines'>Cuisines</NavDropdown.Item>
+        <NavDropdown title='Vakiotiedot' id='static-info-dropdown'>
+          <NavDropdown.Item href='/countries'>Maat</NavDropdown.Item>
+          <NavDropdown.Item href='/regions'>Alueet</NavDropdown.Item>
+          <NavDropdown.Item href='/cuisines'>Keittiöt</NavDropdown.Item>
           <NavDropdown.Divider />
-          <NavDropdown.Item href='/courses'>Courses</NavDropdown.Item>
-          <NavDropdown.Item href='/dishtypes'>Dish types</NavDropdown.Item>
-          <NavDropdown.Item href='/foodstuffs'>Foodstuffs</NavDropdown.Item>
+          <NavDropdown.Item href='/courses'>Ruokalajit</NavDropdown.Item>
+          <NavDropdown.Item href='/dishtypes'>Ruokatyypit</NavDropdown.Item>
+          <NavDropdown.Item href='/foodstuffs'>Ruoka-aineet</NavDropdown.Item>
           <NavDropdown.Divider />
-          <NavDropdown.Item href='/measuretypes'>Measure types</NavDropdown.Item>
-          <NavDropdown.Item href='/measures'>Measures</NavDropdown.Item>
+          <NavDropdown.Item href='/measuretypes'>Mittatyypit</NavDropdown.Item>
+          <NavDropdown.Item href='/measures'>Mitat</NavDropdown.Item>
         </NavDropdown>
-        <Nav.Link href='/shoppinglist'>Shopping list</Nav.Link>
+        <Nav.Link href='/shoppinglist'>Ostoslista</Nav.Link>
         <Logout />
       </Nav>
     </React.Fragment>
@@ -54,8 +54,8 @@ const LoggedInItems = () => {
 
 const MainNavBar = ({ currentUser }) => {
   return (
-    <Navbar>
-      <Navbar.Toggle aria-controls='responsive-mainbar' className='custom-toggler' />
+    <Navbar  style={{paddingRight: 5}}>
+      <Navbar.Toggle aria-controls='responsive-mainbar' className='custom-toggler'/>
       <Navbar.Collapse id='responsive-mainbar'>
         {currentUser && <LoggedInItems />}
         {!currentUser && <AnonymousItems />}

@@ -12,13 +12,13 @@ const LimonelloFormButtons = ({ handleSave, handleCancel, saveIsDisabled }) => {
         disabled={saveIsDisabled ? saveIsDisabled : false}
         style={{ marginRight: 5 }}
       >
-        Save
+        Tallenna
       </Button>
       <Button
         bsstyle='default'
         onClick={handleCancel}
       >
-        Cancel
+        Peruuta
       </Button>
     </>
   )

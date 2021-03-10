@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter, useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { Form, Row } from 'react-bootstrap'
+import { Row } from 'react-bootstrap'
 import {
+  LimonelloForm,
   LimonelloFormButtons,
+  LimonelloFormLabel,
   PageTitle
 } from '../../core'
 
@@ -85,17 +87,17 @@ function CountryEditView(props) {
   }
 
   return (
-    <div>
+    <div style={{ padding: 15 }}>
       <Row>
         <PageTitle
-          text={country ? `Edit ${country.name}` : 'Add new country'}
+          text={country ? `Muokkaa ${country.name}` : 'Lisää uusi maa'}
         />
       </Row>
       <Row>
-        <Form>
-          <Form.Group controlId='name'>
-            <Form.Label>Name</Form.Label>
-            <Form.Control
+        <LimonelloForm style={{ marginLeft: 15, marginTop: 15 }}>
+          <LimonelloForm.Group controlId='name'>
+            <LimonelloFormLabel>Nimi</LimonelloFormLabel>
+            <LimonelloForm.Control
               type='text'
               name='name'
               value={name}
@@ -103,10 +105,10 @@ function CountryEditView(props) {
               onBlur={handleBlur}
               isInvalid={getValidationState(errors, 'name')}
             />
-          </Form.Group>
-          <Form.Group controlId='continent'>
-            <Form.Label>Continent</Form.Label>
-            <Form.Control
+          </LimonelloForm.Group>
+          <LimonelloForm.Group controlId='continent'>
+            <LimonelloFormLabel>Manner</LimonelloFormLabel>
+            <LimonelloForm.Control
               type='text'
               name='continent'
               value={continent}
@@ -114,13 +116,13 @@ function CountryEditView(props) {
               onBlur={handleBlur}
               isInvalid={getValidationState(errors, 'continent')}
             />
-          </Form.Group>
+          </LimonelloForm.Group>
           <LimonelloFormButtons
             handleSave={handleSave}
             handleCancel={handleCancel}
             saveIsDisabled={Object.keys(errors).some(x => errors[x])}
           />
-        </Form>
+        </LimonelloForm>
       </Row>
     </div>
   )

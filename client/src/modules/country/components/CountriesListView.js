@@ -10,7 +10,6 @@ import {
 function CountriesListView(props) {
   const [rowToEdit, setRowToEdit] = useState(null)
   const [relatedRegions, setRelatedRegions] = useState([])
-  console.log('testing', props)
 
   let history = useHistory()
 
@@ -37,7 +36,7 @@ function CountriesListView(props) {
         p.name.toLowerCase().includes(searchPhrase)
       )
     }
-    console.log('found countries:', filtered)
+
     return filtered
   }, [props.items, props.searchPhraseToUse])
 
@@ -60,7 +59,7 @@ function CountriesListView(props) {
             onClick={(e) => props.handleDeleteRequest(item.row.original, e)}
             bsstyle='rowdanger'
           >
-            Delete
+            Poista
           </LimonelloButton>
         ),
         style: {
@@ -77,8 +76,8 @@ function CountriesListView(props) {
   return (
     <React.Fragment>
       <PageBar
-        headerText='Countries'
-        addBtnText='New country'
+        headerText='Maat'
+        addBtnText='Lisää maa'
         handleOpenEditPage={handleOpenEditPage}
         searchPhrase={props.searchPhrase}
         handlePhraseChange={props.handlePhraseChange}

@@ -32,7 +32,7 @@ class Login extends React.Component {
         <input type="hidden" value="prayer"/>
         <FormGroup>
           <FormControl
-            placeholder='Username'
+            placeholder='Tunnus'
             name='username'
             size='mini'
             value={this.state.username}
@@ -44,7 +44,7 @@ class Login extends React.Component {
             autoComplete='off'
           />
           <FormControl
-            placeholder='Password'
+            placeholder='Salasana'
             name='password'
             size='mini'
             value={this.state.password}

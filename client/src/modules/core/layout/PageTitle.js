@@ -4,9 +4,9 @@ import PropTypes from 'prop-types'
 const PageTitle = ({ text }) => {
   return <h2
     style={{
-      fontFamily: 'sans-serif',
+      fontFamily: '"Pattaya", "sans-serif"',
       color: 'white',
-      marginLeft: 10
+      marginLeft: 15
     }}
   >
     {text}

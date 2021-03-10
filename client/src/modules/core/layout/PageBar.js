@@ -10,14 +10,18 @@ const PageBar = ({
   handleOpenEditPage,
   handlePhraseChange,
   handleSearch,
-  searchPhrase,
-  toggleAdvancedSearch
+  searchPhrase
 }) => {
   return (
-    <div style={{backgroundColor: 'navy'}}>
+    <div style={{
+      backgroundColor: 'navy',
+      paddingTop: 8,
+      paddingRight: 10,
+      marginBottom: 15
+    }}>
       <Row>
         <Col md={3}>
-          <PageTitle text='Countries' />
+          <PageTitle text={headerText} />
         </Col>
         <Col md={9}>
           <LimonelloButton
@@ -41,13 +45,13 @@ const PageBar = ({
                 name='searchPhrase'
                 value={searchPhrase}
                 onChange={handlePhraseChange}
-                placeholder='Write a search text'
+                placeholder='Kirjoita hakusana'
               />
               <InputGroup.Append>
                 <LimonelloButton
                   onClick={handleSearch}
                 >
-                  Go!
+                  Hae!
               </LimonelloButton>
               </InputGroup.Append>
             </InputGroup>

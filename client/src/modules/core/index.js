@@ -1,6 +1,9 @@
 import LimonelloButton from './components/LimonelloButton'
 import LimonelloDataTable from './components/LimonelloDataTable'
-import LimonelloForm from './components/LimonelloForm'
+import {
+  LimonelloForm,
+  LimonelloFormLabel
+} from './components/LimonelloForm'
 import LimonelloFormButtons from './components/LimonelloFormButtons'
 import {
   DeletionConfirmation,
@@ -28,6 +31,7 @@ export {
   LimonelloDataTable,
   LimonelloForm,
   LimonelloFormButtons,
+  LimonelloFormLabel,
   PageBar,
   PageTitle,
   withCrud,
