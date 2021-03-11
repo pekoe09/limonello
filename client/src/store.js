@@ -6,11 +6,13 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 
 import {
   countryReducer,
+  courseReducer,
   userReducer
 } from './reducers'
 
 const appReducer = combineReducers({
   countries: countryReducer,
+  courses: courseReducer,
   users: userReducer
 })
 
