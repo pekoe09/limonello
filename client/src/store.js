@@ -13,7 +13,8 @@ import {
   foodstuffReducer,
   grapeReducer,
   measureTypeReducer,
-  userReducer
+  userReducer,
+  wineTypeReducer
 } from './reducers'
 
 const appReducer = combineReducers({
@@ -25,7 +26,8 @@ const appReducer = combineReducers({
   foodstuffs: foodstuffReducer,
   grapes: grapeReducer,
   measureTypes: measureTypeReducer,
-  users: userReducer
+  users: userReducer,
+  wineTypes: wineTypeReducer
 })
 
 export const rootReducer = (state, action) => {

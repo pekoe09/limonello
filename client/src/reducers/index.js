@@ -7,6 +7,7 @@ import { foodstuffReducer } from '../modules/foodstuff'
 import { grapeReducer } from '../modules/grape'
 import { measureTypeReducer } from '../modules/measureType'
 import { userReducer } from '../modules/user'
+import { wineTypeReducer } from '../modules/wineType'
 
 export {
   beerTypeReducer,
@@ -17,5 +18,6 @@ export {
   foodstuffReducer,
   grapeReducer,
   measureTypeReducer,
-  userReducer
+  userReducer,
+  wineTypeReducer
 }
