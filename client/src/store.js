@@ -9,6 +9,7 @@ import {
   courseReducer,
   cuisineReducer,
   dishTypeReducer,
+  foodstuffReducer,
   measureTypeReducer,
   userReducer
 } from './reducers'
@@ -18,6 +19,7 @@ const appReducer = combineReducers({
   courses: courseReducer,
   cuisines: cuisineReducer,
   dishTypes: dishTypeReducer,
+  foodstuffs: foodstuffReducer,
   measureTypes: measureTypeReducer,
   users: userReducer
 })

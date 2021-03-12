@@ -17,6 +17,10 @@ import {
   DishTypesPage
 } from '../../dishtype'
 import {
+  FoodstuffEditPage,
+  FoodstuffsPage
+} from '../../foodstuff'
+import {
   MeasureTypeEditPage,
   MeasureTypesPage
 } from '../../measureType'
@@ -39,6 +43,10 @@ const PageContainer = () => {
       <Route exact path='/dishtypes' render={() => <DishTypesPage />} />
       <Route exact path='/dishtypes/create' render={() => <DishTypeEditPage />} />
       <Route exact path='/dishtypes/edit/:id' render={() => <DishTypeEditPage />} />
+
+      <Route exact path='/foodstuffs' render={() => <FoodstuffsPage />} />
+      <Route exact path='/foodstuffs/create' render={() => <FoodstuffEditPage />} />
+      <Route exact path='/foodstuffs/edit/:id' render={() => <FoodstuffEditPage />} />
 
       <Route exact path='/measuretypes' render={() => <MeasureTypesPage />} />
       <Route exact path='/measuretypes/create' render={() => <MeasureTypeEditPage />} />
