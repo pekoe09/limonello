@@ -5,6 +5,7 @@ import storage from 'redux-persist/lib/storage'
 import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 
 import {
+  beerTypeReducer,
   countryReducer,
   courseReducer,
   cuisineReducer,
@@ -15,6 +16,7 @@ import {
 } from './reducers'
 
 const appReducer = combineReducers({
+  beerTypes: beerTypeReducer,
   countries: countryReducer,
   courses: courseReducer,
   cuisines: cuisineReducer,

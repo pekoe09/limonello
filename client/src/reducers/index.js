@@ -1,3 +1,4 @@
+import { beerTypeReducer } from '../modules/beertype'
 import { countryReducer } from '../modules/country'
 import { courseReducer } from '../modules/course'
 import { cuisineReducer } from '../modules/cuisine'
@@ -7,6 +8,7 @@ import { measureTypeReducer } from '../modules/measureType'
 import { userReducer } from '../modules/user'
 
 export {
+  beerTypeReducer,
   countryReducer,
   courseReducer,
   cuisineReducer,

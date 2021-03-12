@@ -1,6 +1,10 @@
 import React from 'react'
 import { Route, withRouter } from 'react-router-dom'
 import {
+  BeerTypeEditPage,
+  BeerTypesPage
+} from '../../beertype'
+import {
   CountriesPage,
   CountryEditPage
 } from '../../country'
@@ -28,6 +32,10 @@ import {
 const PageContainer = () => {
   return (
     <div>
+      <Route exact path='/beertypes' render={() => <BeerTypesPage />} />
+      <Route exact path='/beertypes/create' render={() => <BeerTypeEditPage />} />
+      <Route exact path='/beertypes/edit/:id' render={() => <BeerTypeEditPage />} />
+
       <Route exact path='/countries' render={() => <CountriesPage />} />
       <Route exact path='/countries/create' render={() => <CountryEditPage />} />
       <Route exaxt path='/countries/edit/:id' render={() => <CountryEditPage />} />
