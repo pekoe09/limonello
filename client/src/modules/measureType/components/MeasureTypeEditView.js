@@ -9,18 +9,20 @@ import {
   PageTitle
 } from '../../core'
 
-function DishTypeEditView(props) {
+function MeasureTypeEditView(props) {
   let history = useHistory()
-  let dishType = null
+  let measureType = null
   const urlId = props.match.params.id
   if (urlId) {
-    dishType = props.items.find(i => i[0] === urlId)[1]
+    measureType = props.items.find(i => i[0] === urlId)[1]
   }
 
-  const [id, setId] = useState(dishType ? dishType._id : '')
-  const [name, setName] = useState(dishType ? dishType.name : '')
+  const [id, setId] = useState(measureType ? measureType._id : '')
+  const [name, setName] = useState(measureType ? measureType.name : '')
+  const [partitive, setPartitive] = useState(measureType ? measureType.partitive : '')
   const [touched, setTouched] = useState({
-    name: false
+    name: false,
+    partitive: false
   })
   const [errors, setErrors] = useState({})
 
@@ -34,24 +36,29 @@ function DishTypeEditView(props) {
 
   const handleSave = async (e) => {
     e.preventDefault()
-    const dishType = {
+    const measureType = {
       _id: id,
-      name
+      name,
+      partitive
     }
-    await props.handleSave(dishType)
+    await props.handleSave(measureType)
     if (!props.error) {
       clearState()
-      history.push('/dishtypes')
+      history.push('/measuretypes')
     }
   }
 
   const handleCancel = () => {
     clearState()
-    history.push('/dishtypes')
+    history.push('/measuretypes')
   }
 
   const handleNameChange = e => {
     setName(e.target.value)
+  }
+
+  const handlePartitiveChange = e => {
+    setPartitive(e.target.value)
   }
 
   const handleBlur = field => {
@@ -60,7 +67,8 @@ function DishTypeEditView(props) {
 
   const validate = () => {
     return {
-      name: !name
+      name: !name,
+      partitive: !partitive
     }
   }
 
@@ -75,13 +83,14 @@ function DishTypeEditView(props) {
   const clearState = () => {
     setId('')
     setName('')
+    setPartitive('')
   }
 
   return (
     <div style={{ padding: 15 }}>
       <Row>
         <PageTitle
-          text={dishType ? `Muokkaa ${dishType.name}` : 'Lisää uusi ruokatyyppi'}
+          text={measureType ? `Muokkaa ${measureType.partitive}` : 'Lisää uusi mittatyyppi'}
         />
       </Row>
       <Row>
@@ -97,6 +106,17 @@ function DishTypeEditView(props) {
               isInvalid={getValidationState(errors, 'name')}
             />
           </LimonelloForm.Group>
+          <LimonelloForm.Group controlId='partitive'>
+            <LimonelloFormLabel>Partitiivi</LimonelloFormLabel>
+            <LimonelloForm.Control
+              type='text'
+              name='partitive'
+              value={partitive}
+              onChange={handlePartitiveChange}
+              onBlur={handleBlur}
+              isInvalid={getValidationState(errors, 'partitive')}
+            />
+          </LimonelloForm.Group>
           <LimonelloFormButtons
             handleSave={handleSave}
             handleCancel={handleCancel}
@@ -109,9 +129,9 @@ function DishTypeEditView(props) {
 }
 
 const mapStateToProps = store => ({
-  error: store.dishTypes.error
+  error: store.measureTypes.error
 })
 
 export default withRouter(connect(
   mapStateToProps
-)(DishTypeEditView))
+)(MeasureTypeEditView))

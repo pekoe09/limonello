@@ -16,6 +16,10 @@ import {
   DishTypeEditPage,
   DishTypesPage
 } from '../../dishtype'
+import {
+  MeasureTypeEditPage,
+  MeasureTypesPage
+} from '../../measureType'
 
 const PageContainer = () => {
   return (
@@ -35,6 +39,10 @@ const PageContainer = () => {
       <Route exact path='/dishtypes' render={() => <DishTypesPage />} />
       <Route exact path='/dishtypes/create' render={() => <DishTypeEditPage />} />
       <Route exact path='/dishtypes/edit/:id' render={() => <DishTypeEditPage />} />
+
+      <Route exact path='/measuretypes' render={() => <MeasureTypesPage />} />
+      <Route exact path='/measuretypes/create' render={() => <MeasureTypeEditPage />} />
+      <Route exact path='/measuretypes/edit/:id' render={() => <MeasureTypeEditPage />} />
     </div>
   )
 }
