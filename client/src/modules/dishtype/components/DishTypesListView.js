@@ -7,14 +7,14 @@ import {
   PageBar
 } from '../../core'
 
-function CountriesListView(props) {
+function DishTypesListView(props) {
   let history = useHistory()
 
   const handleOpenEditPage = (id) => {
     if (id) {
-      history.push(`/countries/edit/${id}`)
+      history.push(`/dishtypes/edit/${id}`)
     } else {
-      history.push('/countries/create')
+      history.push('/dishtypes/create')
     }
   }
 
@@ -71,8 +71,8 @@ function CountriesListView(props) {
   return (
     <React.Fragment>
       <PageBar
-        headerText='Maat'
-        addBtnText='Lisää maa'
+        headerText='Ruokatyypit'
+        addBtnText='Lisää ruokatyyppi'
         handleOpenEditPage={handleOpenEditPage}
         searchPhrase={props.searchPhrase}
         handlePhraseChange={props.handlePhraseChange}
@@ -91,10 +91,10 @@ function CountriesListView(props) {
 }
 
 const mapStateToProps = store => ({
-  loading: store.countries.loading,
-  error: store.countries.error
+  loading: store.dishTypes.loading,
+  error: store.dishTypes.error
 })
 
 export default withRouter(connect(
   mapStateToProps
-)(CountriesListView))
+)(DishTypesListView))

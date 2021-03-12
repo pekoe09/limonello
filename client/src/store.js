@@ -8,6 +8,7 @@ import {
   countryReducer,
   courseReducer,
   cuisineReducer,
+  dishTypeReducer,
   userReducer
 } from './reducers'
 
@@ -15,6 +16,7 @@ const appReducer = combineReducers({
   countries: countryReducer,
   courses: courseReducer,
   cuisines: cuisineReducer,
+  dishTypes: dishTypeReducer,
   users: userReducer
 })
 

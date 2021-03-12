@@ -12,6 +12,10 @@ import {
   CourseEditPage,
   CoursesPage
 } from '../../course'
+import {
+  DishTypeEditPage,
+  DishTypesPage
+} from '../../dishtype'
 
 const PageContainer = () => {
   return (
@@ -27,6 +31,10 @@ const PageContainer = () => {
       <Route exact path='/cuisines' render={() => <CuisinesPage />} />
       <Route exact path='/cuisines/create' render={() => <CuisineEditPage />} />
       <Route exact path='/cuisines/edit/:id' render={() => <CuisineEditPage />} />
+
+      <Route exact path='/dishtypes' render={() => <DishTypesPage />} />
+      <Route exact path='/dishtypes/create' render={() => <DishTypeEditPage />} />
+      <Route exact path='/dishtypes/edit/:id' render={() => <DishTypeEditPage />} />
     </div>
   )
 }
