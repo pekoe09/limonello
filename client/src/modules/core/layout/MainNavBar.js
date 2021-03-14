@@ -41,6 +41,7 @@ const LoggedInItems = () => {
           <NavDropdown.Item href='/courses'>Ruokalajit</NavDropdown.Item>
           <NavDropdown.Item href='/dishtypes'>Ruokatyypit</NavDropdown.Item>
           <NavDropdown.Item href='/foodstuffs'>Ruoka-aineet</NavDropdown.Item>
+          <NavDropdown.Item href='/ingredients'>Ainekset</NavDropdown.Item>
           <NavDropdown.Divider />
           <NavDropdown.Item href='/measuretypes'>Mittatyypit</NavDropdown.Item>
           <NavDropdown.Item href='/measures'>Mitat</NavDropdown.Item>

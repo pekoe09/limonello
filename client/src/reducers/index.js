@@ -5,6 +5,7 @@ import { cuisineReducer } from '../modules/cuisine'
 import { dishTypeReducer } from '../modules/dishtype'
 import { foodstuffReducer } from '../modules/foodstuff'
 import { grapeReducer } from '../modules/grape'
+import { ingredientReducer } from '../modules/ingredient'
 import { measureReducer } from '../modules/measure'
 import { measureTypeReducer } from '../modules/measureType'
 import { regionReducer } from '../modules/region'
@@ -19,6 +20,7 @@ export {
   dishTypeReducer,
   foodstuffReducer,
   grapeReducer,
+  ingredientReducer,
   measureReducer,
   measureTypeReducer,
   regionReducer,

@@ -21,20 +21,20 @@ ingredientRouter.get('/', wrapAsync(async (req, res, next) => {
 
 ingredientRouter.post('/', wrapAsync(async (req, res, next) => {
   await validate(req)
-  let foodStuff = await findObjectById(req.body.foodStuff, FoodStuff, 'FoodStuff')
+  let foodstuff = await findObjectById(req.body.foodstuff, FoodStuff, 'FoodStuff')
 
   let ingredient = new Ingredient({
     name: req.body.name,
     partitive: req.body.partitive,
     comment: req.body.comment,
-    foodStuff: req.body.foodStuff,
+    foodstuff: req.body.foodstuff,
     recipes: [],
     metaData: getMetaData(req)
   })
   ingredient = await ingredient.save()
 
   await FoodStuff.findByIdAndUpdate(
-    foodStuff._id,
+    foodstuff._id,
     { $push: { ingredients: ingredient._id } }
   )
 
@@ -45,19 +45,19 @@ ingredientRouter.put('/:id', wrapAsync(async (req, res, next) => {
   await validate(req)
 
   let ingredient = await findObjectById(req.params.id, Ingredient, 'ingredient')
-  let foodStuff = await findObjectById(req.body.foodStuff, FoodStuff, 'FoodStuff')
-  const oldFoodStuff = ingredient.foodStuff
+  let foodstuff = await findObjectById(req.body.foodstuff, FoodStuff, 'FoodStuff')
+  const oldFoodstuff = ingredient.foodstuff
 
   ingredient.name = req.body.name
   ingredient.partitive = req.body.partitive
   ingredient.comment = req.body.comment
-  ingredient.foodStuff = req.body.foodStuff
+  ingredient.foodstuff = req.body.foodstuff
   ingredient.metaData = getMetaData(req, ingredient.metaData)
   ingredient = await Ingredient.findByIdAndUpdate(ingredient._id, ingredient, { new: true })
 
-  if (ingredient.foodStuff !== oldFoodStuff) {
+  if (ingredient.foodstuff !== oldFoodstuff) {
     await FoodStuff.findByIdAndUpdate(
-      oldFoodStuff._id,
+      oldFoodstuff._id,
       { $pull: { ingredients: ingredient._id } }
     )
     await FoodStuff.findByIdAndUpdate(
@@ -79,7 +79,7 @@ ingredientRouter.delete('/:id', wrapAsync(async (req, res, next) => {
   }
 
   await FoodStuff.findByIdAndUpdate(
-    ingredient.foodStuff,
+    ingredient.foodstuff,
     { $pull: { ingredients: ingredient._id } }
   )
 
@@ -90,7 +90,7 @@ ingredientRouter.delete('/:id', wrapAsync(async (req, res, next) => {
 const validate = async (req) => {
   checkUser(req)
   await validateUserRights(req, 'admin')
-  validateMandatoryFields(req, ['name', 'partitive', 'foodStuff'], 'ingredient', 'create')
+  validateMandatoryFields(req, ['name', 'partitive', 'foodstuff'], 'ingredient', 'create')
   await validateUniqueness(Ingredient, 'Ingredient', 'name', req.body.name, req.params.id)
   await validateUniqueness(Ingredient, 'Ingredient', 'partitive', req.body.partitive, req.params.id)
 }

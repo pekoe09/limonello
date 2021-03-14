@@ -14,7 +14,7 @@ const ingredientSchema = new mongoose.Schema({
   comment: {
     type: String
   },
-  foodStuff: {
+  foodstuff: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'FoodStuff',
     required: true
