@@ -157,7 +157,7 @@ const countryReducer = (store = initialState, action) => {
           byId: {
             ...store.byId,
             [oldCountryId]: oldCountry,
-            [region.country]: updatedCountry
+            [updatedRegion.country]: updatedCountry
           }
         }
       } else {

@@ -88,14 +88,16 @@ export const getRegions = () => {
   }
 }
 
-export const saveRegion = (region, oldCountryId) => {
+export const saveRegion = (region) => {
   return async (dispatch) => {
     if (region._id) {
       dispatch(updateRegionBegin())
       try {
+        const oldCountryId = region.oldCountryId
         region = await updateEntity('regions', region)
         dispatch(updateRegionSuccess(region, oldCountryId))
       } catch (exception) {
+        console.log('error!', exception)
         dispatch(updateRegionFailure(exception))
       }
     } else {

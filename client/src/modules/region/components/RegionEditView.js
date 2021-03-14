@@ -22,6 +22,7 @@ function RegionEditView(props) {
   const [id, setId] = useState(region ? region._id : '')
   const [name, setName] = useState(region ? region.name : '')
   const [country, setCountry] = useState(region ? [region.country] : [])
+  const [oldCountryId, setOldCountryId] = useState(region ? region.country._id : '')
   const [touched, setTouched] = useState({
     name: false,
     country: false
@@ -41,7 +42,8 @@ function RegionEditView(props) {
     const region = {
       _id: id,
       name,
-      country: country[0]
+      country: country[0],
+      oldCountryId
     }
     await props.handleSave(region)
     if (!props.error) {
@@ -81,7 +83,8 @@ function RegionEditView(props) {
   const clearState = () => {
     setId('')
     setName('')
-    setCountry('')
+    setCountry([])
+    setOldCountryId('')
   }
 
   return (
@@ -107,7 +110,7 @@ function RegionEditView(props) {
           <LimonelloForm.Group>
             <LimonelloFormLabel>Maa</LimonelloFormLabel>
             <Typeahead
-              onChange={(selected) => {setCountry(selected)}}
+              onChange={(selected) => { setCountry(selected) }}
               options={props.countries}
               selected={country}
               labelKey='name'
