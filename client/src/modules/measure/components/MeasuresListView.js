@@ -1,21 +1,21 @@
 import React, { useCallback } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, useHistory } from 'react-router-dom'
-import { makeGetRegionsWithCountry } from '../regionSelector'
+import { makeGetMeasuresWithType } from '../measureSelector'
 import {
   LimonelloButton,
   LimonelloDataTable,
   PageBar
 } from '../../core'
 
-function RegionsListView(props) {
+function MeasuresListView(props) {
   let history = useHistory()
 
   const handleOpenEditPage = (id) => {
     if (id) {
-      history.push(`/regions/edit/${id}`)
+      history.push(`/measures/edit/${id}`)
     } else {
-      history.push('/regions/create')
+      history.push('/measures/create')
     }
   }
 
@@ -26,15 +26,15 @@ function RegionsListView(props) {
 
   const getFilteredItems = useCallback(() => {
     let searchPhrase = props.searchPhraseToUse.toLowerCase()
-    let filtered = props.regions
+    let filtered = props.measures
     if (props.searchPhraseToUse.length > 0) {
-      filtered = props.regions.filter(p =>
+      filtered = props.measures.filter(p =>
         p.name.toLowerCase().includes(searchPhrase)
       )
     }
 
     return filtered
-  }, [props.regions, props.searchPhraseToUse])
+  }, [props.measures, props.searchPhraseToUse])
 
   const getData = React.useMemo(() => getFilteredItems(), [getFilteredItems])
 
@@ -48,8 +48,15 @@ function RegionsListView(props) {
         }
       },
       {
-        Header: 'Maa',
-        accessor: 'country.name',
+        Header: 'Lyhenne',
+        accessor: 'abbreviation',
+        headerStyle: {
+          textAlign: 'left'
+        }
+      },
+      {
+        Header: 'Tyyppi',
+        accessor: 'measureType.name',
         headerStyle: {
           textAlign: 'left'
         }
@@ -62,7 +69,7 @@ function RegionsListView(props) {
             onClick={(e) => props.handleDeleteRequest(
               item.row.original,
               e,
-              { countryId: item.row.original.country._id }
+              { measureTypeId: item.row.original.measureType._id }
             )}
             bsstyle='rowdanger'
           >
@@ -83,8 +90,8 @@ function RegionsListView(props) {
   return (
     <React.Fragment>
       <PageBar
-        headerText='Alueet'
-        addBtnText='Lisää alue'
+        headerText='Mitat'
+        addBtnText='Lisää mitta'
         handleOpenEditPage={handleOpenEditPage}
         searchPhrase={props.searchPhrase}
         handlePhraseChange={props.handlePhraseChange}
@@ -103,18 +110,18 @@ function RegionsListView(props) {
 }
 
 const makeMapStateToProps = () => {
-  const getRegionsWithCountry = makeGetRegionsWithCountry()
+  const getMeasuresWithCountry = makeGetMeasuresWithType()
   return store => {
-    const regions = getRegionsWithCountry(store)
-    console.log('received regions', regions)
+    const measures = getMeasuresWithCountry(store)
+    console.log('received measures', measures)
     return {
-      regions,
-      loading: store.regions.loading,
-      error: store.regions.error
+      measures,
+      loading: store.measures.loading,
+      error: store.measures.error
     }
   }
 }
 
 export default withRouter(connect(
   makeMapStateToProps
-)(RegionsListView))
+)(MeasuresListView))

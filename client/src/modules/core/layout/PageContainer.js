@@ -29,6 +29,10 @@ import {
   GrapesPage
 } from '../../grape'
 import {
+  MeasureEditPage,
+  MeasuresPage
+} from '../../measure'
+import {
   MeasureTypeEditPage,
   MeasureTypesPage
 } from '../../measureType'
@@ -71,6 +75,10 @@ const PageContainer = () => {
       <Route exact path='/grapes' render={() => <GrapesPage />} />
       <Route exact path='/grapes/create' render={() => <GrapeEditPage />} />
       <Route exact path='/grapes/edit/:id' render={() => <GrapeEditPage />} />
+
+      <Route exact path='/measures' render={() => <MeasuresPage />} />
+      <Route exact path='/measures/create' render={() => <MeasureEditPage />} />
+      <Route exact path='/measures/edit/:id' render={() => <MeasureEditPage />} />
 
       <Route exact path='/measuretypes' render={() => <MeasureTypesPage />} />
       <Route exact path='/measuretypes/create' render={() => <MeasureTypeEditPage />} />
