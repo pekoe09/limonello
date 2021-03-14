@@ -1,20 +1,21 @@
 import React, { useCallback } from 'react'
 import { connect } from 'react-redux'
 import { withRouter, useHistory } from 'react-router-dom'
+import { makeGetRegionsWithCountry } from '../regionSelector'
 import {
   LimonelloButton,
   LimonelloDataTable,
   PageBar
 } from '../../core'
 
-function CountriesListView(props) {
+function RegionsListView(props) {
   let history = useHistory()
 
   const handleOpenEditPage = (id) => {
     if (id) {
-      history.push(`/countries/edit/${id}`)
+      history.push(`/regions/edit/${id}`)
     } else {
-      history.push('/countries/create')
+      history.push('/regions/create')
     }
   }
 
@@ -25,16 +26,15 @@ function CountriesListView(props) {
 
   const getFilteredItems = useCallback(() => {
     let searchPhrase = props.searchPhraseToUse.toLowerCase()
-    let filtered = props.items.map(i => i[1])
+    let filtered = props.regions
     if (props.searchPhraseToUse.length > 0) {
-      filtered = props.items.filter(p =>
+      filtered = props.regions.filter(p =>
         p.name.toLowerCase().includes(searchPhrase)
       )
     }
-    
-    console.log('filtered', filtered)
+
     return filtered
-  }, [props.items, props.searchPhraseToUse])
+  }, [props.regions, props.searchPhraseToUse])
 
   const getData = React.useMemo(() => getFilteredItems(), [getFilteredItems])
 
@@ -52,7 +52,11 @@ function CountriesListView(props) {
         accessor: 'delete',
         Cell: (item) => (
           <LimonelloButton
-            onClick={(e) => props.handleDeleteRequest(item.row.original, e)}
+            onClick={(e) => props.handleDeleteRequest(
+              item.row.original,
+              e,
+              { countryId: item.row.original.country._id }
+            )}
             bsstyle='rowdanger'
           >
             Poista
@@ -72,8 +76,8 @@ function CountriesListView(props) {
   return (
     <React.Fragment>
       <PageBar
-        headerText='Maat'
-        addBtnText='Lisää maa'
+        headerText='Alueet'
+        addBtnText='Lisää alue'
         handleOpenEditPage={handleOpenEditPage}
         searchPhrase={props.searchPhrase}
         handlePhraseChange={props.handlePhraseChange}
@@ -91,11 +95,19 @@ function CountriesListView(props) {
   )
 }
 
-const mapStateToProps = store => ({
-  loading: store.countries.loading,
-  error: store.countries.error
-})
+const makeMapStateToProps = () => {
+  const getRegionsWithCountry = makeGetRegionsWithCountry()
+  return store => {
+    const regions = getRegionsWithCountry(store)
+    console.log('received regions', regions)
+    return {
+      regions,
+      loading: store.regions.loading,
+      error: store.regions.error
+    }
+  }
+}
 
 export default withRouter(connect(
-  mapStateToProps
-)(CountriesListView))
+  makeMapStateToProps
+)(RegionsListView))

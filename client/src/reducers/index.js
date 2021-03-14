@@ -6,6 +6,7 @@ import { dishTypeReducer } from '../modules/dishtype'
 import { foodstuffReducer } from '../modules/foodstuff'
 import { grapeReducer } from '../modules/grape'
 import { measureTypeReducer } from '../modules/measureType'
+import { regionReducer } from '../modules/region'
 import { userReducer } from '../modules/user'
 import { wineTypeReducer } from '../modules/wineType'
 
@@ -18,6 +19,7 @@ export {
   foodstuffReducer,
   grapeReducer,
   measureTypeReducer,
+  regionReducer,
   userReducer,
   wineTypeReducer
 }

@@ -33,6 +33,10 @@ import {
   MeasureTypesPage
 } from '../../measureType'
 import {
+  RegionEditPage,
+  RegionsPage
+} from '../../region'
+import {
   WineTypeEditPage,
   WineTypesPage
 } from '../../wineType'
@@ -71,6 +75,10 @@ const PageContainer = () => {
       <Route exact path='/measuretypes' render={() => <MeasureTypesPage />} />
       <Route exact path='/measuretypes/create' render={() => <MeasureTypeEditPage />} />
       <Route exact path='/measuretypes/edit/:id' render={() => <MeasureTypeEditPage />} />
+
+      <Route exact path='/regions' render={() => <RegionsPage />} />
+      <Route exact path='/regions/create' render={() => <RegionEditPage />} />
+      <Route exact path='/regions/edit/:id' render={() => <RegionEditPage />} />
 
       <Route exact path='/winetypes' render={() => <WineTypesPage />} />
       <Route exact path='/winetypes/create' render={() => <WineTypeEditPage />} />

@@ -17,6 +17,7 @@ const addCRUDs = (WrappedComponent) => props => {
 
   const [deletionTargetId, setDeletionTargetId] = useState('')
   const [deletionTargetName, setDeletionTargetName] = useState('')
+  const [deletionOther, setDeletionOther] = useState({})
   const [deletionConfirmationIsOpen, setDeletionConfirmationIsOpen] = useState(false)
 
   useEffect(() => {
@@ -43,24 +44,25 @@ const addCRUDs = (WrappedComponent) => props => {
     editItem = items[props.id]
   }
 
-  const handleDeleteRequest = (item, e) => {
+  const handleDeleteRequest = (item, e, other) => {
     e.stopPropagation()
     setDeletionTargetId(item._id)
     setDeletionTargetName(item.name)
+    setDeletionOther(other)
     setDeletionConfirmationIsOpen(true)
   }
 
   const handleDeleteConfirmation = async (isConfirmed) => {
     if (isConfirmed) {
-      await handleDelete(deletionTargetId)
+      await handleDelete()
     }
     setDeletionConfirmationIsOpen(false)
     setDeletionTargetId('')
     setDeletionTargetName('')
   }
 
-  const handleDelete = async (itemId) => {
-    await deleteItem(itemId)
+  const handleDelete = async () => {
+    await deleteItem(deletionTargetId, deletionOther)
     if (error) {
       setModalError('Could not delete the item')
     }

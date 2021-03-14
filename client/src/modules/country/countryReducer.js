@@ -12,6 +12,11 @@ import {
   COUNTRY_DELETE_SUCCESS,
   COUNTRY_DELETE_FAILURE
 } from './countryActions'
+import {
+  REGION_CREATE_SUCCESS,
+  REGION_UPDATE_SUCCESS,
+  REGION_DELETE_SUCCESS
+} from '../region/regionActions'
 
 const initialState = {
   byId: {},
@@ -127,6 +132,48 @@ const countryReducer = (store = initialState, action) => {
         ...store,
         deletingCountry: false,
         countryError: action.payload.error
+      }
+    case REGION_CREATE_SUCCESS:
+      console.log('hit region create success', action.payload.region)
+      const region = action.payload.region
+      const countryWithRegion = store.byId[region.country]
+      countryWithRegion.regions = [...countryWithRegion.regions, region.country]
+
+      return {
+        ...store,
+        byId: { ...store.byId, [region.country]: countryWithRegion }
+      }
+    case REGION_UPDATE_SUCCESS:
+      console.log('hit region update success', action.payload.region, action.payload.oldCountryId)
+      const updatedRegion = action.payload.region
+      const oldCountryId = action.payload.oldCountryId
+      if (updatedRegion.country !== oldCountryId) {
+        let oldCountry = store.byId[oldCountryId]
+        oldCountry.regions = oldCountry.regions.filter(id => id !== updatedRegion._id)
+        let updatedCountry = store.byId[updatedRegion.country]
+        updatedCountry.regions = [...updatedCountry.regions, updatedRegion._id]
+        return {
+          ...store,
+          byId: {
+            ...store.byId,
+            [oldCountryId]: oldCountry,
+            [region.country]: updatedCountry
+          }
+        }
+      } else {
+        return {
+          store
+        }
+      }
+    case REGION_DELETE_SUCCESS:
+      console.log('hit region delete success', action.payload.countryId)
+      const regionId = action.payload.regionId
+      const countryWithoutRegion = store.byId[action.payload.countryId]
+      console.log('countrywithoutregion', countryWithoutRegion)
+      countryWithoutRegion.regions = countryWithoutRegion.regions.filter(id => id !== regionId)
+      return {
+        ...store,
+        [countryWithoutRegion._id]: countryWithoutRegion
       }
     default:
       console.log('hit default')
