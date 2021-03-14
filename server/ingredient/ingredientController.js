@@ -61,7 +61,7 @@ ingredientRouter.put('/:id', wrapAsync(async (req, res, next) => {
       { $pull: { ingredients: ingredient._id } }
     )
     await FoodStuff.findByIdAndUpdate(
-      foodStuff._id,
+      foodstuff._id,
       { $push: { ingredients: ingredient._id } }
     )
   }

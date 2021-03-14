@@ -137,7 +137,7 @@ const countryReducer = (store = initialState, action) => {
       console.log('hit region create success', action.payload.region)
       const region = action.payload.region
       const countryWithRegion = store.byId[region.country]
-      countryWithRegion.regions = [...countryWithRegion.regions, region.country]
+      countryWithRegion.regions = [...countryWithRegion.regions, region._id]
 
       return {
         ...store,

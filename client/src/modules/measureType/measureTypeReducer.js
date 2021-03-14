@@ -12,6 +12,11 @@ import {
   MEASURETYPE_DELETE_SUCCESS,
   MEASURETYPE_DELETE_FAILURE
 } from './measureTypeActions'
+import {
+  MEASURE_CREATE_SUCCESS,
+  MEASURE_UPDATE_SUCCESS,
+  MEASURE_DELETE_SUCCESS
+} from '../measure/measureActions'
 
 const initialState = {
   byId: {},
@@ -127,6 +132,48 @@ const measureTypeReducer = (store = initialState, action) => {
         ...store,
         deletingMeasureType: false,
         measureTypeError: action.payload.error
+      }
+    case MEASURE_CREATE_SUCCESS:
+      console.log('hit measure create success', action.payload.measure)
+      const measure = action.payload.measure
+      const typeWithMeasure = store.byId[measure.measureType]
+      typeWithMeasure.measures = [...typeWithMeasure.measures, measure._id]
+
+      return {
+        ...store,
+        byId: { ...store.byId, [measure.measureType]: typeWithMeasure }
+      }
+    case MEASURE_UPDATE_SUCCESS:
+      console.log('hit measure update success', action.payload.measure, action.payload.oldMeasureTypeId)
+      const updatedMeasure = action.payload.measure
+      const oldTypeId = action.payload.oldMeasureTypeId
+      if (updatedMeasure.measureType !== oldTypeId) {
+        let oldType = store.byId[oldTypeId]
+        oldType.measures = oldType.measures.filter(id => id !== updatedMeasure._id)
+        let updatedMeasureType = store.byId[updatedMeasure.measureType]
+        updatedMeasureType.measures = [...updatedMeasureType.measures, updatedMeasure._id]
+        return {
+          ...store,
+          byId: {
+            ...store.byId,
+            [oldTypeId]: oldType,
+            [updatedMeasure.measureType]: updatedMeasureType
+          }
+        }
+      } else {
+        return {
+          store
+        }
+      }
+    case MEASURE_DELETE_SUCCESS:
+      console.log('hit measure delete success', action.payload.measureTypeId)
+      const measureId = action.payload.measureId
+      const typeWithoutMeasure = store.byId[action.payload.measureTypeId]
+      console.log('typewithoutmeasure', typeWithoutMeasure)
+      typeWithoutMeasure.measures = typeWithoutMeasure.measures.filter(id => id !== measureId)
+      return {
+        ...store,
+        [typeWithoutMeasure._id]: typeWithoutMeasure
       }
     default:
       console.log('hit default')

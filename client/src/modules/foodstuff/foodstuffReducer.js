@@ -12,6 +12,11 @@ import {
   FOODSTUFF_DELETE_SUCCESS,
   FOODSTUFF_DELETE_FAILURE
 } from './foodstuffActions'
+import {
+  INGREDIENT_CREATE_SUCCESS,
+  INGREDIENT_UPDATE_SUCCESS,
+  INGREDIENT_DELETE_SUCCESS
+} from '../ingredient/ingredientActions'
 
 const initialState = {
   byId: {},
@@ -127,6 +132,48 @@ const foodstuffReducer = (store = initialState, action) => {
         ...store,
         deletingFoodstuff: false,
         foodstuffError: action.payload.error
+      }
+    case INGREDIENT_CREATE_SUCCESS:
+      console.log('hit ingredient create success', action.payload.ingredient)
+      const ingredient = action.payload.ingredient
+      const foodstuffWithIngredient = store.byId[ingredient.foodstuff]
+      foodstuffWithIngredient.ingredients = [...foodstuffWithIngredient.ingredients, ingredient._id]
+
+      return {
+        ...store,
+        byId: { ...store.byId, [ingredient.foodstuff]: foodstuffWithIngredient }
+      }
+    case INGREDIENT_UPDATE_SUCCESS:
+      console.log('hit ingredient update success', action.payload.ingredient, action.payload.oldFoodstuffId)
+      const updatedIngredient = action.payload.ingredient
+      const oldFoodstuffId = action.payload.oldFoodstuffId
+      if (updatedIngredient.foodstuff !== oldFoodstuffId) {
+        let oldFoodstuff = store.byId[oldFoodstuffId]
+        oldFoodstuff.ingredients = oldFoodstuff.ingredients.filter(id => id !== updatedIngredient._id)
+        let updatedFoodstuff = store.byId[updatedIngredient.foodstuff]
+        updatedFoodstuff.ingredients = [...updatedFoodstuff.ingredients, updatedIngredient._id]
+        return {
+          ...store,
+          byId: {
+            ...store.byId,
+            [oldFoodstuffId]: oldFoodstuff,
+            [updatedIngredient.foodstuff]: updatedFoodstuff
+          }
+        }
+      } else {
+        return {
+          store
+        }
+      }
+    case INGREDIENT_DELETE_SUCCESS:
+      console.log('hit ingredient delete success', action.payload.ingredientId)
+      const ingredientId = action.payload.ingredientId
+      const foodstuffWithoutIngredient = store.byId[action.payload.foodstuffId]
+      console.log('foodstuffwithoutingredient', foodstuffWithoutIngredient)
+      foodstuffWithoutIngredient.ingredients = foodstuffWithoutIngredient.ingredients.filter(id => id !== ingredientId)
+      return {
+        ...store,
+        [foodstuffWithoutIngredient._id]: foodstuffWithoutIngredient
       }
     default:
       console.log('hit default')
