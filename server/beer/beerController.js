@@ -17,6 +17,7 @@ beerRouter.get('/', wrapAsync(async (req, res, next) => {
   const beers = await Beer
     .find({})
     .sort('name')
+  console.log('returning beers', beers)
   res.json(beers)
 }))
 

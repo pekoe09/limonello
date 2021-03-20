@@ -1,4 +1,5 @@
 import axios from 'axios'
+//import axios from './axios-instance'
 import { getConfig } from './serviceHelpers'
 
 const baseUrl = '/api'
@@ -14,7 +15,9 @@ const getOne = async (entityPlural, id) => {
 }
 
 const getAll = async (entityPlural) => {
-  const response = await axios.get(`${baseUrl}/${entityPlural}`)
+  const config = { Accept: "application/json, text/plain, text/json, */*" }
+  const response = await axios.get(`${baseUrl}/${entityPlural}`, config)
+  console.log('reponse', response)
   return response.data
 }
 

@@ -4,6 +4,9 @@ import {
   updateEntity,
   removeEntity
 } from '../core'
+import {
+  getCountries
+} from '../country/countryActions'
 
 export const REGION_CREATE_BEGIN = 'REGION_CREATE_BEGIN'
 export const REGION_CREATE_SUCCESS = 'REGION_CREATE_SUCCESS'
@@ -77,6 +80,7 @@ export const regionDeleteFailure = error => ({
 export const getRegions = () => {
   console.log('getting regions')
   return async (dispatch) => {
+    dispatch(getCountries())
     dispatch(getRegionsBegin())
     try {
       const regions = await getAll('regions')

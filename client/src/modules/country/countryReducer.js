@@ -17,6 +17,11 @@ import {
   REGION_UPDATE_SUCCESS,
   REGION_DELETE_SUCCESS
 } from '../region/regionActions'
+import {
+  BEER_CREATE_SUCCESS,
+  BEER_UPDATE_SUCCESS,
+  BEER_DELETE_SUCCESS
+} from '../beer/beerActions'
 
 const initialState = {
   byId: {},
@@ -174,6 +179,48 @@ const countryReducer = (store = initialState, action) => {
       return {
         ...store,
         [countryWithoutRegion._id]: countryWithoutRegion
+      }
+    case BEER_CREATE_SUCCESS:
+      console.log('hit beer create success', action.payload.beer)
+      const beer = action.payload.beer
+      const countryWithBeer = store.byId[beer.country]
+      countryWithBeer.beers = [...countryWithBeer.beers, beer._id]
+
+      return {
+        ...store,
+        byId: { ...store.byId, [beer.country]: countryWithBeer }
+      }
+    case BEER_UPDATE_SUCCESS:
+      console.log('hit beer update success', action.payload.beer, action.payload.oldCountryId)
+      const updatedBeer = action.payload.beer
+      const oldBeerCountryId = action.payload.oldCountryId
+      if (updatedBeer.country !== oldBeerCountryId) {
+        let oldBeerCountry = store.byId[oldBeerCountryId]
+        oldBeerCountry.beers = oldBeerCountry.beers.filter(id => id !== updatedBeer._id)
+        let updatedBeerCountry = store.byId[updatedBeer.country]
+        updatedBeerCountry.beers = [...updatedBeerCountry.beers, updatedBeer._id]
+        return {
+          ...store,
+          byId: {
+            ...store.byId,
+            [oldBeerCountryId]: oldBeerCountry,
+            [updatedBeer.country]: updatedBeerCountry
+          }
+        }
+      } else {
+        return {
+          store
+        }
+      }
+    case BEER_DELETE_SUCCESS:
+      console.log('hit beer delete success', action.payload.beerId)
+      const beerId = action.payload.beerId
+      const countryWithoutBeer = store.byId[action.payload.countryId]
+      console.log('countrywithoutbeer', countryWithoutBeer)
+      countryWithoutBeer.beers = countryWithoutBeer.beers.filter(id => id !== beerId)
+      return {
+        ...store,
+        [countryWithoutBeer._id]: countryWithoutBeer
       }
     default:
       console.log('hit default')

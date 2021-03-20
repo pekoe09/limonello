@@ -7,9 +7,19 @@ import {
   getRegions,
   deleteRegion
 } from '../regionActions'
+import {
+  getCountries
+} from '../../country/countryActions.js'
 
 const defaultSort = (a, b) =>
   a.name > b.name ? 1 : (a.name < b.name ? -1 : 0)
+
+// const getAllItems = () => {
+//   return async (dispatch) => {
+//     dispatch(getCountries)
+//     dispatch(getRegions)
+//   }
+// }
 
 const RegionsPage = props => {
   const RegionsWrapped = withSearch(withCrud(RegionsListView))

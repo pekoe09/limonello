@@ -4,6 +4,9 @@ import {
   updateEntity,
   removeEntity
 } from '../core'
+import {
+  getFoodstuffs
+} from '../foodstuff/foodstuffActions'
 
 export const INGREDIENT_CREATE_BEGIN = 'INGREDIENT_CREATE_BEGIN'
 export const INGREDIENT_CREATE_SUCCESS = 'INGREDIENT_CREATE_SUCCESS'
@@ -77,6 +80,7 @@ export const ingredientDeleteFailure = error => ({
 export const getIngredients = () => {
   console.log('getting ingredients')
   return async (dispatch) => {
+    dispatch(getFoodstuffs())
     dispatch(getIngredientsBegin())
     try {
       const ingredients = await getAll('ingredients')

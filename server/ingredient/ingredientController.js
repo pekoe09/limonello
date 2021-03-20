@@ -16,6 +16,7 @@ ingredientRouter.get('/', wrapAsync(async (req, res, next) => {
   const ingredients = await Ingredient
     .find({})
     .sort('name')
+    //.populate('foodstuff')
   res.json(ingredients)
 }))
 
@@ -27,7 +28,7 @@ ingredientRouter.post('/', wrapAsync(async (req, res, next) => {
     name: req.body.name,
     partitive: req.body.partitive,
     comment: req.body.comment,
-    foodstuff: req.body.foodstuff,
+    foodstuff: foodstuff._id,
     recipes: [],
     metaData: getMetaData(req)
   })

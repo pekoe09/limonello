@@ -1,6 +1,11 @@
 import React from 'react'
 import { Route, withRouter } from 'react-router-dom'
 import {
+  BeerDetailsPage,
+  BeerEditPage,
+  BeersPage
+} from '../../beer'
+import {
   BeerTypeEditPage,
   BeerTypesPage
 } from '../../beertype'
@@ -52,6 +57,11 @@ import {
 const PageContainer = () => {
   return (
     <div>
+      <Route exact path='/beers' render={() => <BeersPage />} />
+      <Route exact path='/beers/details/:id' render={() => <BeerDetailsPage />} />
+      <Route exact path='/beers/create' render={() => <BeerEditPage />} />
+      <Route exact path='/beers/edit/:id' render={() => <BeerEditPage />} />
+
       <Route exact path='/beertypes' render={() => <BeerTypesPage />} />
       <Route exact path='/beertypes/create' render={() => <BeerTypeEditPage />} />
       <Route exact path='/beertypes/edit/:id' render={() => <BeerTypeEditPage />} />

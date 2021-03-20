@@ -12,6 +12,11 @@ import {
   BEERTYPE_DELETE_SUCCESS,
   BEERTYPE_DELETE_FAILURE
 } from './beerTypeActions'
+import {
+  BEER_CREATE_SUCCESS,
+  BEER_UPDATE_SUCCESS,
+  BEER_DELETE_SUCCESS
+} from '../beer/beerActions'
 
 const initialState = {
   byId: {},
@@ -127,6 +132,48 @@ const beerTypeReducer = (store = initialState, action) => {
         ...store,
         deletingBeerType: false,
         beerTypeError: action.payload.error
+      }
+    case BEER_CREATE_SUCCESS:
+      console.log('hit beer create success', action.payload.beer)
+      const beer = action.payload.beer
+      const typeWithBeer = store.byId[beer.beerType]
+      typeWithBeer.beers = [...typeWithBeer.beers, beer._id]
+
+      return {
+        ...store,
+        byId: { ...store.byId, [beer.beerType]: typeWithBeer }
+      }
+    case BEER_UPDATE_SUCCESS:
+      console.log('hit beer update success', action.payload.beer, action.payload.oldBeerTypeId)
+      const updatedBeer = action.payload.beer
+      const oldBeerTypeId = action.payload.oldBeerTypeId
+      if (updatedBeer.beerType !== oldBeerTypeId) {
+        let oldBeerType = store.byId[oldBeerTypeId]
+        oldBeerType.beers = oldBeerType.beers.filter(id => id !== updatedBeer._id)
+        let updatedBeerType = store.byId[updatedBeer.beerType]
+        updatedBeerType.beers = [...updatedBeerType.beers, updatedBeer._id]
+        return {
+          ...store,
+          byId: {
+            ...store.byId,
+            [oldBeerTypeId]: oldBeerType,
+            [updatedBeer.country]: updatedBeerType
+          }
+        }
+      } else {
+        return {
+          store
+        }
+      }
+    case BEER_DELETE_SUCCESS:
+      console.log('hit beer delete success', action.payload.beerId)
+      const beerId = action.payload.beerId
+      const typeWithoutBeer = store.byId[action.payload.countryId]
+      console.log('typeWithoutBeer', typeWithoutBeer)
+      typeWithoutBeer.beers = typeWithoutBeer.beers.filter(id => id !== beerId)
+      return {
+        ...store,
+        [typeWithoutBeer._id]: typeWithoutBeer
       }
     default:
       console.log('hit default')

@@ -4,6 +4,9 @@ import {
   updateEntity,
   removeEntity
 } from '../core'
+import {
+  getMeasureTypes
+} from '../measureType/measureTypeActions'
 
 export const MEASURE_CREATE_BEGIN = 'MEASURE_CREATE_BEGIN'
 export const MEASURE_CREATE_SUCCESS = 'MEASURE_CREATE_SUCCESS'
@@ -77,6 +80,7 @@ export const measureDeleteFailure = error => ({
 export const getMeasures = () => {
   console.log('getting measures')
   return async (dispatch) => {
+    dispatch(getMeasureTypes())
     dispatch(getMeasuresBegin())
     try {
       const measures = await getAll('measures')
