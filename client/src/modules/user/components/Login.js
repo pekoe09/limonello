@@ -47,6 +47,7 @@ class Login extends React.Component {
             placeholder='Salasana'
             name='password'
             size='mini'
+            type='password'
             value={this.state.password}
             onChange={this.handleChange}
             style={{
