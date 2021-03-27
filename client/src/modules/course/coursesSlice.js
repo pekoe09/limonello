@@ -32,9 +32,9 @@ export const addCourse = createAsyncThunk(
 
 export const updateCourse = createAsyncThunk(
   'courses/updateCourse',
-  async course => {
-    course = await updateEntity('courses', course)
-    return course
+  async changeItem => {
+    const course = await updateEntity('courses', changeItem.changes)
+    return {id: course._id, changes: course}
   }
 )
 
@@ -59,8 +59,8 @@ const coursesSlice = createSlice({
       state.status = 'loading'
     },
     [getCourses.fulfilled]: (state, action) => {
-      state.status = 'succeeded'
       coursesAdapter.upsertMany(state, action.payload)
+      state.status = 'succeeded'
     },
     [getCourses.rejected]: (state, action) => {
       state.status = 'failed'

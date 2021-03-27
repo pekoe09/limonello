@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter, useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Row } from 'react-bootstrap'
 import {
   LimonelloForm,
@@ -8,14 +8,18 @@ import {
   LimonelloFormLabel,
   PageTitle
 } from '../../core'
+import {
+  selectCourseById
+} from '../coursesSlice'
 
-function CourseEditView(props) {
+const CourseEditView = ({
+  match,
+  handleSave
+}) => {
   let history = useHistory()
-  let course = null
-  const urlId = props.match.params.id
-  if (urlId) {
-    course = props.items.find(i => i[0] === urlId)[1]
-  }
+
+  const courseId = match.params.id
+  let course = useSelector(state => selectCourseById(state, courseId))
 
   const [id, setId] = useState(course ? course._id : '')
   const [name, setName] = useState(course ? course.name : '')
@@ -34,17 +38,19 @@ function CourseEditView(props) {
     return () => clearState()
   }, [])
 
-  const handleSave = async (e) => {
+  const handleSaveRequest = async (e) => {
     e.preventDefault()
     const course = {
       _id: id,
       name,
       ordinality
     }
-    await props.handleSave(course)
-    if (!props.error) {
+    try {
+      await handleSave(course)
       clearState()
       history.push('/courses')
+    } catch (error) {
+      console.log('error on save:', error)
     }
   }
 
@@ -53,13 +59,8 @@ function CourseEditView(props) {
     history.push('/courses')
   }
 
-  const handleNameChange = e => {
-    setName(e.target.value)
-  }
-
-  const handleOrdinalityChange = e => {
-    setOrdinality(e.target.value)
-  }
+  const handleNameChange = e => setName(e.target.value)
+  const handleOrdinalityChange = e => setOrdinality(e.target.value)
 
   const handleBlur = field => {
     setTouched({ ...touched, [field]: true })
@@ -119,7 +120,7 @@ function CourseEditView(props) {
             />
           </LimonelloForm.Group>
           <LimonelloFormButtons
-            handleSave={handleSave}
+            handleSave={handleSaveRequest}
             handleCancel={handleCancel}
             saveIsDisabled={Object.keys(errors).some(x => errors[x])}
           />
@@ -129,10 +130,4 @@ function CourseEditView(props) {
   )
 }
 
-const mapStateToProps = store => ({
-  error: store.courses.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(CourseEditView))
+export default withRouter(CourseEditView)

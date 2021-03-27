@@ -4,7 +4,6 @@ import {
   beerReducer,
   beerTypeReducer,
   countryReducer,
-  courseReducer,
   cuisineReducer,
   dishTypeReducer,
   foodstuffReducer,
@@ -16,6 +15,7 @@ import {
   userReducer,
   wineTypeReducer
 } from './reducers'
+import courseReducer from './modules/course/coursesSlice'
 
 const store = configureStore({
   reducer: {

@@ -12,6 +12,7 @@ import {
   PageTitle
 } from './layout'
 import withCrud from './withCRUD'
+import withCrud2 from './withCRUD2'
 import withSearch from './withSearch'
 import entityServices from './services/entityServices'
 const {
@@ -35,6 +36,7 @@ export {
   PageBar,
   PageTitle,
   withCrud,
+  withCrud2,
   withSearch,
   getAll,
   getByPage,

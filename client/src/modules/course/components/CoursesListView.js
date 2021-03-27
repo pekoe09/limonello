@@ -1,13 +1,29 @@
-import React, { useState, useCallback } from 'react'
-import { connect } from 'react-redux'
+import React, { useState, useCallback, useEffect } from 'react'
+import { connect, useSelector, useDispatch } from 'react-redux'
 import { withRouter, useHistory } from 'react-router-dom'
 import {
   LimonelloButton,
   LimonelloDataTable,
   PageBar
 } from '../../core'
+import {
+  getCourses,
+  selectAllCourses
+} from '../coursesSlice'
 
 function CoursesListView(props) {
+  const dispatch = useDispatch()
+  const allCourses = useSelector(selectAllCourses)
+
+  const coursesStatus = useSelector((state) => state.courses.status)
+  const error = useSelector((state) => state.courses.error)
+
+  useEffect(() => {
+    if(coursesStatus === 'idle') {
+      dispatch(getCourses())
+    }
+  }, [coursesStatus, dispatch])
+
   const [rowToEdit, setRowToEdit] = useState(null)
 
   let history = useHistory()
@@ -22,22 +38,20 @@ function CoursesListView(props) {
   }
 
   const handleRowClick = (row) => {
-    // setRelatedRegions(getRelatedRegions(row.original._id))
-    props.showError('')
     handleOpenEditPage(row.original._id)
   }
 
   const getFilteredItems = useCallback(() => {
     let searchPhrase = props.searchPhraseToUse.toLowerCase()
-    let filtered = props.items.map(i => i[1])
+    let filtered = allCourses
     if (props.searchPhraseToUse.length > 0) {
-      filtered = props.items.filter(p =>
+      filtered = allCourses.filter(p =>
         p.name.toLowerCase().includes(searchPhrase)
       )
     }
 
     return filtered
-  }, [props.items, props.searchPhraseToUse])
+  }, [allCourses, props.searchPhraseToUse])
 
   const getData = React.useMemo(() => getFilteredItems(), [getFilteredItems])
 
