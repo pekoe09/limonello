@@ -3,7 +3,6 @@ import { configureStore } from '@reduxjs/toolkit'
 import {
   beerReducer,
   beerTypeReducer,
-  countryReducer,
   cuisineReducer,
   dishTypeReducer,
   foodstuffReducer,
@@ -15,6 +14,7 @@ import {
   userReducer,
   wineTypeReducer
 } from './reducers'
+import countryReducer from './modules/country/countriesSlice'
 import courseReducer from './modules/course/coursesSlice'
 
 const store = configureStore({

@@ -11,13 +11,9 @@ import {
 } from '../coursesSlice'
 
 const CourseEditPage = () => {
-  const id = null
-
   const CourseEditWrapped = withCrud2(CourseEditView)
   return (
     <CourseEditWrapped
-      repository={'courses'}
-      id={id}
       defaultSort={() => { }}
       addItem={addCourse}
       getAllItems={getCourses}      

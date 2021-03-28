@@ -34,7 +34,7 @@ export const updateCourse = createAsyncThunk(
   'courses/updateCourse',
   async changeItem => {
     const course = await updateEntity('courses', changeItem.changes)
-    return {id: course._id, changes: course}
+    return { id: course._id, changes: course }
   }
 )
 
@@ -42,6 +42,7 @@ export const deleteCourse = createAsyncThunk(
   'courses/deleteCourse',
   async courseId => {
     await removeEntity('courses', courseId)
+    return courseId
   }
 )
 
@@ -67,17 +68,17 @@ const coursesSlice = createSlice({
       state.error = action.error.message
     },
     [addCourse.fulfilled]: coursesAdapter.addOne,
-    [addCourse.failed]: (state, action) => {
+    [addCourse.rejected]: (state, action) => {
       state.status = 'failed'
       state.error = action.error.message
     },
     [updateCourse.fulfilled]: coursesAdapter.updateOne,
-    [updateCourse.failed]: (state, action) => {
+    [updateCourse.rejected]: (state, action) => {
       state.status = 'failed'
       state.error = action.error.message
     },
     [deleteCourse.fulfilled]: coursesAdapter.removeOne,
-    [deleteCourse.failed]: (state, action) => {
+    [deleteCourse.rejected]: (state, action) => {
       state.status = 'failed'
       state.error = action.error.message
     }

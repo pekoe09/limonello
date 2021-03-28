@@ -57,7 +57,7 @@ const withCRUD = (WrappedComponent) => props => {
   }
 
   const handleDelete = async () => {
-    await deleteItem(deletionTargetId, deletionOther)
+    await dispatch(deleteItem(deletionTargetId, deletionOther))
   }
 
   const renderDeletionConfirmation = () => {
@@ -84,7 +84,6 @@ const withCRUD = (WrappedComponent) => props => {
 export default withCRUD
 
 withCRUD.propTypes = {
-  repository: PropTypes.string.isRequired,
   defaultSort: PropTypes.func.isRequired,
   addItem: PropTypes.func.isRequired,
   getAllItems: PropTypes.func.isRequired,

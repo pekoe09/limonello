@@ -1,35 +1,31 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import CountriesListView from './CountriesListView'
-import { withCrud, withSearch } from '../../core'
+import { withCrud2, withSearch } from '../../core'
 import {
-  saveCountry,
   getCountries,
-  deleteCountry
-} from '../countryActions'
+  addCountry,
+  updateCountry,
+  deleteCountry, 
+  selectAllCountries,
+  selectCountryById
+} from '../countriesSlice'
 
 const defaultSort = (a, b) =>
   a.name > b.name ? 1 : (a.name < b.name ? -1 : 0)
 
-const CountriesPage = props => {
-  const CountriesWrapped = withSearch(withCrud(CountriesListView))
+const CountriesPage = () => {
+  const CountriesWrapped = withSearch(withCrud2(CountriesListView))
   return (
     <CountriesWrapped
-      repository={'countries'}
       defaultSort={defaultSort}
-      addItem={props.saveCountry}
-      getAllItems={props.getCountries}
-      updateItem={props.saveCountry}
-      deleteItem={props.deleteCountry}
+      addItem={addCountry}
+      getAllItems={getCountries}
+      updateItem={updateCountry}
+      deleteItem={deleteCountry}
+      selectAllItems={selectAllCountries}
+      selectItemById={selectCountryById}
     />
   )
 }
 
-export default connect(
-  null,
-  {
-    saveCountry,
-    getCountries,
-    deleteCountry
-  }
-)(CountriesPage)
+export default CountriesPage

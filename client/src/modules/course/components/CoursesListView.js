@@ -1,5 +1,5 @@
-import React, { useState, useCallback, useEffect } from 'react'
-import { connect, useSelector, useDispatch } from 'react-redux'
+import React, { useCallback, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { withRouter, useHistory } from 'react-router-dom'
 import {
   LimonelloButton,
@@ -19,17 +19,14 @@ function CoursesListView(props) {
   const error = useSelector((state) => state.courses.error)
 
   useEffect(() => {
-    if(coursesStatus === 'idle') {
+    if (coursesStatus === 'idle') {
       dispatch(getCourses())
     }
   }, [coursesStatus, dispatch])
 
-  const [rowToEdit, setRowToEdit] = useState(null)
-
   let history = useHistory()
 
   const handleOpenEditPage = (id) => {
-    setRowToEdit(id)
     if (id) {
       history.push(`/courses/edit/${id}`)
     } else {
@@ -45,7 +42,7 @@ function CoursesListView(props) {
     let searchPhrase = props.searchPhraseToUse.toLowerCase()
     let filtered = allCourses
     if (props.searchPhraseToUse.length > 0) {
-      filtered = allCourses.filter(p =>
+      filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(searchPhrase)
       )
     }
@@ -115,11 +112,4 @@ function CoursesListView(props) {
   )
 }
 
-const mapStateToProps = store => ({
-  loading: store.courses.loading,
-  error: store.courses.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(CoursesListView))
+export default withRouter(CoursesListView)

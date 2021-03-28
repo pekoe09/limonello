@@ -1,13 +1,29 @@
-import React, { useCallback } from 'react'
-import { connect } from 'react-redux'
+import React, { useCallback, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { withRouter, useHistory } from 'react-router-dom'
 import {
   LimonelloButton,
   LimonelloDataTable,
   PageBar
 } from '../../core'
+import {
+  getCountries,
+  selectAllCountries
+} from '../countriesSlice'
 
 function CountriesListView(props) {
+  const dispatch = useDispatch()
+  const allCountries = useSelector(selectAllCountries)
+
+  const countriesStatus = useSelector((state) => state.countries.status)
+  const error = useSelector((state) => state.countries.error)
+
+  useEffect(() => {
+    if (countriesStatus === 'idle') {
+      dispatch(getCountries())
+    }
+  }, [countriesStatus, dispatch])
+
   let history = useHistory()
 
   const handleOpenEditPage = (id) => {
@@ -19,22 +35,20 @@ function CountriesListView(props) {
   }
 
   const handleRowClick = (row) => {
-    props.showError('')
     handleOpenEditPage(row.original._id)
   }
 
   const getFilteredItems = useCallback(() => {
     let searchPhrase = props.searchPhraseToUse.toLowerCase()
-    let filtered = props.items.map(i => i[1])
+    let filtered = allCountries
     if (props.searchPhraseToUse.length > 0) {
-      filtered = props.items.filter(p =>
+      filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(searchPhrase)
       )
     }
-    
-    console.log('filtered', filtered)
+
     return filtered
-  }, [props.items, props.searchPhraseToUse])
+  }, [allCountries, props.searchPhraseToUse])
 
   const getData = React.useMemo(() => getFilteredItems(), [getFilteredItems])
 
@@ -91,11 +105,4 @@ function CountriesListView(props) {
   )
 }
 
-const mapStateToProps = store => ({
-  loading: store.countries.loading,
-  error: store.countries.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(CountriesListView))
+export default withRouter(CountriesListView)

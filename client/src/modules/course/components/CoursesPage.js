@@ -17,7 +17,6 @@ const CoursesPage = () => {
   const CoursesWrapped = withSearch(withCrud2(CoursesListView))
   return (
     <CoursesWrapped
-      repository={'courses'}
       defaultSort={defaultSort}
       addItem={addCourse}
       getAllItems={getCourses}

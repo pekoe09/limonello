@@ -1,35 +1,28 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import CountryEditView from './CountryEditView'
-import { withCrud } from '../../core'
+import { withCrud2 } from '../../core'
 import {
-  saveCountry,
   getCountries,
-  deleteCountry
-} from '../countryActions'
+  addCountry,
+  updateCountry,
+  deleteCountry,
+  selectAllCountries,
+  selectCountryById
+} from '../countriesSlice'
 
 const CountryEditPage = props => {
-  const id = null
-
-  const CountryEditWrapped = withCrud(CountryEditView)
+  const CountryEditWrapped = withCrud2(CountryEditView)
   return (
     <CountryEditWrapped
-      repository={'countries'}
-      id={id}
-      defaultSort={() => {}}
-      addItem={props.saveCountry}
-      getAllItems={props.getCountries}
-      updateItem={props.saveCountry}
-      deleteItem={props.deleteCountry}
+      defaultSort={() => { }}
+      addItem={addCountry}
+      getAllItems={getCountries}
+      updateItem={updateCountry}
+      deleteItem={deleteCountry}
+      selectItemById={selectCountryById}
+      selectAllItems={selectAllCountries}
     />
   )
 }
 
-export default connect(
-  null,
-  {
-    saveCountry,
-    getCountries,
-    deleteCountry
-  }
-)(CountryEditPage)
+export default CountryEditPage

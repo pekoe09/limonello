@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter, useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Row } from 'react-bootstrap'
 import {
   LimonelloForm,
@@ -8,14 +8,18 @@ import {
   LimonelloFormLabel,
   PageTitle
 } from '../../core'
+import {
+  selectCountryById
+} from '../countriesSlice'
 
-function CountryEditView(props) {
+const CountryEditView = ({
+  match,
+  handleSave
+}) => {
   let history = useHistory()
-  let country = null
-  const urlId = props.match.params.id
-  if (urlId) {
-    country = props.items.find(i => i[0] === urlId)[1]
-  }
+
+  const countryId = match.params.id
+  let country = useSelector(state => selectCountryById(state, countryId))
 
   const [id, setId] = useState(country ? country._id : '')
   const [name, setName] = useState(country ? country.name : '')
@@ -34,17 +38,19 @@ function CountryEditView(props) {
     return () => clearState()
   }, [])
 
-  const handleSave = async (e) => {
+  const handleSaveRequest = async (e) => {
     e.preventDefault()
     const country = {
       _id: id,
       name,
       continent
     }
-    await props.handleSave(country)
-    if (!props.error) {
+    try {
+      await handleSave(country)
       clearState()
       history.push('/countries')
+    } catch (error) {
+      console.log('error on save:', error)
     }
   }
 
@@ -53,13 +59,8 @@ function CountryEditView(props) {
     history.push('/countries')
   }
 
-  const handleNameChange = e => {
-    setName(e.target.value)
-  }
-
-  const handleContinentChange = e => {
-    setContinent(e.target.value)
-  }
+  const handleNameChange = e => setName(e.target.value)
+  const handleContinentChange = e => setContinent(e.target.value)
 
   const handleBlur = field => {
     setTouched({ ...touched, [field]: true })
@@ -118,7 +119,7 @@ function CountryEditView(props) {
             />
           </LimonelloForm.Group>
           <LimonelloFormButtons
-            handleSave={handleSave}
+            handleSave={handleSaveRequest}
             handleCancel={handleCancel}
             saveIsDisabled={Object.keys(errors).some(x => errors[x])}
           />
@@ -128,10 +129,4 @@ function CountryEditView(props) {
   )
 }
 
-const mapStateToProps = store => ({
-  error: store.countries.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(CountryEditView))
+export default withRouter(CountryEditView)
