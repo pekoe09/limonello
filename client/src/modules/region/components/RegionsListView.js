@@ -1,14 +1,29 @@
-import React, { useCallback } from 'react'
-import { connect } from 'react-redux'
+import React, { useCallback, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { withRouter, useHistory } from 'react-router-dom'
-import { makeGetRegionsWithCountry } from '../regionSelector'
 import {
   LimonelloButton,
   LimonelloDataTable,
   PageBar
 } from '../../core'
+import {
+  getRegions,
+  selectAllRegionsWithCountry
+} from '../regionsSlice'
 
-function RegionsListView(props) {
+const RegionsListView = (props) => {
+  const dispatch = useDispatch()
+  const allRegions = useSelector(selectAllRegionsWithCountry)
+
+  const regionsStatus = useSelector((state) => state.regions.status)
+  const error = useSelector((state) => state.regions.error)
+
+  useEffect(() => {
+    if (regionsStatus === 'idle') {
+    dispatch(getRegions())
+    }
+  }, [regionsStatus, dispatch])
+
   let history = useHistory()
 
   const handleOpenEditPage = (id) => {
@@ -20,21 +35,20 @@ function RegionsListView(props) {
   }
 
   const handleRowClick = (row) => {
-    props.showError('')
     handleOpenEditPage(row.original._id)
   }
 
   const getFilteredItems = useCallback(() => {
     let searchPhrase = props.searchPhraseToUse.toLowerCase()
-    let filtered = props.regions
+    let filtered = allRegions
     if (props.searchPhraseToUse.length > 0) {
-      filtered = props.regions.filter(p =>
+      filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(searchPhrase)
       )
     }
 
     return filtered
-  }, [props.regions, props.searchPhraseToUse])
+  }, [allRegions, props.searchPhraseToUse])
 
   const getData = React.useMemo(() => getFilteredItems(), [getFilteredItems])
 
@@ -102,19 +116,4 @@ function RegionsListView(props) {
   )
 }
 
-const makeMapStateToProps = () => {
-  const getRegionsWithCountry = makeGetRegionsWithCountry()
-  return store => {
-    const regions = getRegionsWithCountry(store)
-    console.log('received regions', regions)
-    return {
-      regions,
-      loading: store.regions.loading,
-      error: store.regions.error
-    }
-  }
-}
-
-export default withRouter(connect(
-  makeMapStateToProps
-)(RegionsListView))
+export default withRouter(RegionsListView)
