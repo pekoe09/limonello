@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter, useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.min.css'
 import { Row } from 'react-bootstrap'
@@ -10,18 +9,28 @@ import {
   LimonelloFormLabel,
   PageTitle
 } from '../../core'
+import {
+  selectRegionById
+} from '../regionsSlice'
+import {
+  selectAllCountries
+} from '../../country/countriesSlice'
+import { useSelector } from 'react-redux'
 
-function RegionEditView(props) {
+const RegionEditView = ({
+  match,
+  handleSave
+}) => {
   let history = useHistory()
-  let region = null
-  const urlId = props.match.params.id
-  if (urlId) {
-    region = props.items.find(i => i[0] === urlId)[1]
-  }
+
+  const regionId = match.params.id
+  let region = useSelector(state => selectRegionById(state, regionId))
+  const countries = Object.values(useSelector(selectAllCountries))
+  const initialCountry = region ? countries.find(c => c._id === region.country) : null
 
   const [id, setId] = useState(region ? region._id : '')
   const [name, setName] = useState(region ? region.name : '')
-  const [country, setCountry] = useState(region ? [region.country] : [])
+  const [country, setCountry] = useState(region ? [initialCountry] : [])
   const [oldCountryId, setOldCountryId] = useState(region ? region.country._id : '')
   const [touched, setTouched] = useState({
     name: false,
@@ -37,7 +46,7 @@ function RegionEditView(props) {
     return () => clearState()
   }, [])
 
-  const handleSave = async (e) => {
+  const handleSaveReguest = async (e) => {
     e.preventDefault()
     const region = {
       _id: id,
@@ -45,10 +54,12 @@ function RegionEditView(props) {
       country: country[0],
       oldCountryId
     }
-    await props.handleSave(region)
-    if (!props.error) {
+    try {
+      await handleSave(region)
       clearState()
-      history.push('/regions')
+      history.push('regions')
+    } catch (error) {
+      console.log('error on save', error)
     }
   }
 
@@ -57,9 +68,7 @@ function RegionEditView(props) {
     history.push('/regions')
   }
 
-  const handleNameChange = e => {
-    setName(e.target.value)
-  }
+  const handleNameChange = e => setName(e.target.value)
 
   const handleBlur = field => {
     setTouched({ ...touched, [field]: true })
@@ -111,15 +120,15 @@ function RegionEditView(props) {
             <LimonelloFormLabel>Maa</LimonelloFormLabel>
             <Typeahead
               onChange={(selected) => { setCountry(selected) }}
-              options={props.countries}
+              options={countries}
               selected={country}
               labelKey='name'
-              id='_id'
+              id='country'
               maxResults={10}
             />
           </LimonelloForm.Group>
           <LimonelloFormButtons
-            handleSave={handleSave}
+            handleSave={handleSaveReguest}
             handleCancel={handleCancel}
             saveIsDisabled={Object.keys(errors).some(x => errors[x])}
           />
@@ -129,11 +138,4 @@ function RegionEditView(props) {
   )
 }
 
-const mapStateToProps = store => ({
-  countries: Object.entries(store.countries.byId).map(o => o[1]),
-  error: store.regions.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(RegionEditView))
+export default withRouter(RegionEditView)

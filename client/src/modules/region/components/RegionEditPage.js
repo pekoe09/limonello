@@ -1,35 +1,28 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import RegionEditView from './RegionEditView'
-import { withCrud } from '../../core'
+import { withCrud2 } from '../../core'
 import {
-  saveRegion,
   getRegions,
-  deleteRegion
-} from '../regionActions'
+  addRegion,
+  updateRegion,
+  deleteRegion,
+  selectAllRegions,
+  selectRegionById
+} from '../regionsSlice'
 
-const RegionEditPage = props => {
-  const id = null
-
-  const RegionEditWrapped = withCrud(RegionEditView)
+const RegionEditPage = () => {
+  const RegionEditWrapped = withCrud2(RegionEditView)
   return (
     <RegionEditWrapped
-      repository={'regions'}
-      id={id}
-      defaultSort={() => {}}
-      addItem={props.saveRegion}
-      getAllItems={props.getRegions}
-      updateItem={props.saveRegion}
-      deleteItem={props.deleteRegion}
+      defaultSort={() => { }}
+      addItem={addRegion}
+      getAllItems={getRegions}
+      updateItem={updateRegion}
+      deleteItem={deleteRegion}
+      selectItemById={selectRegionById}
+      selectAllItems={selectAllRegions}
     />
   )
 }
 
-export default connect(
-  null,
-  {
-    saveRegion,
-    getRegions,
-    deleteRegion
-  }
-)(RegionEditPage)
+export default RegionEditPage

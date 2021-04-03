@@ -9,7 +9,7 @@ import {
 } from '../beertype/beerTypeActions'
 import {
   getCountries
-} from '../country/countryActions'
+} from '../country/countriesSlice'
 
 export const BEER_CREATE_BEGIN = 'BEER_CREATE_BEGIN'
 export const BEER_CREATE_SUCCESS = 'BEER_CREATE_SUCCESS'

@@ -1,9 +1,16 @@
 import RegionEditPage from './components/RegionEditPage'
 import RegionsPage from './components/RegionsPage'
-import regionReducer from './regionReducer'
+import regionReducer, {
+  selectAllRegions,
+  selectRegionById,
+  selectAllRegionsWithCountry
+} from './regionsSlice'
 
 export {
   RegionEditPage,
   RegionsPage,
-  regionReducer
+  regionReducer,
+  selectAllRegions,
+  selectAllRegionsWithCountry,
+  selectRegionById
 }

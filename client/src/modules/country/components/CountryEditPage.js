@@ -10,7 +10,7 @@ import {
   selectCountryById
 } from '../countriesSlice'
 
-const CountryEditPage = props => {
+const CountryEditPage = () => {
   const CountryEditWrapped = withCrud2(CountryEditView)
   return (
     <CountryEditWrapped

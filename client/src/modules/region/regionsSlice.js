@@ -11,14 +11,8 @@ import {
   removeEntity
 } from '../core'
 import {
-  selectAllCountries,
-  selectCountryById
+  selectAllCountries
 } from '../country/countriesSlice'
-import { selectCourseById } from '../course/coursesSlice'
-// import { normalize } from 'normalizr'
-// import {
-//   regionEntity
-// } from '../core/services/normalizedSchemas'
 
 const regionsAdapter = createEntityAdapter({
   selectId: region => region._id
@@ -28,8 +22,6 @@ export const getRegions = createAsyncThunk(
   'regions/getRegions',
   async () => {
     const regions = await getAll('regions')
-    console.log('got regions', regions)
-    //const normalized = normalize(regions, regionEntity)
     return regions
   }
 )

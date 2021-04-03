@@ -1,6 +1,6 @@
 import CountriesPage from './components/CountriesPage'
 import CountryEditPage from './components/CountryEditPage'
-import countryReducer from './countryReducer'
+import countryReducer from './countriesSlice'
 
 export {
   CountriesPage,
