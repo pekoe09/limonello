@@ -5,6 +5,7 @@ import {
 } from '@reduxjs/toolkit'
 import userService from './userServices'
 import { getCountries } from '../country/countriesSlice'
+import { getCuisines } from '../cuisine'
 import { getRegions } from '../region/regionsSlice'
 
 const usersAdapter = createEntityAdapter({
@@ -17,6 +18,7 @@ export const login = createAsyncThunk(
     const currentUser = await userService.login(credentials)
     thunkAPI.dispatch(getCountries())
     thunkAPI.dispatch(getRegions())
+    thunkAPI.dispatch(getCuisines())
     return currentUser
   }
 )

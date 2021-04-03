@@ -1,35 +1,28 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import CuisineEditView from './CuisineEditView'
-import { withCrud } from '../../core'
+import { withCrud2 } from '../../core'
 import {
-  saveCuisine,
   getCuisines,
-  deleteCuisine
-} from '../cuisineActions'
+  addCuisine,
+  updateCuisine,
+  deleteCuisine,
+  selectAllCuisines,
+  selectCuisineById
+} from '../cuisinesSlice'
 
-const CuisineEditPage = props => {
-  const id = null
-
-  const CuisineEditWrapped = withCrud(CuisineEditView)
+const CuisineEditPage = () => {
+  const CuisineEditWrapped = withCrud2(CuisineEditView)
   return (
     <CuisineEditWrapped
-      repository={'cuisines'}
-      id={id}
-      defaultSort={() => {}}
-      addItem={props.saveCuisine}
-      getAllItems={props.getCuisines}
-      updateItem={props.saveCuisine}
-      deleteItem={props.deleteCuisine}
+      defaultSort={() => { }}
+      addItem={addCuisine}
+      getAllItems={getCuisines}
+      updateItem={updateCuisine}
+      deleteItem={deleteCuisine}
+      selectItemById={selectCuisineById}
+      selectAllItems={selectAllCuisines}
     />
   )
 }
 
-export default connect(
-  null,
-  {
-    saveCuisine,
-    getCuisines,
-    deleteCuisine
-  }
-)(CuisineEditPage)
+export default CuisineEditPage

@@ -1,5 +1,9 @@
+import store from '../../../store'
+
 export const getTokenHeader = () => {
-  const user = JSON.parse(localStorage.getItem('limonellouser'))
+  console.log('current store', store)
+  let state = store.getState()
+  const user = state.users.currentUser
   if (user && user.token) {
     return `bearer ${user.token}`
   }

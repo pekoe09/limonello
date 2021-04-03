@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter, useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Row } from 'react-bootstrap'
 import {
   LimonelloForm,
@@ -8,14 +8,18 @@ import {
   LimonelloFormLabel,
   PageTitle
 } from '../../core'
+import {
+  selectCuisineById
+} from '../cuisinesSlice'
 
-function CuisineEditView(props) {
+const CuisineEditView = ({
+  match,
+  handleSave
+}) => {
   let history = useHistory()
-  let cuisine = null
-  const urlId = props.match.params.id
-  if (urlId) {
-    cuisine = props.items.find(i => i[0] === urlId)[1]
-  }
+
+  const cuisineId = match.params.id
+  let cuisine = useSelector(state => selectCuisineById(state, cuisineId))
 
   const [id, setId] = useState(cuisine ? cuisine._id : '')
   const [name, setName] = useState(cuisine ? cuisine.name : '')
@@ -32,16 +36,18 @@ function CuisineEditView(props) {
     return () => clearState()
   }, [])
 
-  const handleSave = async (e) => {
+  const handleSaveRequest = async (e) => {
     e.preventDefault()
     const cuisine = {
       _id: id,
       name
     }
-    await props.handleSave(cuisine)
-    if (!props.error) {
+    try {
+      await handleSave(cuisine)
       clearState()
       history.push('/cuisines')
+    } catch (error) {
+      console.log('error on save', error)
     }
   }
 
@@ -50,9 +56,7 @@ function CuisineEditView(props) {
     history.push('/cuisines')
   }
 
-  const handleNameChange = e => {
-    setName(e.target.value)
-  }
+  const handleNameChange = e => setName(e.target.value)
 
   const handleBlur = field => {
     setTouched({ ...touched, [field]: true })
@@ -98,7 +102,7 @@ function CuisineEditView(props) {
             />
           </LimonelloForm.Group>
           <LimonelloFormButtons
-            handleSave={handleSave}
+            handleSave={handleSaveRequest}
             handleCancel={handleCancel}
             saveIsDisabled={Object.keys(errors).some(x => errors[x])}
           />
@@ -108,10 +112,4 @@ function CuisineEditView(props) {
   )
 }
 
-const mapStateToProps = store => ({
-  error: store.cuisines.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(CuisineEditView))
+export default withRouter(CuisineEditView)

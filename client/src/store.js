@@ -18,7 +18,6 @@ import autoMergeLevel2 from 'redux-persist/lib/stateReconciler/autoMergeLevel2'
 import {
   beerReducer,
   beerTypeReducer,
-  cuisineReducer,
   dishTypeReducer,
   foodstuffReducer,
   grapeReducer,
@@ -29,6 +28,7 @@ import {
 } from './reducers'
 import countryReducer from './modules/country/countriesSlice'
 import courseReducer from './modules/course/coursesSlice'
+import cuisineReducer from './modules/cuisine/cuisinesSlice'
 import regionReducer from './modules/region/regionsSlice'
 import userReducer from './modules/user/usersSlice'
 

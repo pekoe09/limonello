@@ -26,13 +26,13 @@ const withCRUD = (WrappedComponent) => props => {
     (async function getData() {
       await getAllItems()
     })()
-  }, [])
+  }, [getAllItems])
 
   const handleSave = async (item) => {
     console.log('hit handleSave', item)
     let result
     if (item._id) {
-      result = await dispatch(updateItem({id: item._id, changes: item}))
+      result = await dispatch(updateItem({ id: item._id, changes: item }))
     } else {
       result = await dispatch(addItem(item))
     }
