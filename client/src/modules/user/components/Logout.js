@@ -1,12 +1,15 @@
 import React from 'react'
-import { connect } from 'react-redux'
-import { withRouter } from 'react-router-dom'
+import { withRouter, useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import { Form, Button } from 'react-bootstrap'
-import { logout } from '../userActions'
+import { logout } from '../usersSlice'
 
-const Logout = ({ logout, history }) => {
+const Logout = () => {
+  let history = useHistory()
+  const dispatch = useDispatch()
+
   const handleLogout = () => {
-    logout()
+    dispatch(logout())
     history.push('/')
   }
 
@@ -25,9 +28,4 @@ const Logout = ({ logout, history }) => {
   )
 }
 
-export default withRouter(connect(
-  null,
-  {
-    logout
-  }
-)(Logout))
+export default withRouter(Logout)

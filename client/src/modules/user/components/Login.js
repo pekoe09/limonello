@@ -1,82 +1,68 @@
-import React from 'react'
-import { connect } from 'react-redux'
+import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom'
 import { Form, FormGroup, FormControl, Button } from 'react-bootstrap'
-import { login } from '../userActions'
+import { useDispatch } from 'react-redux'
+import { login } from '../usersSlice'
 
-class Login extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      username: '',
-      password: ''
-    }
-  }
+const Login = () => {
 
-  handleChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value })
-  }
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
-  handleSubmit = async (event) => {
-    event.preventDefault()
+  const dispatch = useDispatch()
+
+  const handleUsernamechange = e => setUsername(e.target.value)
+  const handlePasswordchange = e => setPassword(e.target.value)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
     const credentials = {
-      username: this.state.username,
-      password: this.state.password
+      username,
+      password
     }
-    await this.props.login(credentials)
+    console.log('trying to log in', credentials)
+    dispatch(login(credentials))
   }
 
-  render() {
-    return (
-      <Form inline>
-        <input type="hidden" value="prayer"/>
-        <FormGroup>
-          <FormControl
-            placeholder='Tunnus'
-            name='username'
-            size='mini'
-            value={this.state.username}
-            onChange={this.handleChange}
-            style={{
-              marginRight: 5,
-              fontFamily: 'sans-serif'
-            }}
-            autoComplete='off'
-          />
-          <FormControl
-            placeholder='Salasana'
-            name='password'
-            size='mini'
-            type='password'
-            value={this.state.password}
-            onChange={this.handleChange}
-            style={{
-              marginRight: 10,
-              fontFamily: 'sans-serif'
-            }}
-            autoComplete='off'
-          />
-          <Button
-            type='submit'
-            onClick={this.handleSubmit}
-            style={{ fontFamily: 'sans-serif' }}
-          >
-            Login
+  return (
+    <Form inline>
+      <input type="hidden" value="prayer" />
+      <FormGroup>
+        <FormControl
+          placeholder='Tunnus'
+          name='username'
+          size='mini'
+          value={username}
+          onChange={handleUsernamechange}
+          style={{
+            marginRight: 5,
+            fontFamily: 'sans-serif'
+          }}
+          autoComplete='off'
+        />
+        <FormControl
+          placeholder='Salasana'
+          name='password'
+          size='mini'
+          type='password'
+          value={password}
+          onChange={handlePasswordchange}
+          style={{
+            marginRight: 10,
+            fontFamily: 'sans-serif'
+          }}
+          autoComplete='off'
+        />
+        <Button
+          type='submit'
+          onClick={handleSubmit}
+          style={{ fontFamily: 'sans-serif' }}
+        >
+          Login
           </Button>
-        </FormGroup>
-      </Form>
-    )
-  }
+      </FormGroup>
+    </Form>
+  )
 }
 
-const mapStateToProps = store => ({
-  loggingIn: store.users.loggingIn,
-  error: store.users.error
-})
-
-export default withRouter(connect(
-  mapStateToProps,
-  {
-    login
-  }
-)(Login))
+export default withRouter(Login)

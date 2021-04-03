@@ -25,12 +25,12 @@ import {
   ingredientReducer,
   measureReducer,
   measureTypeReducer,
-  userReducer,
   wineTypeReducer
 } from './reducers'
 import countryReducer from './modules/country/countriesSlice'
 import courseReducer from './modules/course/coursesSlice'
 import regionReducer from './modules/region/regionsSlice'
+import userReducer from './modules/user/usersSlice'
 
 const persistConfig = {
   key: 'limonello',
@@ -55,7 +55,18 @@ const reducers = combineReducers({
   wineTypes: wineTypeReducer
 })
 
-const persistedReducer = persistReducer(persistConfig, reducers)
+const rootReducer = (state, action) => {
+  if (action.type === 'users/logout/fulfilled') {
+    Object.keys(state).forEach(key => {
+      storage.removeItem(`persist:${key}`)
+    })
+    localStorage.removeItem('persist:limonello')
+    state = undefined
+  }
+  return reducers(state, action)
+}
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 const store = configureStore({
   reducer: persistedReducer,
