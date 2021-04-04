@@ -1,35 +1,28 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import FoodstuffEditView from './FoodstuffEditView'
-import { withCrud } from '../../core'
+import { withCrud2 } from '../../core'
 import {
-  saveFoodstuff,
   getFoodstuffs,
-  deleteFoodstuff
-} from '../foodstuffActions'
+  addFoodstuff,
+  updateFoodstuff,
+  deleteFoodstuff,
+  selectAllFoodstuffs,
+  selectFoodstuffById
+} from '../foodStuffsSlice'
 
 const FoodstuffEditPage = props => {
-  const id = null
-
-  const FoodstuffEditWrapped = withCrud(FoodstuffEditView)
+  const FoodstuffEditWrapped = withCrud2(FoodstuffEditView)
   return (
     <FoodstuffEditWrapped
-      repository={'foodstuffs'}
-      id={id}
-      defaultSort={() => {}}
-      addItem={props.saveFoodstuff}
-      getAllItems={props.getFoodstuffs}
-      updateItem={props.saveFoodstuff}
-      deleteItem={props.deleteFoodstuff}
+      defaultSort={() => { }}
+      addItem={addFoodstuff}
+      getAllItems={getFoodstuffs}
+      updateItem={updateFoodstuff}
+      deleteItem={deleteFoodstuff}
+      selectItemById={selectFoodstuffById}
+      selectAllItems={selectAllFoodstuffs}
     />
   )
 }
 
-export default connect(
-  null,
-  {
-    saveFoodstuff,
-    getFoodstuffs,
-    deleteFoodstuff
-  }
-)(FoodstuffEditPage)
+export default FoodstuffEditPage

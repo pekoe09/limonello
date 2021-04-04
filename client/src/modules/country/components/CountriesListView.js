@@ -11,7 +11,14 @@ import {
   selectAllCountries
 } from '../countriesSlice'
 
-function CountriesListView(props) {
+const CountriesListView = ({
+  searchPhrase,
+  searchPhraseToUse,
+  handlePhraseChange,
+  handleSearch, 
+  handleDeleteRequest,
+  renderDeletionConfirmation
+}) => {
   const dispatch = useDispatch()
   const allCountries = useSelector(selectAllCountries)
 
@@ -39,16 +46,16 @@ function CountriesListView(props) {
   }
 
   const getFilteredItems = useCallback(() => {
-    let searchPhrase = props.searchPhraseToUse.toLowerCase()
+    let searchPhrase = searchPhraseToUse.toLowerCase()
     let filtered = allCountries
-    if (props.searchPhraseToUse.length > 0) {
+    if (searchPhraseToUse.length > 0) {
       filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(searchPhrase)
       )
     }
 
     return filtered
-  }, [allCountries, props.searchPhraseToUse])
+  }, [allCountries, searchPhraseToUse])
 
   const getData = React.useMemo(() => getFilteredItems(), [getFilteredItems])
 
@@ -66,7 +73,7 @@ function CountriesListView(props) {
         accessor: 'delete',
         Cell: (item) => (
           <LimonelloButton
-            onClick={(e) => props.handleDeleteRequest(item.row.original, e)}
+            onClick={(e) => handleDeleteRequest(item.row.original, e)}
             bsstyle='rowdanger'
           >
             Poista
@@ -89,9 +96,9 @@ function CountriesListView(props) {
         headerText='Maat'
         addBtnText='Lisää maa'
         handleOpenEditPage={handleOpenEditPage}
-        searchPhrase={props.searchPhrase}
-        handlePhraseChange={props.handlePhraseChange}
-        handleSearch={props.handleSearch}
+        searchPhrase={searchPhrase}
+        handlePhraseChange={handlePhraseChange}
+        handleSearch={handleSearch}
       />
 
       <LimonelloDataTable
@@ -100,7 +107,7 @@ function CountriesListView(props) {
         handleRowClick={handleRowClick}
       />
 
-      {props.renderDeletionConfirmation()}
+      {renderDeletionConfirmation()}
     </React.Fragment>
   )
 }

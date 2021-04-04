@@ -1,9 +1,12 @@
 import FoodstuffEditPage from './components/FoodstuffEditPage'
 import FoodstuffsPage from './components/FoodstuffsPage'
-import foodstuffReducer from './foodstuffReducer'
+import foodstuffReducer, {
+  getFoodstuffs
+} from './foodStuffsSlice'
 
 export {
   FoodstuffEditPage,
   FoodstuffsPage,
-  foodstuffReducer
+  foodstuffReducer,
+  getFoodstuffs
 }

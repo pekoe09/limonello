@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter, useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Row } from 'react-bootstrap'
 import {
   LimonelloForm,
@@ -9,13 +9,15 @@ import {
   PageTitle
 } from '../../core'
 
-function FoodstuffEditView(props) {
+const FoodstuffEditView = ({
+  match,
+  handleSave,
+  selectItemById
+}) => {
   let history = useHistory()
-  let foodstuff = null
-  const urlId = props.match.params.id
-  if (urlId) {
-    foodstuff = props.items.find(i => i[0] === urlId)[1]
-  }
+
+  const foodstuffId = match.params.id
+  let foodstuff = useSelector(state => selectItemById(state, foodstuffId))
 
   const [id, setId] = useState(foodstuff ? foodstuff._id : '')
   const [name, setName] = useState(foodstuff ? foodstuff.name : '')
@@ -32,16 +34,18 @@ function FoodstuffEditView(props) {
     return () => clearState()
   }, [])
 
-  const handleSave = async (e) => {
+  const handleSaveRequest = async (e) => {
     e.preventDefault()
     const foodstuff = {
       _id: id,
       name
     }
-    await props.handleSave(foodstuff)
-    if (!props.error) {
+    try {
+      await handleSave(foodstuff)
       clearState()
       history.push('/foodstuffs')
+    } catch (error) {
+      console.log('error on save', error)
     }
   }
 
@@ -50,9 +54,7 @@ function FoodstuffEditView(props) {
     history.push('/foodstuffs')
   }
 
-  const handleNameChange = e => {
-    setName(e.target.value)
-  }
+  const handleNameChange = e => setName(e.target.value)
 
   const handleBlur = field => {
     setTouched({ ...touched, [field]: true })
@@ -98,7 +100,7 @@ function FoodstuffEditView(props) {
             />
           </LimonelloForm.Group>
           <LimonelloFormButtons
-            handleSave={handleSave}
+            handleSave={handleSaveRequest}
             handleCancel={handleCancel}
             saveIsDisabled={Object.keys(errors).some(x => errors[x])}
           />
@@ -108,10 +110,4 @@ function FoodstuffEditView(props) {
   )
 }
 
-const mapStateToProps = store => ({
-  error: store.foodstuffs.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(FoodstuffEditView))
+export default withRouter(FoodstuffEditView)

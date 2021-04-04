@@ -8,18 +8,16 @@ import {
   LimonelloFormLabel,
   PageTitle
 } from '../../core'
-import {
-  selectDishTypeById
-} from '../dishTypesSlice'
 
 const DishTypeEditView = ({
   match,
-  handleSave
+  handleSave,
+  selectItemById
 }) => {
   let history = useHistory()
 
   const dishTypeId = match.params.id
-  let dishType = useSelector(state => selectDishTypeById(state, dishTypeId))
+  let dishType = useSelector(state => selectItemById(state, dishTypeId))
 
   const [id, setId] = useState(dishType ? dishType._id : '')
   const [name, setName] = useState(dishType ? dishType.name : '')

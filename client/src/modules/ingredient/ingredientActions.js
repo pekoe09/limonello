@@ -6,7 +6,7 @@ import {
 } from '../core'
 import {
   getFoodstuffs
-} from '../foodstuff/foodstuffActions'
+} from '../foodstuff'
 
 export const INGREDIENT_CREATE_BEGIN = 'INGREDIENT_CREATE_BEGIN'
 export const INGREDIENT_CREATE_SUCCESS = 'INGREDIENT_CREATE_SUCCESS'

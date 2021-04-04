@@ -1,13 +1,36 @@
-import React, { useCallback } from 'react'
-import { connect } from 'react-redux'
+import React, { useCallback, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { withRouter, useHistory } from 'react-router-dom'
 import {
   LimonelloButton,
   LimonelloDataTable,
   PageBar
 } from '../../core'
+import {
+  getFoodstuffs,
+  selectAllFoodstuffs
+} from '../foodStuffsSlice'
 
-function FoodstuffsListView(props) {
+const FoodstuffsListView = ({
+  searchPhrase,
+  searchPhraseToUse,
+  handlePhraseChange,
+  handleSearch,
+  handleDeleteRequest,
+  renderDeletionConfirmation
+}) => {
+  const dispatch = useDispatch()
+  const allFoodstuffs = useSelector(selectAllFoodstuffs)
+
+  const foodstuffsStatus = useSelector(state => state.foodstuffs.status)
+  const error = useSelector(state => state.foodstuffs.error)
+
+  useEffect(() => {
+    if (foodstuffsStatus === 'idle') {
+      dispatch(getFoodstuffs())
+    }
+  })
+
   let history = useHistory()
 
   const handleOpenEditPage = (id) => {
@@ -19,21 +42,20 @@ function FoodstuffsListView(props) {
   }
 
   const handleRowClick = (row) => {
-    props.showError('')
     handleOpenEditPage(row.original._id)
   }
 
   const getFilteredItems = useCallback(() => {
-    let searchPhrase = props.searchPhraseToUse.toLowerCase()
-    let filtered = props.items.map(i => i[1])
-    if (props.searchPhraseToUse.length > 0) {
-      filtered = props.items.filter(p =>
+    let searchPhrase = searchPhraseToUse.toLowerCase()
+    let filtered = allFoodstuffs
+    if (searchPhraseToUse.length > 0) {
+      filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(searchPhrase)
       )
     }
 
     return filtered
-  }, [props.items, props.searchPhraseToUse])
+  }, [allFoodstuffs, searchPhraseToUse])
 
   const getData = React.useMemo(() => getFilteredItems(), [getFilteredItems])
 
@@ -51,7 +73,7 @@ function FoodstuffsListView(props) {
         accessor: 'delete',
         Cell: (item) => (
           <LimonelloButton
-            onClick={(e) => props.handleDeleteRequest(item.row.original, e)}
+            onClick={(e) => handleDeleteRequest(item.row.original, e)}
             bsstyle='rowdanger'
           >
             Poista
@@ -74,9 +96,9 @@ function FoodstuffsListView(props) {
         headerText='Ruoka-aineet'
         addBtnText='Lisää ruoka-aine'
         handleOpenEditPage={handleOpenEditPage}
-        searchPhrase={props.searchPhrase}
-        handlePhraseChange={props.handlePhraseChange}
-        handleSearch={props.handleSearch}
+        searchPhrase={searchPhrase}
+        handlePhraseChange={handlePhraseChange}
+        handleSearch={handleSearch}
       />
 
       <LimonelloDataTable
@@ -85,16 +107,9 @@ function FoodstuffsListView(props) {
         handleRowClick={handleRowClick}
       />
 
-      {props.renderDeletionConfirmation()}
+      {renderDeletionConfirmation()}
     </React.Fragment>
   )
 }
 
-const mapStateToProps = store => ({
-  loading: store.foodstuffs.loading,
-  error: store.foodstuffs.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(FoodstuffsListView))
+export default withRouter(FoodstuffsListView)
