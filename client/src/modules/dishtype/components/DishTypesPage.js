@@ -1,35 +1,31 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import DishTypesListView from './DishTypesListView'
-import { withCrud, withSearch } from '../../core'
+import { withCrud2, withSearch } from '../../core'
 import {
-  saveDishType,
   getDishTypes,
-  deleteDishType
-} from '../dishTypeActions'
+  addDishType,
+  updateDishType,
+  deleteDishType,
+  selectAllDishTypes,
+  selectDishTypeById
+} from '../dishTypesSlice'
 
 const defaultSort = (a, b) =>
   a.name > b.name ? 1 : (a.name < b.name ? -1 : 0)
 
-const DishTypesPage = props => {
-  const DishTypesWrapped = withSearch(withCrud(DishTypesListView))
+const DishTypesPage = () => {
+  const DishTypesWrapped = withSearch(withCrud2(DishTypesListView))
   return (
     <DishTypesWrapped
-      repository={'dishTypes'}
       defaultSort={defaultSort}
-      addItem={props.saveDishType}
-      getAllItems={props.getDishTypes}
-      updateItem={props.saveDishType}
-      deleteItem={props.deleteDishType}
+      addItem={addDishType}
+      getAllItems={getDishTypes}
+      updateItem={updateDishType}
+      deleteItem={deleteDishType}
+      selectAllItems={selectAllDishTypes}
+      selectItemById={selectDishTypeById}
     />
   )
 }
 
-export default connect(
-  null,
-  {
-    saveDishType,
-    getDishTypes,
-    deleteDishType
-  }
-)(DishTypesPage)
+export default DishTypesPage

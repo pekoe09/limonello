@@ -1,13 +1,36 @@
-import React, { useCallback } from 'react'
-import { connect } from 'react-redux'
+import React, { useCallback, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { withRouter, useHistory } from 'react-router-dom'
 import {
   LimonelloButton,
   LimonelloDataTable,
   PageBar
 } from '../../core'
+import {
+  getDishTypes,
+  selectAllDishTypes
+} from '../dishTypesSlice'
 
-function DishTypesListView(props) {
+const DishTypesListView = ({
+  searchPhrase,
+  searchPhraseToUse,
+  handlePhraseChange,
+  handleSearch,
+  handleDeleteRequest,
+  renderDeletionConfirmation
+}) => {
+  const dispatch = useDispatch()
+  const allDishTypes = useSelector(selectAllDishTypes)
+
+  const dishTypesStatus = useSelector((state) => state.dishTypes.status)
+  const error = useSelector((state) => state.dishTypes.error)
+
+  useEffect(() => {
+    if (dishTypesStatus === 'idle') {
+      dispatch(getDishTypes())
+    }
+  }, [dishTypesStatus, dispatch])
+
   let history = useHistory()
 
   const handleOpenEditPage = (id) => {
@@ -19,21 +42,20 @@ function DishTypesListView(props) {
   }
 
   const handleRowClick = (row) => {
-    props.showError('')
     handleOpenEditPage(row.original._id)
   }
 
   const getFilteredItems = useCallback(() => {
-    let searchPhrase = props.searchPhraseToUse.toLowerCase()
-    let filtered = props.items.map(i => i[1])
-    if (props.searchPhraseToUse.length > 0) {
-      filtered = props.items.filter(p =>
+    let searchPhrase = searchPhraseToUse.toLowerCase()
+    let filtered = allDishTypes
+    if (searchPhraseToUse.length > 0) {
+      filtered = filtered(p =>
         p.name.toLowerCase().includes(searchPhrase)
       )
     }
 
     return filtered
-  }, [props.items, props.searchPhraseToUse])
+  }, [allDishTypes, searchPhraseToUse])
 
   const getData = React.useMemo(() => getFilteredItems(), [getFilteredItems])
 
@@ -51,7 +73,7 @@ function DishTypesListView(props) {
         accessor: 'delete',
         Cell: (item) => (
           <LimonelloButton
-            onClick={(e) => props.handleDeleteRequest(item.row.original, e)}
+            onClick={(e) => handleDeleteRequest(item.row.original, e)}
             bsstyle='rowdanger'
           >
             Poista
@@ -74,9 +96,9 @@ function DishTypesListView(props) {
         headerText='Ruokatyypit'
         addBtnText='Lisää ruokatyyppi'
         handleOpenEditPage={handleOpenEditPage}
-        searchPhrase={props.searchPhrase}
-        handlePhraseChange={props.handlePhraseChange}
-        handleSearch={props.handleSearch}
+        searchPhrase={searchPhrase}
+        handlePhraseChange={handlePhraseChange}
+        handleSearch={handleSearch}
       />
 
       <LimonelloDataTable
@@ -85,16 +107,9 @@ function DishTypesListView(props) {
         handleRowClick={handleRowClick}
       />
 
-      {props.renderDeletionConfirmation()}
+      {renderDeletionConfirmation()}
     </React.Fragment>
   )
 }
 
-const mapStateToProps = store => ({
-  loading: store.dishTypes.loading,
-  error: store.dishTypes.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(DishTypesListView))
+export default withRouter(DishTypesListView)

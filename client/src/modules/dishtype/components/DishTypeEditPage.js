@@ -1,35 +1,28 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import DishTypeEditView from './DishTypeEditView'
-import { withCrud } from '../../core'
+import { withCrud2 } from '../../core'
 import {
-  saveDishType,
   getDishTypes,
-  deleteDishType
-} from '../dishTypeActions'
+  addDishType,
+  updateDishType,
+  deleteDishType,
+  selectAllDishTypes,
+  selectDishTypeById
+} from '../dishTypesSlice'
 
-const DishTypeEditPage = props => {
-  const id = null
-
-  const DishTypeEditWrapped = withCrud(DishTypeEditView)
+const DishTypeEditPage = () => {
+  const DishTypeEditWrapped = withCrud2(DishTypeEditView)
   return (
     <DishTypeEditWrapped
-      repository={'dishTypes'}
-      id={id}
-      defaultSort={() => {}}
-      addItem={props.saveDishType}
-      getAllItems={props.getDishTypes}
-      updateItem={props.saveDishType}
-      deleteItem={props.deleteDishType}
+      defaultSort={() => { }}
+      addItem={addDishType}
+      getAllItems={getDishTypes}
+      updateItem={updateDishType}
+      deleteItem={deleteDishType}
+      selectItemById={selectDishTypeById}
+      selectAllItems={selectAllDishTypes}
     />
   )
 }
 
-export default connect(
-  null,
-  {
-    saveDishType,
-    getDishTypes,
-    deleteDishType
-  }
-)(DishTypeEditPage)
+export default DishTypeEditPage

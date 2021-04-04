@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter, useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Row } from 'react-bootstrap'
 import {
   LimonelloForm,
@@ -8,14 +8,18 @@ import {
   LimonelloFormLabel,
   PageTitle
 } from '../../core'
+import {
+  selectDishTypeById
+} from '../dishTypesSlice'
 
-function DishTypeEditView(props) {
+const DishTypeEditView = ({
+  match,
+  handleSave
+}) => {
   let history = useHistory()
-  let dishType = null
-  const urlId = props.match.params.id
-  if (urlId) {
-    dishType = props.items.find(i => i[0] === urlId)[1]
-  }
+
+  const dishTypeId = match.params.id
+  let dishType = useSelector(state => selectDishTypeById(state, dishTypeId))
 
   const [id, setId] = useState(dishType ? dishType._id : '')
   const [name, setName] = useState(dishType ? dishType.name : '')
@@ -32,16 +36,18 @@ function DishTypeEditView(props) {
     return () => clearState()
   }, [])
 
-  const handleSave = async (e) => {
+  const handleSaveRequest = async (e) => {
     e.preventDefault()
     const dishType = {
       _id: id,
       name
     }
-    await props.handleSave(dishType)
-    if (!props.error) {
+    try {
+      await handleSave(dishType)
       clearState()
       history.push('/dishtypes')
+    } catch (error) {
+      console.log('error on save', error)
     }
   }
 
@@ -50,9 +56,7 @@ function DishTypeEditView(props) {
     history.push('/dishtypes')
   }
 
-  const handleNameChange = e => {
-    setName(e.target.value)
-  }
+  const handleNameChange = e => setName(e.target.value)
 
   const handleBlur = field => {
     setTouched({ ...touched, [field]: true })
@@ -98,7 +102,7 @@ function DishTypeEditView(props) {
             />
           </LimonelloForm.Group>
           <LimonelloFormButtons
-            handleSave={handleSave}
+            handleSave={handleSaveRequest}
             handleCancel={handleCancel}
             saveIsDisabled={Object.keys(errors).some(x => errors[x])}
           />
@@ -108,10 +112,4 @@ function DishTypeEditView(props) {
   )
 }
 
-const mapStateToProps = store => ({
-  error: store.dishTypes.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(DishTypeEditView))
+export default withRouter(DishTypeEditView)
