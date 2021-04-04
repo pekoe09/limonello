@@ -10,7 +10,7 @@ import {
   selectFoodstuffById
 } from '../foodStuffsSlice'
 
-const FoodstuffEditPage = props => {
+const FoodstuffEditPage = () => {
   const FoodstuffEditWrapped = withCrud2(FoodstuffEditView)
   return (
     <FoodstuffEditWrapped

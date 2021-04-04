@@ -6,12 +6,10 @@ import {
   LimonelloDataTable,
   PageBar
 } from '../../core'
-import {
-  getCuisines,
-  selectAllCuisines
-} from '../cuisinesSlice'
 
 const CuisinesListView = ({
+  getAllItems,
+  selectAllItems,
   searchPhrase,
   searchPhraseToUse,
   handlePhraseChange,
@@ -20,14 +18,14 @@ const CuisinesListView = ({
   renderDeletionConfirmation
 }) => {
   const dispatch = useDispatch()
-  const allCuisines = useSelector(selectAllCuisines)
+  const allCuisines = useSelector(selectAllItems)
 
   const cuisinesStatus = useSelector((state) => state.cuisines.status)
   const error = useSelector((state) => state.cuisines.error)
 
   useEffect(() => {
     if (cuisinesStatus === 'idle') {
-      dispatch(getCuisines())
+      dispatch(getAllItems())
     }
   }, [cuisinesStatus, dispatch])
 

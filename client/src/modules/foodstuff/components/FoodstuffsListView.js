@@ -6,12 +6,10 @@ import {
   LimonelloDataTable,
   PageBar
 } from '../../core'
-import {
-  getFoodstuffs,
-  selectAllFoodstuffs
-} from '../foodStuffsSlice'
 
 const FoodstuffsListView = ({
+  getAllItems,
+  selectAllItems,
   searchPhrase,
   searchPhraseToUse,
   handlePhraseChange,
@@ -20,14 +18,14 @@ const FoodstuffsListView = ({
   renderDeletionConfirmation
 }) => {
   const dispatch = useDispatch()
-  const allFoodstuffs = useSelector(selectAllFoodstuffs)
+  const allFoodstuffs = useSelector(selectAllItems)
 
   const foodstuffsStatus = useSelector(state => state.foodstuffs.status)
   const error = useSelector(state => state.foodstuffs.error)
 
   useEffect(() => {
     if (foodstuffsStatus === 'idle') {
-      dispatch(getFoodstuffs())
+      dispatch(getAllItems())
     }
   })
 

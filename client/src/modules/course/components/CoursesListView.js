@@ -6,21 +6,26 @@ import {
   LimonelloDataTable,
   PageBar
 } from '../../core'
-import {
-  getCourses,
-  selectAllCourses
-} from '../coursesSlice'
 
-function CoursesListView(props) {
+const CoursesListView = ({
+  getAllItems,
+  selectAllItems,
+  searchPhrase,
+  searchPhraseToUse,
+  handlePhraseChange,
+  handleSearch,
+  handleDeleteRequest,
+  renderDeletionConfirmation
+}) => {
   const dispatch = useDispatch()
-  const allCourses = useSelector(selectAllCourses)
+  const allCourses = useSelector(selectAllItems)
 
   const coursesStatus = useSelector((state) => state.courses.status)
   const error = useSelector((state) => state.courses.error)
 
   useEffect(() => {
     if (coursesStatus === 'idle') {
-      dispatch(getCourses())
+      dispatch(getAllItems())
     }
   }, [coursesStatus, dispatch])
 
@@ -39,16 +44,16 @@ function CoursesListView(props) {
   }
 
   const getFilteredItems = useCallback(() => {
-    let searchPhrase = props.searchPhraseToUse.toLowerCase()
+    let searchPhrase = searchPhraseToUse.toLowerCase()
     let filtered = allCourses
-    if (props.searchPhraseToUse.length > 0) {
+    if (searchPhraseToUse.length > 0) {
       filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(searchPhrase)
       )
     }
 
     return filtered
-  }, [allCourses, props.searchPhraseToUse])
+  }, [allCourses, searchPhraseToUse])
 
   const getData = React.useMemo(() => getFilteredItems(), [getFilteredItems])
 
@@ -73,7 +78,7 @@ function CoursesListView(props) {
         accessor: 'delete',
         Cell: (item) => (
           <LimonelloButton
-            onClick={(e) => props.handleDeleteRequest(item.row.original, e)}
+            onClick={(e) => handleDeleteRequest(item.row.original, e)}
             bsstyle='rowdanger'
           >
             Poista
@@ -96,9 +101,9 @@ function CoursesListView(props) {
         headerText='Ruokalajit'
         addBtnText='Lisää ruokalaji'
         handleOpenEditPage={handleOpenEditPage}
-        searchPhrase={props.searchPhrase}
-        handlePhraseChange={props.handlePhraseChange}
-        handleSearch={props.handleSearch}
+        searchPhrase={searchPhrase}
+        handlePhraseChange={handlePhraseChange}
+        handleSearch={handleSearch}
       />
 
       <LimonelloDataTable
@@ -107,7 +112,7 @@ function CoursesListView(props) {
         handleRowClick={handleRowClick}
       />
 
-      {props.renderDeletionConfirmation()}
+      {renderDeletionConfirmation()}
     </React.Fragment>
   )
 }

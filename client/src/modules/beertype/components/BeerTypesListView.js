@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react'
-import { connect } from 'react-redux'
+import React, { useCallback, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { withRouter, useHistory } from 'react-router-dom'
 import {
   LimonelloButton,
@@ -7,7 +7,28 @@ import {
   PageBar
 } from '../../core'
 
-function BeerTypesListView(props) {
+const BeerTypesListView = ({
+  getAllItems,
+  selectAllItems,
+  searchPhrase,
+  searchPhraseToUse,
+  handlePhraseChange,
+  handleSearch,
+  handleDeleteRequest,
+  renderDeletionConfirmation
+}) => {
+  const dispatch = useDispatch()
+  const allBeerTypes = useSelector(selectAllItems)
+
+  const beerTypeStatus = useSelector(state => state.beerTypes.status)
+  const error = useSelector(state => state.beerTypes.error)
+
+  useEffect(() => {
+    if (beerTypeStatus === 'idle') {
+      dispatch(getAllItems())
+    }
+  })
+
   let history = useHistory()
 
   const handleOpenEditPage = (id) => {
@@ -19,21 +40,20 @@ function BeerTypesListView(props) {
   }
 
   const handleRowClick = (row) => {
-    props.showError('')
     handleOpenEditPage(row.original._id)
   }
 
   const getFilteredItems = useCallback(() => {
-    let searchPhrase = props.searchPhraseToUse.toLowerCase()
-    let filtered = props.items.map(i => i[1])
-    if (props.searchPhraseToUse.length > 0) {
-      filtered = props.items.filter(p =>
+    let searchPhrase = searchPhraseToUse.toLowerCase()
+    let filtered = allBeerTypes
+    if (searchPhraseToUse.length > 0) {
+      filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(searchPhrase)
       )
     }
 
     return filtered
-  }, [props.items, props.searchPhraseToUse])
+  }, [allBeerTypes, searchPhraseToUse])
 
   const getData = React.useMemo(() => getFilteredItems(), [getFilteredItems])
 
@@ -51,7 +71,7 @@ function BeerTypesListView(props) {
         accessor: 'delete',
         Cell: (item) => (
           <LimonelloButton
-            onClick={(e) => props.handleDeleteRequest(item.row.original, e)}
+            onClick={(e) => handleDeleteRequest(item.row.original, e)}
             bsstyle='rowdanger'
           >
             Poista
@@ -74,9 +94,9 @@ function BeerTypesListView(props) {
         headerText='Oluttyypit'
         addBtnText='Lisää oluttyyppi'
         handleOpenEditPage={handleOpenEditPage}
-        searchPhrase={props.searchPhrase}
-        handlePhraseChange={props.handlePhraseChange}
-        handleSearch={props.handleSearch}
+        searchPhrase={searchPhrase}
+        handlePhraseChange={handlePhraseChange}
+        handleSearch={handleSearch}
       />
 
       <LimonelloDataTable
@@ -85,16 +105,9 @@ function BeerTypesListView(props) {
         handleRowClick={handleRowClick}
       />
 
-      {props.renderDeletionConfirmation()}
+      {renderDeletionConfirmation()}
     </React.Fragment>
   )
 }
 
-const mapStateToProps = store => ({
-  loading: store.beerTypes.loading,
-  error: store.beerTypes.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(BeerTypesListView))
+export default withRouter(BeerTypesListView)

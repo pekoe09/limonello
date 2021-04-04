@@ -8,18 +8,16 @@ import {
   LimonelloFormLabel,
   PageTitle
 } from '../../core'
-import {
-  selectCourseById
-} from '../coursesSlice'
 
 const CourseEditView = ({
   match,
-  handleSave
+  handleSave,
+  selectItemById
 }) => {
   let history = useHistory()
 
   const courseId = match.params.id
-  let course = useSelector(state => selectCourseById(state, courseId))
+  let course = useSelector(state => selectItemById(state, courseId))
 
   const [id, setId] = useState(course ? course._id : '')
   const [name, setName] = useState(course ? course.name : '')

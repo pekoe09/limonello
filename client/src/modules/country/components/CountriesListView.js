@@ -6,12 +6,10 @@ import {
   LimonelloDataTable,
   PageBar
 } from '../../core'
-import {
-  getCountries,
-  selectAllCountries
-} from '../countriesSlice'
 
 const CountriesListView = ({
+  getAllItems,
+  selectAllItems,
   searchPhrase,
   searchPhraseToUse,
   handlePhraseChange,
@@ -20,14 +18,14 @@ const CountriesListView = ({
   renderDeletionConfirmation
 }) => {
   const dispatch = useDispatch()
-  const allCountries = useSelector(selectAllCountries)
+  const allCountries = useSelector(selectAllItems)
 
   const countriesStatus = useSelector((state) => state.countries.status)
   const error = useSelector((state) => state.countries.error)
 
   useEffect(() => {
     if (countriesStatus === 'idle') {
-      dispatch(getCountries())
+      dispatch(getAllItems())
     }
   }, [countriesStatus, dispatch])
 

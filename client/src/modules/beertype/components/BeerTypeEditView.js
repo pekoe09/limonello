@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter, useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import { Row } from 'react-bootstrap'
 import {
   LimonelloForm,
@@ -9,13 +9,15 @@ import {
   PageTitle
 } from '../../core'
 
-function BeerTypeEditView(props) {
+const BeerTypeEditView = ({
+  match,
+  handleSave,
+  selectItemById
+}) => {
   let history = useHistory()
-  let beerType = null
-  const urlId = props.match.params.id
-  if (urlId) {
-    beerType = props.items.find(i => i[0] === urlId)[1]
-  }
+
+  const beerTypeId = match.params.id
+  let beerType = useSelector(state => selectItemById(state, beerTypeId))
 
   const [id, setId] = useState(beerType ? beerType._id : '')
   const [name, setName] = useState(beerType ? beerType.name : '')
@@ -34,17 +36,19 @@ function BeerTypeEditView(props) {
     return () => clearState()
   }, [])
 
-  const handleSave = async (e) => {
+  const handleSaveRequest = async (e) => {
     e.preventDefault()
     const beerType = {
       _id: id,
       name,
       description
     }
-    await props.handleSave(beerType)
-    if (!props.error) {
+    try {
+      await handleSave(beerType)
       clearState()
       history.push('/beertypes')
+    } catch (error) {
+      console.log('error on save', error)
     }
   }
 
@@ -53,13 +57,8 @@ function BeerTypeEditView(props) {
     history.push('/beertypes')
   }
 
-  const handleNameChange = e => {
-    setName(e.target.value)
-  }
-
-  const handleDescriptionChange = e => {
-    setDescription(e.target.value)
-  }
+  const handleNameChange = e => setName(e.target.value)
+  const handleDescriptionChange = e => setDescription(e.target.value)
 
   const handleBlur = field => {
     setTouched({ ...touched, [field]: true })
@@ -117,7 +116,7 @@ function BeerTypeEditView(props) {
             />
           </LimonelloForm.Group>
           <LimonelloFormButtons
-            handleSave={handleSave}
+            handleSave={handleSaveRequest}
             handleCancel={handleCancel}
             saveIsDisabled={Object.keys(errors).some(x => errors[x])}
           />
@@ -127,10 +126,4 @@ function BeerTypeEditView(props) {
   )
 }
 
-const mapStateToProps = store => ({
-  error: store.beerTypes.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(BeerTypeEditView))
+export default withRouter(BeerTypeEditView)

@@ -76,6 +76,7 @@ const withCRUD = (WrappedComponent) => props => {
       handleSave={handleSave}
       handleDeleteRequest={handleDeleteRequest}
       renderDeletionConfirmation={renderDeletionConfirmation}
+      getAllItems={getAllItems}
       selectAllItems={selectAllItems}
       selectItemById={selectItemById}
       {...rest}

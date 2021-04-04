@@ -6,7 +6,7 @@ import {
 } from '../core'
 import {
   getBeerTypes
-} from '../beertype/beerTypeActions'
+} from '../beertype'
 import {
   getCountries
 } from '../country/countriesSlice'

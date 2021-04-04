@@ -22,7 +22,7 @@ const CuisinesPage = () => {
       getAllItems={getCuisines}
       updateItem={updateCuisine}
       deleteItem={deleteCuisine}
-      selectAllItem={selectAllCuisines}
+      selectAllItems={selectAllCuisines}
       selectItemById={selectCuisineById}
     />
   )

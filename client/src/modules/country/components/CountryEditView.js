@@ -8,18 +8,16 @@ import {
   LimonelloFormLabel,
   PageTitle
 } from '../../core'
-import {
-  selectCountryById
-} from '../countriesSlice'
 
 const CountryEditView = ({
   match,
-  handleSave
+  handleSave,
+  selectItemById
 }) => {
   let history = useHistory()
 
   const countryId = match.params.id
-  let country = useSelector(state => selectCountryById(state, countryId))
+  let country = useSelector(state => selectItemById(state, countryId))
 
   const [id, setId] = useState(country ? country._id : '')
   const [name, setName] = useState(country ? country.name : '')
