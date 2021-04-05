@@ -1,35 +1,28 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import GrapeEditView from './GrapeEditView'
-import { withCrud } from '../../core'
+import { withCrud2 } from '../../core'
 import {
-  saveGrape,
   getGrapes,
-  deleteGrape
-} from '../grapeActions'
+  addGrape,
+  updateGrape,
+  deleteGrape,
+  selectAllGrapes,
+  selectGrapeById
+} from '../grapesSlice'
 
-const GrapeEditPage = props => {
-  const id = null
-
-  const GrapeEditWrapped = withCrud(GrapeEditView)
+const GrapeEditPage = () => {
+  const GrapeEditWrapped = withCrud2(GrapeEditView)
   return (
     <GrapeEditWrapped
-      repository={'grapes'}
-      id={id}
-      defaultSort={() => {}}
-      addItem={props.saveGrape}
-      getAllItems={props.getGrapes}
-      updateItem={props.saveGrape}
-      deleteItem={props.deleteGrape}
+      defaultSort={() => { }}
+      addItem={addGrape}
+      getAllItems={getGrapes}
+      updateItem={updateGrape}
+      deleteItem={deleteGrape}
+      selectItemById={selectGrapeById}
+      selectAllItems={selectAllGrapes}
     />
   )
 }
 
-export default connect(
-  null,
-  {
-    saveGrape,
-    getGrapes,
-    deleteGrape
-  }
-)(GrapeEditPage)
+export default GrapeEditPage

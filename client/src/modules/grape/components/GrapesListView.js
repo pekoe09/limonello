@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react'
-import { connect } from 'react-redux'
+import React, { useCallback, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { withRouter, useHistory } from 'react-router-dom'
 import {
   LimonelloButton,
@@ -7,7 +7,28 @@ import {
   PageBar
 } from '../../core'
 
-function GrapesListView(props) {
+const GrapesListView = ({
+  getAllItems,
+  selectAllItems,
+  searchPhrase,
+  searchPhraseToUse,
+  handlePhraseChange,
+  handleSearch,
+  handleDeleteRequest,
+  renderDeletionConfirmation
+}) => {
+  const dispatch = useDispatch()
+  const allGrapes = useSelector(selectAllItems)
+
+  const grapesStatus = useSelector(state => state.grapes.status)
+  const error = useSelector(state => state.grapes.error)
+
+  useEffect(() => {
+    if (grapesStatus === 'idle') {
+      dispatch(getAllItems())
+    }
+  })
+
   let history = useHistory()
 
   const handleOpenEditPage = (id) => {
@@ -19,21 +40,20 @@ function GrapesListView(props) {
   }
 
   const handleRowClick = (row) => {
-    props.showError('')
     handleOpenEditPage(row.original._id)
   }
 
   const getFilteredItems = useCallback(() => {
-    let searchPhrase = props.searchPhraseToUse.toLowerCase()
-    let filtered = props.items.map(i => i[1])
-    if (props.searchPhraseToUse.length > 0) {
-      filtered = props.items.filter(p =>
+    let searchPhrase = searchPhraseToUse.toLowerCase()
+    let filtered = allGrapes
+    if (searchPhraseToUse.length > 0) {
+      filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(searchPhrase)
       )
     }
 
     return filtered
-  }, [props.items, props.searchPhraseToUse])
+  }, [allGrapes, searchPhraseToUse])
 
   const getData = React.useMemo(() => getFilteredItems(), [getFilteredItems])
 
@@ -51,7 +71,7 @@ function GrapesListView(props) {
         accessor: 'delete',
         Cell: (item) => (
           <LimonelloButton
-            onClick={(e) => props.handleDeleteRequest(item.row.original, e)}
+            onClick={(e) => handleDeleteRequest(item.row.original, e)}
             bsstyle='rowdanger'
           >
             Poista
@@ -74,9 +94,9 @@ function GrapesListView(props) {
         headerText='Rypäleet'
         addBtnText='Lisää rypäle'
         handleOpenEditPage={handleOpenEditPage}
-        searchPhrase={props.searchPhrase}
-        handlePhraseChange={props.handlePhraseChange}
-        handleSearch={props.handleSearch}
+        searchPhrase={searchPhrase}
+        handlePhraseChange={handlePhraseChange}
+        handleSearch={handleSearch}
       />
 
       <LimonelloDataTable
@@ -85,16 +105,9 @@ function GrapesListView(props) {
         handleRowClick={handleRowClick}
       />
 
-      {props.renderDeletionConfirmation()}
+      {renderDeletionConfirmation()}
     </React.Fragment>
   )
 }
 
-const mapStateToProps = store => ({
-  loading: store.grapes.loading,
-  error: store.grapes.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(GrapesListView))
+export default withRouter(GrapesListView)

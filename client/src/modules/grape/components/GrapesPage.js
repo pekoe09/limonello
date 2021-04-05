@@ -1,35 +1,31 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import GrapesListView from './GrapesListView'
-import { withCrud, withSearch } from '../../core'
+import { withCrud2, withSearch } from '../../core'
 import {
-  saveGrape,
   getGrapes,
-  deleteGrape
-} from '../grapeActions'
+  addGrape,
+  updateGrape,
+  deleteGrape,
+  selectAllGrapes,
+  selectGrapeById
+} from '../grapesSlice'
 
 const defaultSort = (a, b) =>
   a.name > b.name ? 1 : (a.name < b.name ? -1 : 0)
 
-const GrapesPage = props => {
-  const GrapesWrapped = withSearch(withCrud(GrapesListView))
+const GrapesPage = () => {
+  const GrapesWrapped = withSearch(withCrud2(GrapesListView))
   return (
     <GrapesWrapped
-      repository={'grapes'}
       defaultSort={defaultSort}
-      addItem={props.saveGrape}
-      getAllItems={props.getGrapes}
-      updateItem={props.saveGrape}
-      deleteItem={props.deleteGrape}
+      addItem={addGrape}
+      getAllItems={getGrapes}
+      updateItem={updateGrape}
+      deleteItem={deleteGrape}
+      selectAllItems={selectAllGrapes}
+      selectGrapeById={selectGrapeById}
     />
   )
 }
 
-export default connect(
-  null,
-  {
-    saveGrape,
-    getGrapes,
-    deleteGrape
-  }
-)(GrapesPage)
+export default GrapesPage

@@ -1,6 +1,6 @@
 import GrapeEditPage from './components/GrapeEditPage'
 import GrapesPage from './components/GrapesPage'
-import grapeReducer from './grapeReducer'
+import grapeReducer from './grapesSlice'
 
 export {
   GrapeEditPage,

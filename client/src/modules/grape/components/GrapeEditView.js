@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter, useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Row } from 'react-bootstrap'
 import {
   LimonelloForm,
@@ -9,13 +9,15 @@ import {
   PageTitle
 } from '../../core'
 
-function GrapeEditView(props) {
+const GrapeEditView = ({
+  match,
+  handleSave,
+  selectItemById
+}) => {
   let history = useHistory()
-  let grape = null
-  const urlId = props.match.params.id
-  if (urlId) {
-    grape = props.items.find(i => i[0] === urlId)[1]
-  }
+
+  const grapeId = match.params.id
+  let grape = useSelector(state => selectItemById(state, grapeId))
 
   const [id, setId] = useState(grape ? grape._id : '')
   const [name, setName] = useState(grape ? grape.name : '')
@@ -34,17 +36,19 @@ function GrapeEditView(props) {
     return () => clearState()
   }, [])
 
-  const handleSave = async (e) => {
+  const handleSaveRequest = async (e) => {
     e.preventDefault()
     const grape = {
       _id: id,
       name,
       description
     }
-    await props.handleSave(grape)
-    if (!props.error) {
+    try {
+      await handleSave(grape)
       clearState()
       history.push('/grapes')
+    } catch (error) {
+      console.log('error on save', error)
     }
   }
 
@@ -53,13 +57,8 @@ function GrapeEditView(props) {
     history.push('/grapes')
   }
 
-  const handleNameChange = e => {
-    setName(e.target.value)
-  }
-
-  const handleDescriptionChange = e => {
-    setDescription(e.target.value)
-  }
+  const handleNameChange = e => setName(e.target.value)
+  const handleDescriptionChange = e => setDescription(e.target.value)
 
   const handleBlur = field => {
     setTouched({ ...touched, [field]: true })
@@ -117,7 +116,7 @@ function GrapeEditView(props) {
             />
           </LimonelloForm.Group>
           <LimonelloFormButtons
-            handleSave={handleSave}
+            handleSave={handleSaveRequest}
             handleCancel={handleCancel}
             saveIsDisabled={Object.keys(errors).some(x => errors[x])}
           />
@@ -127,10 +126,4 @@ function GrapeEditView(props) {
   )
 }
 
-const mapStateToProps = store => ({
-  error: store.grapes.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(GrapeEditView))
+export default withRouter(GrapeEditView)
