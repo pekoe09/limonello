@@ -1,14 +1,34 @@
-import React, { useCallback } from 'react'
-import { connect } from 'react-redux'
+import React, { useCallback, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { withRouter, useHistory } from 'react-router-dom'
-import { makeGetIngredientsWithFoodstuff } from '../ingredientSelector'
 import {
   LimonelloButton,
   LimonelloDataTable,
   PageBar
 } from '../../core'
 
-function IngredientsListView(props) {
+const IngredientsListView = ({
+  getAllItems,
+  selectAllItems,
+  searchPhrase,
+  searchPhraseToUse,
+  handlePhraseChange,
+  handleSearch,
+  handleDeleteRequest,
+  renderDeletionConfirmation
+}) => {
+  const dispatch = useDispatch()
+  const allIngredients = useSelector(selectAllItems)
+
+  const ingredientsStatus = useSelector(state => state.ingredients.status)
+  const error = useSelector(state => state.ingredients.error)
+
+  useEffect(() => {
+    if (ingredientsStatus === 'idle') {
+      dispatch(getAllItems())
+    }
+  })
+
   let history = useHistory()
 
   const handleOpenEditPage = (id) => {
@@ -20,21 +40,20 @@ function IngredientsListView(props) {
   }
 
   const handleRowClick = (row) => {
-    props.showError('')
     handleOpenEditPage(row.original._id)
   }
 
   const getFilteredItems = useCallback(() => {
-    let searchPhrase = props.searchPhraseToUse.toLowerCase()
-    let filtered = props.ingredients
-    if (props.searchPhraseToUse.length > 0) {
-      filtered = props.ingredients.filter(p =>
+    let searchPhrase = searchPhraseToUse.toLowerCase()
+    let filtered = allIngredients
+    if (searchPhraseToUse.length > 0) {
+      filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(searchPhrase)
       )
     }
 
     return filtered
-  }, [props.ingredients, props.searchPhraseToUse])
+  }, [allIngredients, searchPhraseToUse])
 
   const getData = React.useMemo(() => getFilteredItems(), [getFilteredItems])
 
@@ -59,7 +78,7 @@ function IngredientsListView(props) {
         accessor: 'delete',
         Cell: (item) => (
           <LimonelloButton
-            onClick={(e) => props.handleDeleteRequest(
+            onClick={(e) => handleDeleteRequest(
               item.row.original,
               e,
               { foodstuffId: item.row.original.foodstuff._id }
@@ -86,9 +105,9 @@ function IngredientsListView(props) {
         headerText='Ainekset'
         addBtnText='Lisää aines'
         handleOpenEditPage={handleOpenEditPage}
-        searchPhrase={props.searchPhrase}
-        handlePhraseChange={props.handlePhraseChange}
-        handleSearch={props.handleSearch}
+        searchPhrase={searchPhrase}
+        handlePhraseChange={handlePhraseChange}
+        handleSearch={handleSearch}
       />
 
       <LimonelloDataTable
@@ -97,24 +116,10 @@ function IngredientsListView(props) {
         handleRowClick={handleRowClick}
       />
 
-      {props.renderDeletionConfirmation()}
+      {renderDeletionConfirmation()}
     </React.Fragment>
   )
 }
 
-const makeMapStateToProps = () => {
-  const getIngredientsWithCountry = makeGetIngredientsWithFoodstuff()
-  return store => {
-    const ingredients = getIngredientsWithCountry(store)
-    console.log('received ingredients', ingredients)
-    return {
-      ingredients,
-      loading: store.ingredients.loading,
-      error: store.ingredients.error
-    }
-  }
-}
 
-export default withRouter(connect(
-  makeMapStateToProps
-)(IngredientsListView))
+export default withRouter(IngredientsListView)

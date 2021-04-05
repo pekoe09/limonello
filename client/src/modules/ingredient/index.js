@@ -1,9 +1,10 @@
 import IngredientEditPage from './components/IngredientEditPage'
 import IngredientsPage from './components/IngredientsPage'
-import ingredientReducer from './ingredientReducer'
+import ingredientReducer, { getIngredients } from './ingredientsSlice'
 
 export {
   IngredientEditPage,
   IngredientsPage,
-  ingredientReducer
+  ingredientReducer,
+  getIngredients
 }

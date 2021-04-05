@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter, useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.min.css'
 import { Row } from 'react-bootstrap'
@@ -10,20 +10,28 @@ import {
   LimonelloFormLabel,
   PageTitle
 } from '../../core'
+import {
+  selectAllFoodstuffs
+} from '../../foodstuff'
 
-function IngredientEditView(props) {
+const IngredientEditView = ({
+  match,
+  handleSave,
+  selectItemById
+}) => {
   let history = useHistory()
-  let ingredient = null
-  const urlId = props.match.params.id
-  if (urlId) {
-    ingredient = props.items.find(i => i[0] === urlId)[1]
-  }
+
+  const ingredientId = match.params.id
+  let ingredient = useSelector(state => selectItemById(state, ingredientId))
+  const foodstuffs = Object.values(useSelector(selectAllFoodstuffs))
+  const initialFoodstuff = ingredient ? foodstuffs.find(f => f._id === ingredient.foodstuff) : null
+  console.log('initial foodstuff', initialFoodstuff)
 
   const [id, setId] = useState(ingredient ? ingredient._id : '')
   const [name, setName] = useState(ingredient ? ingredient.name : '')
   const [partitive, setPartitive] = useState(ingredient ? ingredient.partitive : '')
   const [comment, setComment] = useState(ingredient ? ingredient.comment : '')
-  const [foodstuff, setFoodstuff] = useState(ingredient ? [ingredient.foodstuff] : [])
+  const [foodstuff, setFoodstuff] = useState(ingredient ? [initialFoodstuff] : [])
   const [oldFoodstuffId, setOldFoodstuffId] = useState(ingredient ? ingredient.foodstuff._id : '')
   const [touched, setTouched] = useState({
     name: false,
@@ -41,7 +49,7 @@ function IngredientEditView(props) {
     return () => clearState()
   }, [])
 
-  const handleSave = async (e) => {
+  const handleSaveReguest = async (e) => {
     e.preventDefault()
     const ingredient = {
       _id: id,
@@ -51,10 +59,12 @@ function IngredientEditView(props) {
       foodstuff: foodstuff[0]._id,
       oldFoodstuffId
     }
-    await props.handleSave(ingredient)
-    if (!props.error) {
+    try {
+      await handleSave(ingredient)
       clearState()
       history.push('/ingredients')
+    } catch (error) {
+      console.log('error on save', error)
     }
   }
 
@@ -63,17 +73,9 @@ function IngredientEditView(props) {
     history.push('/ingredients')
   }
 
-  const handleNameChange = e => {
-    setName(e.target.value)
-  }
-
-  const handlePartitiveChange = e => {
-    setPartitive(e.target.value)
-  }
-
-  const handleCommentChange = e => {
-    setComment(e.target.value)
-  }
+  const handleNameChange = e => setName(e.target.value)
+  const handlePartitiveChange = e => setPartitive(e.target.value)
+  const handleCommentChange = e => setComment(e.target.value)
 
   const handleBlur = field => {
     setTouched({ ...touched, [field]: true })
@@ -151,7 +153,7 @@ function IngredientEditView(props) {
             <LimonelloFormLabel>Ruoka-aine</LimonelloFormLabel>
             <Typeahead
               onChange={(selected) => { setFoodstuff(selected) }}
-              options={props.foodstuffs}
+              options={foodstuffs}
               selected={foodstuff}
               labelKey='name'
               id='_id'
@@ -159,7 +161,7 @@ function IngredientEditView(props) {
             />
           </LimonelloForm.Group>
           <LimonelloFormButtons
-            handleSave={handleSave}
+            handleSave={handleSaveReguest}
             handleCancel={handleCancel}
             saveIsDisabled={Object.keys(errors).some(x => errors[x])}
           />
@@ -169,11 +171,4 @@ function IngredientEditView(props) {
   )
 }
 
-const mapStateToProps = store => ({
-  foodstuffs: Object.entries(store.foodstuffs.byId).map(o => o[1]),
-  error: store.ingredients.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(IngredientEditView))
+export default withRouter(IngredientEditView)

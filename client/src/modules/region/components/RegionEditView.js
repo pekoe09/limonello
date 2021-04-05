@@ -10,21 +10,19 @@ import {
   PageTitle
 } from '../../core'
 import {
-  selectRegionById
-} from '../regionsSlice'
-import {
   selectAllCountries
-} from '../../country/countriesSlice'
+} from '../../country'
 import { useSelector } from 'react-redux'
 
 const RegionEditView = ({
   match,
-  handleSave
+  handleSave,
+  selectItemById
 }) => {
   let history = useHistory()
 
   const regionId = match.params.id
-  let region = useSelector(state => selectRegionById(state, regionId))
+  let region = useSelector(state => selectItemById(state, regionId))
   const countries = Object.values(useSelector(selectAllCountries))
   const initialCountry = region ? countries.find(c => c._id === region.country) : null
 

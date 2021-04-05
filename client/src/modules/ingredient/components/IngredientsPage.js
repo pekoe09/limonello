@@ -1,35 +1,31 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import IngredientsListView from './IngredientsListView'
-import { withCrud, withSearch } from '../../core'
+import { withCrud2, withSearch } from '../../core'
 import {
-  saveIngredient,
   getIngredients,
-  deleteIngredient
-} from '../ingredientActions'
+  addIngredient,
+  updateIngredient,
+  deleteIngredient,
+  selectAllIngredientsWithFoodstuff,
+  selectIngredientById
+} from '../ingredientsSlice'
 
 const defaultSort = (a, b) =>
   a.name > b.name ? 1 : (a.name < b.name ? -1 : 0)
 
-const IngredientsPage = props => {
-  const IngredientsWrapped = withSearch(withCrud(IngredientsListView))
+const IngredientsPage = () => {
+  const IngredientsWrapped = withSearch(withCrud2(IngredientsListView))
   return (
     <IngredientsWrapped
-      repository={'ingredients'}
       defaultSort={defaultSort}
-      addItem={props.saveIngredient}
-      getAllItems={props.getIngredients}
-      updateItem={props.saveIngredient}
-      deleteItem={props.deleteIngredient}
+      addItem={addIngredient}
+      getAllItems={getIngredients}
+      updateItem={updateIngredient}
+      deleteItem={deleteIngredient}
+      selectAllItems={selectAllIngredientsWithFoodstuff}
+      selectIngredientById={selectIngredientById}
     />
   )
 }
 
-export default connect(
-  null,
-  {
-    saveIngredient,
-    getIngredients,
-    deleteIngredient
-  }
-)(IngredientsPage)
+export default IngredientsPage

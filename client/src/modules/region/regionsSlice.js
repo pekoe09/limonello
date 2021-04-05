@@ -12,7 +12,7 @@ import {
 } from '../core'
 import {
   selectAllCountries
-} from '../country/countriesSlice'
+} from '../country'
 
 const regionsAdapter = createEntityAdapter({
   selectId: region => region._id

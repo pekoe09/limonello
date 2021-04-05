@@ -1,9 +1,10 @@
 import GrapeEditPage from './components/GrapeEditPage'
 import GrapesPage from './components/GrapesPage'
-import grapeReducer from './grapesSlice'
+import grapeReducer, { getGrapes } from './grapesSlice'
 
 export {
   GrapeEditPage,
   GrapesPage,
-  grapeReducer
+  grapeReducer,
+  getGrapes
 }

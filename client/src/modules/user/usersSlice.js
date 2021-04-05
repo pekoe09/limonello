@@ -4,8 +4,14 @@ import {
   createAsyncThunk
 } from '@reduxjs/toolkit'
 import userService from './userServices'
-import { getCountries } from '../country/countriesSlice'
+import { getBeerTypes } from '../beertype'
+import { getCountries } from '../country'
+import { getCourses } from '../course'
 import { getCuisines } from '../cuisine'
+import { getDishTypes } from '../dishtype'
+import { getFoodstuffs } from '../foodstuff'
+import { getGrapes } from '../grape'
+import { getIngredients } from '../ingredient'
 import { getRegions } from '../region/regionsSlice'
 
 const usersAdapter = createEntityAdapter({
@@ -16,7 +22,14 @@ export const login = createAsyncThunk(
   'users/login',
   async (credentials, thunkAPI) => {
     const currentUser = await userService.login(credentials)
+    thunkAPI.dispatch(getBeerTypes())
     thunkAPI.dispatch(getCountries())
+    thunkAPI.dispatch(getCourses())
+    thunkAPI.dispatch(getCuisines())
+    thunkAPI.dispatch(getDishTypes())
+    thunkAPI.dispatch(getFoodstuffs())
+    thunkAPI.dispatch(getGrapes())
+    thunkAPI.dispatch(getIngredients())
     thunkAPI.dispatch(getRegions())
     thunkAPI.dispatch(getCuisines())
     return currentUser
