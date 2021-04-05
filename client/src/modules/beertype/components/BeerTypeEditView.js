@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter, useHistory } from 'react-router-dom'
-import { connect, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Row } from 'react-bootstrap'
 import {
   LimonelloForm,

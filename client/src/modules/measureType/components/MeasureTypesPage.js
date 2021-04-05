@@ -1,35 +1,31 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import MeasureTypesListView from './MeasureTypesListView'
-import { withCrud, withSearch } from '../../core'
+import { withCrud2, withSearch } from '../../core'
 import {
-  saveMeasureType,
   getMeasureTypes,
-  deleteMeasureType
-} from '../measureTypeActions'
+  addMeasureType,
+  updateMeasureType,
+  deleteMeasureType,
+  selectAllMeasureTypes,
+  selectMeasureTypeById
+} from '../measureTypesSlice'
 
 const defaultSort = (a, b) =>
   a.name > b.name ? 1 : (a.name < b.name ? -1 : 0)
 
-const MeasureTypesPage = props => {
-  const MeasureTypesWrapped = withSearch(withCrud(MeasureTypesListView))
+const MeasureTypesPage = () => {
+  const MeasureTypesWrapped = withSearch(withCrud2(MeasureTypesListView))
   return (
     <MeasureTypesWrapped
-      repository={'measureTypes'}
       defaultSort={defaultSort}
-      addItem={props.saveMeasureType}
-      getAllItems={props.getMeasureTypes}
-      updateItem={props.saveMeasureType}
-      deleteItem={props.deleteMeasureType}
+      addItem={addMeasureType}
+      getAllItems={getMeasureTypes}
+      updateItem={updateMeasureType}
+      deleteItem={deleteMeasureType}
+      selectAllItems={selectAllMeasureTypes}
+      selectItemById={selectMeasureTypeById}
     />
   )
 }
 
-export default connect(
-  null,
-  {
-    saveMeasureType,
-    getMeasureTypes,
-    deleteMeasureType
-  }
-)(MeasureTypesPage)
+export default MeasureTypesPage

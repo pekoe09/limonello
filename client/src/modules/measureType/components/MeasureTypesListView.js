@@ -1,5 +1,5 @@
-import React, { useCallback } from 'react'
-import { connect } from 'react-redux'
+import React, { useCallback, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { withRouter, useHistory } from 'react-router-dom'
 import {
   LimonelloButton,
@@ -7,7 +7,28 @@ import {
   PageBar
 } from '../../core'
 
-function MeasureTypesListView(props) {
+const MeasureTypesListView = ({
+  getAllItems,
+  selectAllItems,
+  searchPhrase,
+  searchPhraseToUse,
+  handlePhraseChange,
+  handleSearch,
+  handleDeleteRequest,
+  renderDeletionConfirmation
+}) => {
+  const dispatch = useDispatch()
+  const allMeasureTypes = useSelector(selectAllItems)
+
+  const measureTypesStatus = useSelector(state => state.measureTypes.status)
+  const error = useSelector(state => state.measureTypes.error)
+
+  useEffect(() => {
+    if (measureTypesStatus === 'idle') {
+      dispatch(getAllItems())
+    }
+  })
+
   let history = useHistory()
 
   const handleOpenEditPage = (id) => {
@@ -19,21 +40,20 @@ function MeasureTypesListView(props) {
   }
 
   const handleRowClick = (row) => {
-    props.showError('')
     handleOpenEditPage(row.original._id)
   }
 
   const getFilteredItems = useCallback(() => {
-    let searchPhrase = props.searchPhraseToUse.toLowerCase()
-    let filtered = props.items.map(i => i[1])
-    if (props.searchPhraseToUse.length > 0) {
-      filtered = props.items.filter(p =>
+    let searchPhrase = searchPhraseToUse.toLowerCase()
+    let filtered = allMeasureTypes
+    if (searchPhraseToUse.length > 0) {
+      filtered = filtered.filter(p =>
         p.name.toLowerCase().includes(searchPhrase)
       )
     }
 
     return filtered
-  }, [props.items, props.searchPhraseToUse])
+  }, [allMeasureTypes, searchPhraseToUse])
 
   const getData = React.useMemo(() => getFilteredItems(), [getFilteredItems])
 
@@ -58,7 +78,7 @@ function MeasureTypesListView(props) {
         accessor: 'delete',
         Cell: (item) => (
           <LimonelloButton
-            onClick={(e) => props.handleDeleteRequest(item.row.original, e)}
+            onClick={(e) => handleDeleteRequest(item.row.original, e)}
             bsstyle='rowdanger'
           >
             Poista
@@ -81,9 +101,9 @@ function MeasureTypesListView(props) {
         headerText='Mittatyyppi'
         addBtnText='Lisää mittatyyppi'
         handleOpenEditPage={handleOpenEditPage}
-        searchPhrase={props.searchPhrase}
-        handlePhraseChange={props.handlePhraseChange}
-        handleSearch={props.handleSearch}
+        searchPhrase={searchPhrase}
+        handlePhraseChange={handlePhraseChange}
+        handleSearch={handleSearch}
       />
 
       <LimonelloDataTable
@@ -92,16 +112,9 @@ function MeasureTypesListView(props) {
         handleRowClick={handleRowClick}
       />
 
-      {props.renderDeletionConfirmation()}
+      {renderDeletionConfirmation()}
     </React.Fragment>
   )
 }
 
-const mapStateToProps = store => ({
-  loading: store.measureTypes.loading,
-  error: store.measureTypes.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(MeasureTypesListView))
+export default withRouter(MeasureTypesListView)

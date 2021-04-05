@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter, useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Row } from 'react-bootstrap'
 import {
   LimonelloForm,
@@ -9,13 +9,15 @@ import {
   PageTitle
 } from '../../core'
 
-function MeasureTypeEditView(props) {
+const MeasureTypeEditView = ({
+  match,
+  handleSave,
+  selectItemById
+}) => {
   let history = useHistory()
-  let measureType = null
-  const urlId = props.match.params.id
-  if (urlId) {
-    measureType = props.items.find(i => i[0] === urlId)[1]
-  }
+
+  const measureTypeId = match.params.id
+  let measureType = useSelector(state => selectItemById(state, measureTypeId))
 
   const [id, setId] = useState(measureType ? measureType._id : '')
   const [name, setName] = useState(measureType ? measureType.name : '')
@@ -34,17 +36,19 @@ function MeasureTypeEditView(props) {
     return () => clearState()
   }, [])
 
-  const handleSave = async (e) => {
+  const handleSaveRequest = async (e) => {
     e.preventDefault()
     const measureType = {
       _id: id,
       name,
       partitive
     }
-    await props.handleSave(measureType)
-    if (!props.error) {
+    try {
+      await handleSave(measureType)
       clearState()
       history.push('/measuretypes')
+    } catch (error) {
+      console.log('error on save', error)
     }
   }
 
@@ -53,13 +57,8 @@ function MeasureTypeEditView(props) {
     history.push('/measuretypes')
   }
 
-  const handleNameChange = e => {
-    setName(e.target.value)
-  }
-
-  const handlePartitiveChange = e => {
-    setPartitive(e.target.value)
-  }
+  const handleNameChange = e => setName(e.target.value)
+  const handlePartitiveChange = e => setPartitive(e.target.value)
 
   const handleBlur = field => {
     setTouched({ ...touched, [field]: true })
@@ -118,7 +117,7 @@ function MeasureTypeEditView(props) {
             />
           </LimonelloForm.Group>
           <LimonelloFormButtons
-            handleSave={handleSave}
+            handleSave={handleSaveRequest}
             handleCancel={handleCancel}
             saveIsDisabled={Object.keys(errors).some(x => errors[x])}
           />
@@ -128,10 +127,4 @@ function MeasureTypeEditView(props) {
   )
 }
 
-const mapStateToProps = store => ({
-  error: store.measureTypes.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(MeasureTypeEditView))
+export default withRouter(MeasureTypeEditView)

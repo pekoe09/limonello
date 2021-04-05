@@ -12,6 +12,7 @@ import { getDishTypes } from '../dishtype'
 import { getFoodstuffs } from '../foodstuff'
 import { getGrapes } from '../grape'
 import { getIngredients } from '../ingredient'
+import { getMeasureTypes } from '../measureType'
 import { getRegions } from '../region/regionsSlice'
 
 const usersAdapter = createEntityAdapter({
@@ -30,8 +31,8 @@ export const login = createAsyncThunk(
     thunkAPI.dispatch(getFoodstuffs())
     thunkAPI.dispatch(getGrapes())
     thunkAPI.dispatch(getIngredients())
+    thunkAPI.dispatch(getMeasureTypes())
     thunkAPI.dispatch(getRegions())
-    thunkAPI.dispatch(getCuisines())
     return currentUser
   }
 )
