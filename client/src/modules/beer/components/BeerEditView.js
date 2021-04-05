@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter, useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.min.css'
 import { Row } from 'react-bootstrap'
@@ -10,14 +10,26 @@ import {
   LimonelloFormLabel,
   PageTitle
 } from '../../core'
+import {
+  selectAllBeerTypes
+} from '../../beertype'
+import {
+  selectAllCountries
+} from '../../country'
 
-function BeerEditView(props) {
+const BeerEditView = ({
+  match,
+  handleSave,
+  selectItemById
+}) => {
   let history = useHistory()
-  let beer = null
-  const urlId = props.match.params.id
-  if (urlId) {
-    beer = props.items.find(i => i[0] === urlId)[1]
-  }
+
+  const beerId = match.params.id
+  let beer = useSelector(state => selectItemById(state, beerId))
+  const beerTypes = Object.values(useSelector(selectAllBeerTypes))
+  const initialBeerType = beer ? beerTypes.find(t => t._id === beer.beerType) : null
+  const countries = Object.values(useSelector(selectAllCountries))
+  const initialCountry = beer ? countries.find(c => c._id === beer.country) : null
 
   const [id, setId] = useState(beer ? beer._id : '')
   const [name, setName] = useState(beer ? beer.name : '')
@@ -29,9 +41,9 @@ function BeerEditView(props) {
   const [boughtFrom, setBoughtFrom] = useState(beer ? beer.boughtFrom : '')
   const [brewery, setBrewery] = useState(beer ? beer.brewery : '')
   const [comment, setComment] = useState(beer ? beer.comment : '')
-  const [beerType, setBeerType] = useState(beer ? [beer.beerType] : [])
+  const [beerType, setBeerType] = useState(beer ? [initialBeerType] : [])
   const [oldBeerTypeId, setOldBeerTypeId] = useState(beer ? beer.beerType._id : '')
-  const [country, setCountry] = useState(beer ? [beer.country] : [])
+  const [country, setCountry] = useState(beer ? [initialCountry] : [])
   const [oldCountryId, setOldCountryId] = useState(beer ? beer.country._id : '')
   const [touched, setTouched] = useState({
     name: false,
@@ -56,7 +68,7 @@ function BeerEditView(props) {
     return () => clearState()
   }, [])
 
-  const handleSave = async (e) => {
+  const handleSaveRequest = async (e) => {
     e.preventDefault()
     const beer = {
       _id: id,
@@ -74,10 +86,12 @@ function BeerEditView(props) {
       country: country[0]._id,
       oldCountryId
     }
-    await props.handleSave(beer)
-    if (!props.error) {
+    try {
+      await handleSave(beer)
       clearState()
       history.push('/beers')
+    } catch (error) {
+      console.log('error on save', error)
     }
   }
 
@@ -86,41 +100,15 @@ function BeerEditView(props) {
     history.push('/beers')
   }
 
-  const handleNameChange = e => {
-    setName(e.target.value)
-  }
-
-  const handleAlcoholChange = e => {
-    setAlcohol(e.target.value)
-  }
-
-  const handleHoppinessChange = e => {
-    setHoppiness(e.target.value)
-  }
-
-  const handleSweetnessChange = e => {
-    setSweetness(e.target.value)
-  }
-
-  const handleStarsChange = e => {
-    setStars(e.target.value)
-  }
-
-  const handlePriceChange = e => {
-    setPrice(e.target.value)
-  }
-
-  const handleBoughtFromChange = e => {
-    setBoughtFrom(e.target.value)
-  }
-
-  const handleCommentChange = e => {
-    setComment(e.target.value)
-  }
-
-  const handleBreweryChange = e => {
-    setBrewery(e.target.value)
-  }
+  const handleNameChange = e => setName(e.target.value)
+  const handleAlcoholChange = e => setAlcohol(e.target.value)
+  const handleHoppinessChange = e => setHoppiness(e.target.value)
+  const handleSweetnessChange = e => setSweetness(e.target.value)
+  const handleStarsChange = e => setStars(e.target.value)
+  const handlePriceChange = e => setPrice(e.target.value)
+  const handleBoughtFromChange = e => setBoughtFrom(e.target.value)
+  const handleCommentChange = e => setComment(e.target.value)
+  const handleBreweryChange = e => setBrewery(e.target.value)
 
   const handleBlur = field => {
     setTouched({ ...touched, [field]: true })
@@ -183,7 +171,7 @@ function BeerEditView(props) {
             <LimonelloFormLabel>Oluttyyppi</LimonelloFormLabel>
             <Typeahead
               onChange={(selected) => { setBeerType(selected) }}
-              options={props.beerTypes}
+              options={beerTypes}
               selected={beerType}
               labelKey='name'
               id='_id'
@@ -195,7 +183,7 @@ function BeerEditView(props) {
             <LimonelloFormLabel>Maa</LimonelloFormLabel>
             <Typeahead
               onChange={(selected) => { setCountry(selected) }}
-              options={props.countries}
+              options={countries}
               selected={country}
               labelKey='name'
               id='_id'
@@ -296,7 +284,7 @@ function BeerEditView(props) {
           </LimonelloForm.Group>
 
           <LimonelloFormButtons
-            handleSave={handleSave}
+            handleSave={handleSaveRequest}
             handleCancel={handleCancel}
             saveIsDisabled={Object.keys(errors).some(x => errors[x])}
           />
@@ -306,12 +294,4 @@ function BeerEditView(props) {
   )
 }
 
-const mapStateToProps = store => ({
-  beerTypes: Object.entries(store.beerTypes.byId).map(o => o[1]),
-  countries: Object.entries(store.countries.byId).map(o => o[1]),
-  error: store.beers.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(BeerEditView))
+export default withRouter(BeerEditView)

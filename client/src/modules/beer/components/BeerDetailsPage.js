@@ -1,36 +1,28 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import BeerDetailsView from './BeerDetailsView'
-import { withCrud } from '../../core'
+import { withCrud2 } from '../../core'
 import {
-  saveBeer,
   getBeers,
-  deleteBeer
-} from '../beerActions'
+  addBeer,
+  updateBeer,
+  deleteBeer,
+  selectAllBeersWithTypeAndCountry,
+  selectBeerById
+} from '../beersSlice'
 
-const BeerDetailsPage = props => {
-  const id = null
-  console.log('beer details props', props)
-
-  const BeerDetailsWrapped = withCrud(BeerDetailsView)
+const BeerDetailsPage = () => {
+  const BeerDetailsWrapped = withCrud2(BeerDetailsView)
   return (
     <BeerDetailsWrapped
-      repository={'beers'}
-      id={id}
       defaultSort={() => { }}
-      addItem={props.saveBeer}
-      getAllItems={props.getBeers}
-      updateItem={props.saveBeer}
-      deleteItem={props.deleteBeer}
+      addItem={addBeer}
+      getAllItems={getBeers}
+      updateItem={updateBeer}
+      deleteItem={deleteBeer}
+      selectItemById={selectBeerById}
+      selectAllItems={selectAllBeersWithTypeAndCountry}
     />
   )
 }
 
-export default connect(
-  null,
-  {
-    saveBeer,
-    getBeers,
-    deleteBeer
-  }
-)(BeerDetailsPage)
+export default BeerDetailsPage

@@ -6,7 +6,7 @@ import {
   addRegion,
   updateRegion,
   deleteRegion,
-  selectAllRegions,
+  selectAllRegionsWithCountry,
   selectRegionById
 } from '../regionsSlice'
 
@@ -22,7 +22,7 @@ const RegionsPage = () => {
       getAllItems={getRegions}
       updateItem={updateRegion}
       deleteItem={deleteRegion}
-      selectAllItems={selectAllRegions}
+      selectAllItems={selectAllRegionsWithCountry}
       selectItemById={selectRegionById}
     />
   )

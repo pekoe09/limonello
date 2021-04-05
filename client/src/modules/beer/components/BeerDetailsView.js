@@ -1,18 +1,30 @@
 import React from 'react'
 import { withRouter, useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Col, Row } from 'react-bootstrap'
-import { makeGetBeersWithCountryAndType } from '../beerSelector'
 import {
   LimonelloForm,
   LimonelloFormLabel,
   PageTitle
 } from '../../core'
+import {
+  selectBeerTypeById
+} from '../../beertype'
+import {
+  selectCountryById
+} from '../../country'
 
-function BeerDetailsView({ beer }) {
-  console.log('beer details view props', beer)
-  //const beer = { name: 'test' }
+const BeerDetailsView = ({
+  match,
+  selectItemById
+}) => {
   let history = useHistory()
+
+  const beerId = match.params.id
+  let beer = useSelector(state => selectItemById(state, beerId))
+  const beerType = useSelector(state => selectBeerTypeById(state, beer.beerType))
+  const country = useSelector(state => selectCountryById(state, beer.country))
+  beer = { ...beer, beerType, country }
 
   const handleReturn = () => {
     history.push('/beers')
@@ -99,17 +111,4 @@ function BeerDetailsView({ beer }) {
   )
 }
 
-const makeMapStateToProps = (store, ownProps) => {
-  const getBeersWithCountryAndType = makeGetBeersWithCountryAndType()
-  return store => {
-    const beers = getBeersWithCountryAndType(store)
-    console.log('beer', beers.find(b => b._id === ownProps.match.params.id))
-    return {
-      beer: beers.find(b => b._id === ownProps.match.params.id)
-    }
-  }
-}
-
-export default withRouter(connect(
-  makeMapStateToProps
-)(BeerDetailsView))
+export default withRouter(BeerDetailsView)

@@ -1,9 +1,14 @@
 import CountriesPage from './components/CountriesPage'
 import CountryEditPage from './components/CountryEditPage'
-import countryReducer from './countriesSlice'
+import countryReducer, {
+  selectAllCountries,
+  selectCountryById
+} from './countriesSlice'
 
 export {
   CountriesPage,
   CountryEditPage,
-  countryReducer
+  countryReducer,
+  selectAllCountries,
+  selectCountryById
 }
