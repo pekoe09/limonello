@@ -15,6 +15,7 @@ import { getIngredients } from '../ingredient'
 import { getMeasures } from '../measure'
 import { getMeasureTypes } from '../measureType'
 import { getRegions } from '../region/regionsSlice'
+import { getWineTypes } from '../wineType'
 
 const usersAdapter = createEntityAdapter({
   selectId: user => user._id
@@ -35,6 +36,7 @@ export const login = createAsyncThunk(
     thunkAPI.dispatch(getMeasureTypes())
     thunkAPI.dispatch(getMeasures())
     thunkAPI.dispatch(getRegions())
+    thunkAPI.dispatch(getWineTypes())
     return currentUser
   }
 )

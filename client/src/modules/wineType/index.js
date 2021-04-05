@@ -1,9 +1,10 @@
 import WineTypeEditPage from './components/WineTypeEditPage'
 import WineTypesPage from './components/WineTypesPage'
-import wineTypeReducer from './wineTypeReducer'
+import wineTypeReducer, { getWineTypes } from './wineTypesSlice'
 
 export {
   WineTypeEditPage,
   WineTypesPage,
-  wineTypeReducer
+  wineTypeReducer,
+  getWineTypes
 }

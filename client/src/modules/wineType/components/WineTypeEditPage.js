@@ -1,35 +1,28 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import WineTypeEditView from './WineTypeEditView'
-import { withCrud } from '../../core'
+import { withCrud2 } from '../../core'
 import {
-  saveWineType,
   getWineTypes,
-  deleteWineType
-} from '../wineTypeActions'
+  addWineType,
+  updateWineType,
+  deleteWineType,
+  selectAllWineTypes,
+  selectWineTypeById
+} from '../wineTypesSlice'
 
 const WineTypeEditPage = props => {
-  const id = null
-
-  const WineTypeEditWrapped = withCrud(WineTypeEditView)
+  const WineTypeEditWrapped = withCrud2(WineTypeEditView)
   return (
     <WineTypeEditWrapped
-      repository={'wineTypes'}
-      id={id}
-      defaultSort={() => {}}
-      addItem={props.saveWineType}
-      getAllItems={props.getWineTypes}
-      updateItem={props.saveWineType}
-      deleteItem={props.deleteWineType}
+      defaultSort={() => { }}
+      addItem={addWineType}
+      getAllItems={getWineTypes}
+      updateItem={updateWineType}
+      deleteItem={deleteWineType}
+      selectAllItems={selectAllWineTypes}
+      selectItemById={selectWineTypeById}
     />
   )
 }
 
-export default connect(
-  null,
-  {
-    saveWineType,
-    getWineTypes,
-    deleteWineType
-  }
-)(WineTypeEditPage)
+export default WineTypeEditPage

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter, useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Row } from 'react-bootstrap'
 import {
   LimonelloForm,
@@ -9,13 +9,15 @@ import {
   PageTitle
 } from '../../core'
 
-function WineTypeEditView(props) {
+const WineTypeEditView = ({
+  match,
+  handleSave,
+  selectItemById
+}) => {
   let history = useHistory()
-  let wineType = null
-  const urlId = props.match.params.id
-  if (urlId) {
-    wineType = props.items.find(i => i[0] === urlId)[1]
-  }
+
+  const wineTypeId = match.params.id
+  let wineType = useSelector(state => selectItemById(state, wineTypeId))
 
   const [id, setId] = useState(wineType ? wineType._id : '')
   const [name, setName] = useState(wineType ? wineType.name : '')
@@ -32,16 +34,18 @@ function WineTypeEditView(props) {
     return () => clearState()
   }, [])
 
-  const handleSave = async (e) => {
+  const handleSaveRequest = async (e) => {
     e.preventDefault()
     const wineType = {
       _id: id,
       name
     }
-    await props.handleSave(wineType)
-    if (!props.error) {
+    try {
+      await handleSave(wineType)
       clearState()
-      history.push('/winetypes')
+      history.push('/wineTypes')
+    } catch (error) {
+      console.log('error on save', error)
     }
   }
 
@@ -50,9 +54,7 @@ function WineTypeEditView(props) {
     history.push('/winetypes')
   }
 
-  const handleNameChange = e => {
-    setName(e.target.value)
-  }
+  const handleNameChange = e => setName(e.target.value)
 
   const handleBlur = field => {
     setTouched({ ...touched, [field]: true })
@@ -98,7 +100,7 @@ function WineTypeEditView(props) {
             />
           </LimonelloForm.Group>
           <LimonelloFormButtons
-            handleSave={handleSave}
+            handleSave={handleSaveRequest}
             handleCancel={handleCancel}
             saveIsDisabled={Object.keys(errors).some(x => errors[x])}
           />
@@ -108,10 +110,4 @@ function WineTypeEditView(props) {
   )
 }
 
-const mapStateToProps = store => ({
-  error: store.wineTypes.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(WineTypeEditView))
+export default withRouter(WineTypeEditView)

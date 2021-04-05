@@ -1,35 +1,31 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import WineTypesListView from './WineTypesListView'
-import { withCrud, withSearch } from '../../core'
+import { withCrud2, withSearch } from '../../core'
 import {
-  saveWineType,
   getWineTypes,
-  deleteWineType
-} from '../wineTypeActions'
+  addWineType,
+  updateWineType,
+  deleteWineType,
+  selectAllWineTypes,
+  selectWineTypeById
+} from '../wineTypesSlice'
 
 const defaultSort = (a, b) =>
   a.name > b.name ? 1 : (a.name < b.name ? -1 : 0)
 
-const WineTypesPage = props => {
-  const WineTypesWrapped = withSearch(withCrud(WineTypesListView))
+const WineTypesPage = () => {
+  const WineTypesWrapped = withSearch(withCrud2(WineTypesListView))
   return (
     <WineTypesWrapped
-      repository={'wineTypes'}
       defaultSort={defaultSort}
-      addItem={props.saveWineType}
-      getAllItems={props.getWineTypes}
-      updateItem={props.saveWineType}
-      deleteItem={props.deleteWineType}
+      addItem={addWineType}
+      getAllItems={getWineTypes}
+      updateItem={updateWineType}
+      deleteItem={deleteWineType}
+      selectAllItems={selectAllWineTypes}
+      selectItemById={selectWineTypeById}
     />
   )
 }
 
-export default connect(
-  null,
-  {
-    saveWineType,
-    getWineTypes,
-    deleteWineType
-  }
-)(WineTypesPage)
+export default WineTypesPage
