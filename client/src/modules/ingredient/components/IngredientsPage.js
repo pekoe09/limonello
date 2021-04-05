@@ -23,7 +23,7 @@ const IngredientsPage = () => {
       updateItem={updateIngredient}
       deleteItem={deleteIngredient}
       selectAllItems={selectAllIngredientsWithFoodstuff}
-      selectIngredientById={selectIngredientById}
+      selectItemById={selectIngredientById}
     />
   )
 }

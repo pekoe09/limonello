@@ -1,9 +1,10 @@
 import MeasureEditPage from './components/MeasureEditPage'
 import MeasuresPage from './components/MeasuresPage'
-import measureReducer from './measureReducer'
+import measureReducer, { getMeasures } from './measuresSlice'
 
 export {
   MeasureEditPage,
   MeasuresPage,
-  measureReducer
+  measureReducer,
+  getMeasures
 }

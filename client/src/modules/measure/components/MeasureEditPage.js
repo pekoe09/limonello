@@ -1,35 +1,28 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import MeasureEditView from './MeasureEditView'
-import { withCrud } from '../../core'
+import { withCrud2 } from '../../core'
 import {
-  saveMeasure,
   getMeasures,
-  deleteMeasure
-} from '../measureActions'
+  addMeasure,
+  updateMeasure,
+  deleteMeasure,
+  selectAllMeasuresWithType,
+  selectMeasureById
+} from '../measuresSlice'
 
-const MeasureEditPage = props => {
-  const id = null
-
-  const MeasureEditWrapped = withCrud(MeasureEditView)
+const MeasureEditPage = () => {
+  const MeasureEditWrapped = withCrud2(MeasureEditView)
   return (
     <MeasureEditWrapped
-      repository={'measures'}
-      id={id}
-      defaultSort={() => {}}
-      addItem={props.saveMeasure}
-      getAllItems={props.getMeasures}
-      updateItem={props.saveMeasure}
-      deleteItem={props.deleteMeasure}
+      defaultSort={() => { }}
+      addItem={addMeasure}
+      getAllItems={getMeasures}
+      updateItem={updateMeasure}
+      deleteItem={deleteMeasure}
+      selectAllItems={selectAllMeasuresWithType}
+      selectItemById={selectMeasureById}
     />
   )
 }
 
-export default connect(
-  null,
-  {
-    saveMeasure,
-    getMeasures,
-    deleteMeasure
-  }
-)(MeasureEditPage)
+export default MeasureEditPage

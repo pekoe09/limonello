@@ -25,7 +25,6 @@ const IngredientEditView = ({
   let ingredient = useSelector(state => selectItemById(state, ingredientId))
   const foodstuffs = Object.values(useSelector(selectAllFoodstuffs))
   const initialFoodstuff = ingredient ? foodstuffs.find(f => f._id === ingredient.foodstuff) : null
-  console.log('initial foodstuff', initialFoodstuff)
 
   const [id, setId] = useState(ingredient ? ingredient._id : '')
   const [name, setName] = useState(ingredient ? ingredient.name : '')

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { withRouter, useHistory } from 'react-router-dom'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Typeahead } from 'react-bootstrap-typeahead'
 import 'react-bootstrap-typeahead/css/Typeahead.min.css'
 import { Row } from 'react-bootstrap'
@@ -10,20 +10,27 @@ import {
   LimonelloFormLabel,
   PageTitle
 } from '../../core'
+import {
+  selectAllMeasureTypes
+} from '../../measureType'
 
-function MeasureEditView(props) {
+const MeasureEditView = ({
+  match,
+  handleSave,
+  selectItemById
+}) => {
   let history = useHistory()
-  let measure = null
-  const urlId = props.match.params.id
-  if (urlId) {
-    measure = props.items.find(i => i[0] === urlId)[1]
-  }
+
+  const measureId = match.params.id
+  let measure = useSelector(state => selectItemById(state, measureId))
+  const measureTypes = Object.values(useSelector(selectAllMeasureTypes))
+  const initialMeasureType = measure ? measureTypes.find(t => t._id === measure.measureType) : null
 
   const [id, setId] = useState(measure ? measure._id : '')
   const [name, setName] = useState(measure ? measure.name : '')
   const [partitive, setPartitive] = useState(measure ? measure.partitive : '')
   const [abbreviation, setAbbreviation] = useState(measure ? measure.abbreviation : '')
-  const [measureType, setMeasureType] = useState(measure ? [measure.measureType] : [])
+  const [measureType, setMeasureType] = useState(measure ? [initialMeasureType] : [])
   const [oldMeasureTypeId, setOldMeasureTypeId] = useState(measure ? measure.measureType._id : '')
   const [touched, setTouched] = useState({
     name: false,
@@ -41,7 +48,7 @@ function MeasureEditView(props) {
     return () => clearState()
   }, [])
 
-  const handleSave = async (e) => {
+  const handleSaveReguest = async (e) => {
     e.preventDefault()
     const measure = {
       _id: id,
@@ -51,10 +58,12 @@ function MeasureEditView(props) {
       measureType: measureType[0],
       oldMeasureTypeId
     }
-    await props.handleSave(measure)
-    if (!props.error) {
+    try {
+      await handleSave(measure)
       clearState()
       history.push('/measures')
+    } catch (error) {
+      console.log('error on save', error)
     }
   }
 
@@ -63,17 +72,9 @@ function MeasureEditView(props) {
     history.push('/measures')
   }
 
-  const handleNameChange = e => {
-    setName(e.target.value)
-  }
-
-  const handlePartitiveChange = e => {
-    setPartitive(e.target.value)
-  }
-
-  const handleAbbreviationChange = e => {
-    setAbbreviation(e.target.value)
-  }
+  const handleNameChange = e => setName(e.target.value)
+  const handlePartitiveChange = e => setPartitive(e.target.value)
+  const handleAbbreviationChange = e => setAbbreviation(e.target.value)
 
   const handleBlur = field => {
     setTouched({ ...touched, [field]: true })
@@ -151,7 +152,7 @@ function MeasureEditView(props) {
             <LimonelloFormLabel>Tyyppi</LimonelloFormLabel>
             <Typeahead
               onChange={(selected) => { setMeasureType(selected) }}
-              options={props.measureTypes}
+              options={measureTypes}
               selected={measureType}
               labelKey='name'
               id='_id'
@@ -159,7 +160,7 @@ function MeasureEditView(props) {
             />
           </LimonelloForm.Group>
           <LimonelloFormButtons
-            handleSave={handleSave}
+            handleSave={handleSaveReguest}
             handleCancel={handleCancel}
             saveIsDisabled={Object.keys(errors).some(x => errors[x])}
           />
@@ -169,11 +170,4 @@ function MeasureEditView(props) {
   )
 }
 
-const mapStateToProps = store => ({
-  measureTypes: Object.entries(store.measureTypes.byId).map(o => o[1]),
-  error: store.measures.error
-})
-
-export default withRouter(connect(
-  mapStateToProps
-)(MeasureEditView))
+export default withRouter(MeasureEditView)

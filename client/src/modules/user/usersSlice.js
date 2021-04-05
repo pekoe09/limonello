@@ -12,6 +12,7 @@ import { getDishTypes } from '../dishtype'
 import { getFoodstuffs } from '../foodstuff'
 import { getGrapes } from '../grape'
 import { getIngredients } from '../ingredient'
+import { getMeasures } from '../measure'
 import { getMeasureTypes } from '../measureType'
 import { getRegions } from '../region/regionsSlice'
 
@@ -32,6 +33,7 @@ export const login = createAsyncThunk(
     thunkAPI.dispatch(getGrapes())
     thunkAPI.dispatch(getIngredients())
     thunkAPI.dispatch(getMeasureTypes())
+    thunkAPI.dispatch(getMeasures())
     thunkAPI.dispatch(getRegions())
     return currentUser
   }
