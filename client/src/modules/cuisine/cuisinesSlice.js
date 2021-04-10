@@ -1,8 +1,7 @@
 import {
   createEntityAdapter,
   createSlice,
-  createAsyncThunk,
-  createSelector
+  createAsyncThunk
 } from '@reduxjs/toolkit'
 import {
   getAll,
@@ -34,7 +33,7 @@ export const addCuisine = createAsyncThunk(
 export const updateCuisine = createAsyncThunk(
   'cuisines/updateCuisine',
   async changeItem => {
-    const cuisine = await updateCuisine('cuisines', changeItem.changes)
+    const cuisine = await updateEntity('cuisines', changeItem.changes)
     return { id: cuisine._id, changes: cuisine }
   }
 )

@@ -27,7 +27,7 @@ const MeasuresListView = ({
     if (measuresStatus === 'idle') {
       dispatch(getAllItems())
     }
-  })
+  }, [measuresStatus, dispatch, getAllItems])
 
   let history = useHistory()
 
@@ -103,7 +103,7 @@ const MeasuresListView = ({
         maxWidth: 80
       }
     ],
-    []
+    [handleDeleteRequest]
   )
 
   return (

@@ -27,7 +27,7 @@ const IngredientsListView = ({
     if (ingredientsStatus === 'idle') {
       dispatch(getAllItems())
     }
-  })
+  }, [ingredientsStatus, dispatch, getAllItems])
 
   let history = useHistory()
 
@@ -96,7 +96,7 @@ const IngredientsListView = ({
         maxWidth: 80
       }
     ],
-    []
+    [handleDeleteRequest]
   )
 
   return (

@@ -27,7 +27,7 @@ const RegionsListView = ({
     if (regionsStatus === 'idle') {
       dispatch(getAllItems())
     }
-  }, [regionsStatus, dispatch])
+  }, [regionsStatus, dispatch, getAllItems])
 
   let history = useHistory()
 
@@ -96,7 +96,7 @@ const RegionsListView = ({
         maxWidth: 80
       }
     ],
-    []
+    [handleDeleteRequest]
   )
 
   return (

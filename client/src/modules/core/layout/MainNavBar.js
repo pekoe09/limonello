@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { NavLink } from 'react-router-dom'
-import { Navbar, Nav, NavItem, NavDropdown, Image } from 'react-bootstrap'
+import { Navbar, Nav, NavItem, NavDropdown } from 'react-bootstrap'
 import { Login, Logout } from '../../user'
 
 const AnonymousItems = () => {
@@ -25,9 +24,9 @@ const LoggedInItems = () => {
         className='justify-content-end'
       >
         <Nav.Link href='/recipes'>Reseptit</Nav.Link>
-        <NavDropdown title='Juomat' id='beverages-dropdown'>          
+        <NavDropdown title='Juomat' id='beverages-dropdown'>
           <NavDropdown.Item href='/wines'>Viinit</NavDropdown.Item>
-          <NavDropdown.Item href='/grapes'>Rypäleet</NavDropdown.Item>  
+          <NavDropdown.Item href='/grapes'>Rypäleet</NavDropdown.Item>
           <NavDropdown.Item href='/winetypes'>Viinityypit</NavDropdown.Item>
           <NavDropdown.Divider />
           <NavDropdown.Item href='/beers'>Oluet</NavDropdown.Item>
@@ -55,8 +54,8 @@ const LoggedInItems = () => {
 
 const MainNavBar = ({ currentUser }) => {
   return (
-    <Navbar  style={{paddingRight: 5}}>
-      <Navbar.Toggle aria-controls='responsive-mainbar' className='custom-toggler'/>
+    <Navbar style={{ paddingRight: 5 }}>
+      <Navbar.Toggle aria-controls='responsive-mainbar' className='custom-toggler' />
       <Navbar.Collapse id='responsive-mainbar'>
         {currentUser && <LoggedInItems />}
         {!currentUser && <AnonymousItems />}

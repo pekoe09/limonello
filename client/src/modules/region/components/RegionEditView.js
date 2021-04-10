@@ -55,7 +55,7 @@ const RegionEditView = ({
     try {
       await handleSave(region)
       clearState()
-      history.push('regions')
+      history.push('/regions')
     } catch (error) {
       console.log('error on save', error)
     }

@@ -27,7 +27,7 @@ const DishTypesListView = ({
     if (dishTypesStatus === 'idle') {
       dispatch(getAllItems())
     }
-  }, [dishTypesStatus, dispatch])
+  }, [dishTypesStatus, dispatch, getAllItems])
 
   let history = useHistory()
 
@@ -85,7 +85,7 @@ const DishTypesListView = ({
         maxWidth: 80
       }
     ],
-    []
+    [handleDeleteRequest]
   )
 
   return (

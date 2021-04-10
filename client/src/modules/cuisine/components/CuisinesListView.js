@@ -27,7 +27,7 @@ const CuisinesListView = ({
     if (cuisinesStatus === 'idle') {
       dispatch(getAllItems())
     }
-  }, [cuisinesStatus, dispatch])
+  }, [cuisinesStatus, dispatch, getAllItems])
 
   let history = useHistory()
 
@@ -85,7 +85,7 @@ const CuisinesListView = ({
         maxWidth: 80
       }
     ],
-    []
+    [handleDeleteRequest]
   )
 
   return (

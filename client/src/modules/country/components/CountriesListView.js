@@ -13,7 +13,7 @@ const CountriesListView = ({
   searchPhrase,
   searchPhraseToUse,
   handlePhraseChange,
-  handleSearch, 
+  handleSearch,
   handleDeleteRequest,
   renderDeletionConfirmation
 }) => {
@@ -27,7 +27,7 @@ const CountriesListView = ({
     if (countriesStatus === 'idle') {
       dispatch(getAllItems())
     }
-  }, [countriesStatus, dispatch])
+  }, [countriesStatus, dispatch, getAllItems])
 
   let history = useHistory()
 
@@ -85,7 +85,7 @@ const CountriesListView = ({
         maxWidth: 80
       }
     ],
-    []
+    [handleDeleteRequest]
   )
 
   return (

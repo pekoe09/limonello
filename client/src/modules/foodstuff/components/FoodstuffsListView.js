@@ -27,7 +27,7 @@ const FoodstuffsListView = ({
     if (foodstuffsStatus === 'idle') {
       dispatch(getAllItems())
     }
-  })
+  }, [foodstuffsStatus, dispatch, getAllItems])
 
   let history = useHistory()
 
@@ -85,7 +85,7 @@ const FoodstuffsListView = ({
         maxWidth: 80
       }
     ],
-    []
+    [handleDeleteRequest]
   )
 
   return (

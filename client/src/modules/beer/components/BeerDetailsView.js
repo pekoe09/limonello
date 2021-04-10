@@ -5,6 +5,7 @@ import { Col, Row } from 'react-bootstrap'
 import {
   LimonelloForm,
   LimonelloFormLabel,
+  LimonelloDetailsButtons,
   PageTitle
 } from '../../core'
 import {
@@ -30,6 +31,14 @@ const BeerDetailsView = ({
     history.push('/beers')
   }
 
+  const handleEditRequest = () => {
+    history.push(`/beers/edit/${beerId}`)
+  }
+
+  const handleAddRequest = () => {
+    history.push('/beers/create')
+  }
+
   return (
     <div style={{ padding: 15 }}>
       <Row>
@@ -39,6 +48,11 @@ const BeerDetailsView = ({
       </Row>
       <Row>
         <LimonelloForm style={{ width: '50%' }}>
+          <LimonelloDetailsButtons
+            handleReturn={handleReturn}
+            handleEdit={handleEditRequest}
+            handleAdd={handleAddRequest}
+          />
           <LimonelloForm.Group as={Row} controlId='name'>
             <LimonelloFormLabel column sm='3'>Nimi</LimonelloFormLabel>
             <Col sm='9'>
@@ -105,6 +119,12 @@ const BeerDetailsView = ({
               <LimonelloForm.Control plaintext readOnly value={beer.comment} />
             </Col>
           </LimonelloForm.Group>
+
+          <LimonelloDetailsButtons
+            handleReturn={handleReturn}
+            handleEdit={handleEditRequest}
+            handleAdd={handleAddRequest}
+          />
         </LimonelloForm>
       </Row>
     </div>

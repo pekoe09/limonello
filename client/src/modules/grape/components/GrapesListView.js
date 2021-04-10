@@ -27,7 +27,7 @@ const GrapesListView = ({
     if (grapesStatus === 'idle') {
       dispatch(getAllItems())
     }
-  })
+  }, [grapesStatus, dispatch, getAllItems])
 
   let history = useHistory()
 
@@ -85,7 +85,7 @@ const GrapesListView = ({
         maxWidth: 80
       }
     ],
-    []
+    [handleDeleteRequest]
   )
 
   return (

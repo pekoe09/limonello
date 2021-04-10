@@ -27,7 +27,7 @@ const CoursesListView = ({
     if (coursesStatus === 'idle') {
       dispatch(getAllItems())
     }
-  }, [coursesStatus, dispatch])
+  }, [coursesStatus, dispatch, getAllItems])
 
   let history = useHistory()
 
@@ -92,7 +92,7 @@ const CoursesListView = ({
         maxWidth: 80
       }
     ],
-    []
+    [handleDeleteRequest]
   )
 
   return (

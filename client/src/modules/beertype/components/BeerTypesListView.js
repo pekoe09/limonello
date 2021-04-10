@@ -27,7 +27,7 @@ const BeerTypesListView = ({
     if (beerTypeStatus === 'idle') {
       dispatch(getAllItems())
     }
-  })
+  }, [beerTypeStatus, dispatch, getAllItems])
 
   let history = useHistory()
 
@@ -85,7 +85,7 @@ const BeerTypesListView = ({
         maxWidth: 80
       }
     ],
-    []
+    [handleDeleteRequest]
   )
 
   return (

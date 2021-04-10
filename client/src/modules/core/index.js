@@ -4,6 +4,7 @@ import {
   LimonelloForm,
   LimonelloFormLabel
 } from './components/LimonelloForm'
+import LimonelloDetailsButtons from './components/LimonelloDetailsButtons'
 import LimonelloFormButtons from './components/LimonelloFormButtons'
 import {
   DeletionConfirmation,
@@ -30,6 +31,7 @@ export {
   Layout,
   LimonelloButton,
   LimonelloDataTable,
+  LimonelloDetailsButtons,
   LimonelloForm,
   LimonelloFormButtons,
   LimonelloFormLabel,

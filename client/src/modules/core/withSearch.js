@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { compose } from 'redux'
 
 const addSearch = (WrappedComponent) => props => {
@@ -6,7 +6,6 @@ const addSearch = (WrappedComponent) => props => {
     ...rest
   } = props
 
-  const [testVar, setTestVar] = useState('testi')
   const [searchPhrase, setSearchPhrase] = useState('')
   const [searchPhraseToUse, setSearchPhraseToUse] = useState('')
 
@@ -25,7 +24,6 @@ const addSearch = (WrappedComponent) => props => {
 
   return (
     <WrappedComponent
-      testVar={testVar}
       searchPhrase={searchPhrase}
       searchPhraseToUse={searchPhraseToUse}
       handlePhraseChange={handlePhraseChange}
