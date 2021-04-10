@@ -50,6 +50,10 @@ import {
   RegionsPage
 } from '../../region'
 import {
+  WineEditPage,
+  WinesPage
+} from '../../wine'
+import {
   WineTypeEditPage,
   WineTypesPage
 } from '../../wineType'
@@ -105,6 +109,10 @@ const PageContainer = () => {
       <Route exact path='/regions' render={() => <RegionsPage />} />
       <Route exact path='/regions/create' render={() => <RegionEditPage />} />
       <Route exact path='/regions/edit/:id' render={() => <RegionEditPage />} />
+
+      <Route exact path='/wines' render={() => <WinesPage />} />
+      <Route exact path='/wines/create' render={() => <WineEditPage />} />
+      <Route exact path='/wines/edit/:id' render={() => <WineEditPage />} />
 
       <Route exact path='/winetypes' render={() => <WineTypesPage />} />
       <Route exact path='/winetypes/create' render={() => <WineTypeEditPage />} />

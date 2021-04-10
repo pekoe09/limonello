@@ -12,6 +12,7 @@ import { measureTypeReducer } from '../modules/measureType'
 import { regionReducer } from '../modules/region'
 import { userReducer } from '../modules/user'
 import { wineTypeReducer } from '../modules/wineType'
+import { wineReducer } from '../modules/wine'
 
 export {
   beerReducer,
@@ -27,5 +28,6 @@ export {
   measureTypeReducer,
   regionReducer,
   userReducer,
-  wineTypeReducer
+  wineTypeReducer,
+  wineReducer
 }
