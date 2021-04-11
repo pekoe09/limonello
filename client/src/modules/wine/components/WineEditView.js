@@ -10,6 +10,7 @@ import {
   LimonelloFormLabel,
   PageTitle
 } from '../../core'
+import GrapeContents from './GrapeContents'
 import {
   selectAllWineTypes
 } from '../../wineType'
@@ -38,6 +39,7 @@ const WineEditView = ({
   const initialCountry = wine ? countries.find(c => c._id === wine.country) : null
   const regions = Object.values(useSelector(selectAllRegionsWithCountry))
   const initialRegion = wine ? regions.find(r => r._id === wine.region) : null
+  const allGrapes = Object.values(useSelector(selectAllGrapes))
 
   const [id, setId] = useState(wine ? wine._id : '')
   const [name, setName] = useState(wine ? wine.name : '')
@@ -47,6 +49,7 @@ const WineEditView = ({
   const [boughtFrom, setBoughtFrom] = useState(wine ? wine.boughtFrom : '')
   const [producer, setProducer] = useState(wine ? wine.producer : '')
   const [vintage, setVintage] = useState(wine ? wine.vintage : '')
+  const [grapes, setGrapes] = useState(wine ? wine.grapes : [])
   const [comment, setComment] = useState(wine ? wine.comment : '')
   const [wineType, setWineType] = useState(wine ? [initialWineType] : [])
   const [oldWineTypeId, setOldWineTypeId] = useState(wine ? wine.wineType._id : '')
@@ -87,6 +90,8 @@ const WineEditView = ({
       price,
       boughtFrom,
       producer,
+      vintage,
+      grapes,
       comment,
       wineType: wineType[0]._id,
       oldWineTypeId,
@@ -107,6 +112,19 @@ const WineEditView = ({
   const handleCancel = () => {
     clearState()
     history.push('/wines')
+  }
+
+  const handleAddGrape = (grape, portion) => {
+    setGrapes(grapes
+      .filter(g => g.grape !== grape._id)
+      .concat({
+        grape: grape._id,
+        portion
+      }))
+  }
+
+  const handleRemoveGrape = grapeId => {
+    setGrapes(grapes.filter(g => g.grape !== grapeId))
   }
 
   const handleNameChange = e => setName(e.target.value)
@@ -148,6 +166,7 @@ const WineEditView = ({
     setComment('')
     setProducer('')
     setVintage('')
+    setGrapes([])
     setWineType([])
     setOldWineTypeId('')
     setCountry([])
@@ -232,6 +251,16 @@ const WineEditView = ({
               value={vintage}
               onChange={handleVintageChange}
               onBlur={handleBlur}
+            />
+          </LimonelloForm.Group>
+          <LimonelloForm.Group>
+            <LimonelloFormLabel>Rypäleet</LimonelloFormLabel>
+            <GrapeContents
+              allGrapes={allGrapes}
+              grapePortions={grapes}
+              handleAdd={handleAddGrape}
+              handleRemove={handleRemoveGrape}
+              id='grapes'
             />
           </LimonelloForm.Group>
           <LimonelloForm.Group controlId='stars'>
